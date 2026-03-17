@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr Tomasz Siemek — AI, Mikropoświadczenia, Edukacja | siemek.pl</title>
+<meta name="description" content="Dr inż. Tomasz Siemek — ekspert AI, mikropoświadczenia, nowoczesne systemy egzaminacyjne. Rozwiązania dla uczelni i biznesu.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══ RESET & TOKENS ═══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --bg:#fefcfc;--bg2:#f9f4f5;--bg3:#f3ebec;
+    --accent:#b5707b;--accent-l:#d4959e;--accent-d:#8e4f5a;
+    --accent2:#6b5b7b;--accent3:#5b7b7b;
+    --glow:rgba(181,112,123,.08);
+    --surface:rgba(181,112,123,.03);--surface2:rgba(181,112,123,.06);
+    --border:rgba(181,112,123,.10);--border2:rgba(181,112,123,.18);
+    --text:#2a1f22;--text2:#6b555b;--text3:#a8919a;
+    --sans:'Space Grotesk',sans-serif;
+    --display:'Syne',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --hand:'Caveat',cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none;line-height:1.65}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(181,112,123,.15);color:var(--accent-d)}
+
+/* ═══ CURSOR ═══ */
+.cur{position:fixed;pointer-events:none;z-index:99999}
+.cur-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%)}
+.cur-ring{width:40px;height:40px;border:1.5px solid rgba(181,112,123,.35);border-radius:50%;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s}
+.cur-trail{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--accent-l);pointer-events:none;z-index:99998;opacity:0}
+
+/* ═══ LOADER ═══ */
+#loader{
+    position:fixed;inset:0;z-index:100000;background:#2a1f22;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+}
+#loader.done{pointer-events:none;visibility:hidden}
+#loaderSvg{width:min(80vw,600px);overflow:visible;opacity:0}
+#loaderSvg text{
+    font-family:var(--display);font-weight:800;
+    fill:none;stroke:var(--accent-l);stroke-width:1.5;
+    stroke-dasharray:1500;stroke-dashoffset:1500;
+}
+.loader-sub{font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:4px;opacity:0;margin-top:18px}
+
+/* ═══ PROGRESS ═══ */
+#prog{position:fixed;top:0;left:0;height:3px;z-index:50000;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));width:0}
+
+/* ═══ NAV ═══ */
+nav{
+    position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:10000;
+    display:flex;align-items:center;gap:4px;padding:5px;border-radius:60px;
+    background:rgba(254,252,252,.82);backdrop-filter:blur(20px);
+    border:1px solid var(--border);box-shadow:0 4px 30px rgba(181,112,123,.06);
+}
+.n-logo{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--accent);padding:10px 20px;border-right:1px solid var(--border);margin-right:4px}
+.n-link{font-size:.78rem;font-weight:500;color:var(--text3);padding:10px 18px;border-radius:50px;transition:all .3s}
+.n-link:hover{color:var(--text)}
+.n-link.active{color:#fff;background:var(--accent);box-shadow:0 4px 16px rgba(181,112,123,.25)}
+
+/* ═══ HERO ═══ */
+.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;background:linear-gradient(160deg,var(--bg),var(--bg2),var(--bg3))}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;width:100%;max-width:1400px;margin:0 auto;padding:0 7vw}
+.hero-content{text-align:left}
+.hero-photo{display:flex;justify-content:flex-end;align-items:center}
+.hero-photo-wrap{
+    width:100%;max-width:520px;aspect-ratio:3/4;border-radius:28px;overflow:hidden;position:relative;
+    box-shadow:0 40px 100px rgba(181,112,123,.15),0 10px 30px rgba(0,0,0,.06);
+    border:1px solid var(--border2);
+    opacity:0;animation:fU .8s ease 1.2s forwards;
+}
+.hero-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 6s ease}
+.hero-photo-wrap:hover img{transform:scale(1.04)}
+.hero-photo-wrap::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 50%,rgba(42,31,34,.2));
+    pointer-events:none;
+}
+.hero-pre{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:28px;
+    display:inline-flex;align-items:center;gap:10px;background:var(--surface2);padding:8px 20px;border-radius:50px;border:1px solid var(--border);
+    opacity:0;animation:fU .8s ease .8s forwards;
+}
+.hero-pre .pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(181,112,123,.35)}70%{box-shadow:0 0 0 8px transparent}}
+.hero-name{font-family:var(--display);font-size:clamp(3rem,7vw,7rem);font-weight:800;line-height:.92;letter-spacing:-3px;margin-bottom:16px}
+.hero-name .line{display:block;overflow:hidden}
+.hero-name .line span{display:inline-block;transform:translateY(115%);animation:nameIn .9s cubic-bezier(.16,1,.3,1) forwards}
+.hero-name .line:nth-child(1) span{animation-delay:1s;color:var(--text)}
+.hero-name .line:nth-child(2) span{animation-delay:1.15s;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+@keyframes nameIn{to{transform:translateY(0)}}
+.hero-tw{font-family:var(--hand);font-size:clamp(1.2rem,2.5vw,1.9rem);color:var(--accent);min-height:2.4rem;margin-bottom:20px;opacity:0;animation:fU .7s ease 1.4s forwards}
+.tw-c{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:2px;vertical-align:text-bottom;animation:blink .7s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.hero-sub{font-size:1.05rem;color:var(--text2);font-weight:300;line-height:1.8;max-width:520px;margin:0 0 36px;opacity:0;animation:fU .7s ease 1.6s forwards}
+.hero-sub strong{color:var(--text);font-weight:600}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fU .7s ease 2.2s forwards}
+.hero-scroll span{font-family:var(--mono);font-size:.62rem;color:var(--text3);letter-spacing:2px;text-transform:uppercase}
+.scroll-line{width:1px;height:36px;background:linear-gradient(180deg,var(--accent),transparent);animation:scrollP 2s ease infinite}
+@keyframes scrollP{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+@media(max-width:768px){
+    .hero-inner{grid-template-columns:1fr;text-align:center}
+    .hero-content{order:2}
+    .hero-photo{order:1;justify-content:center}
+    .hero-photo-wrap{max-width:300px}
+    .hero-sub{margin:0 auto 36px}
+}
+
+/* ═══ MARQUEE ═══ */
+.marquee{padding:18px 0;overflow:hidden;background:var(--accent);position:relative;z-index:2}
+.mq-track{display:flex;gap:48px;animation:mq 20s linear infinite;width:max-content}
+.mq-item{font-family:var(--mono);font-size:.75rem;font-weight:500;color:rgba(255,255,255,.85);white-space:nowrap;display:flex;align-items:center;gap:14px;text-transform:uppercase;letter-spacing:1px}
+.mq-item .dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ═══ HORIZONTAL SCROLL ═══ */
+.hz-scroll{overflow:hidden;height:100vh;display:flex;align-items:center;background:linear-gradient(160deg,#2a1f22,#3a2a30);position:relative;z-index:2}
+.hz-text{display:flex;width:max-content;white-space:nowrap;gap:4vw;padding-left:100vw}
+.hz-text .hz-word{font-family:var(--display);font-size:clamp(2.5rem,10vw,10rem);font-weight:800;line-height:1.1;color:transparent;-webkit-text-stroke:1.5px var(--accent-l)}
+.hz-text .hz-word.filled{color:#fff;-webkit-text-stroke:0}
+.hz-text .hz-word.accent{color:var(--accent);-webkit-text-stroke:0}
+.hz-text .hz-sep{font-family:var(--display);font-size:clamp(2.5rem,10vw,10rem);font-weight:300;line-height:1.1;color:var(--accent-l);opacity:.3}
+
+/* ═══ SECTIONS ═══ */
+.sec{padding:140px 7vw;position:relative;z-index:2}
+.sec-head{margin-bottom:72px}
+.sec-tag{font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-tag::before{content:'';width:24px;height:2px;background:var(--accent);border-radius:1px}
+.sec-title{font-family:var(--display);font-size:clamp(2rem,4vw,3.4rem);font-weight:800;letter-spacing:-1.5px;line-height:1.08}
+.sec-title .dim{color:var(--text3);font-weight:400}
+.sec-w{background:var(--bg)}.sec-b{background:var(--bg2)}.sec-c{background:var(--bg3)}
+.sec-dark{background:linear-gradient(160deg,#2a1f22,#3a2a30);color:#fff}
+.sec-dark .sec-title{color:#fff}.sec-dark .sec-title .dim{color:rgba(255,255,255,.35)}
+.sec-dark .sec-tag{color:var(--accent-l)}.sec-dark .sec-tag::before{background:var(--accent-l)}
+
+/* ═══ O MNIE ═══ */
+.about-intro{text-align:center;max-width:720px;margin:0 auto 56px}
+.about-intro p{font-size:1.1rem;line-height:1.9;color:var(--text2);font-weight:300}
+.about-intro p strong{color:var(--text);font-weight:600}
+
+/* Filmik-pasek (reel) */
+.about-reel{
+    position:relative;overflow:hidden;border-radius:22px;margin-bottom:64px;
+    background:#2a1f22;padding:0;height:220px;
+    border:1px solid var(--border2);
+    box-shadow:0 20px 60px rgba(181,112,123,.08);
+}
+.about-reel-overlay{
+    position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(90deg,#2a1f22 0%,transparent 12%,transparent 88%,#2a1f22 100%);
+}
+.about-reel-track{
+    display:flex;gap:0;height:100%;width:max-content;
+    animation:reelScroll 30s linear infinite;
+}
+.about-reel-item{
+    width:320px;height:100%;flex-shrink:0;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+}
+.about-reel-item canvas{width:100%;height:100%;display:block}
+@keyframes reelScroll{to{transform:translateX(-50%)}}
+
+/* Kluczowe info — karty */
+.about-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.about-key{
+    padding:32px 24px;border-radius:20px;background:var(--bg);border:1px solid var(--border);
+    text-align:center;transition:all .4s ease;
+}
+.about-key:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 16px 48px rgba(181,112,123,.1)}
+.about-key-icon{font-size:1.8rem;margin-bottom:14px}
+.about-key-num{font-family:var(--display);font-size:2.4rem;font-weight:700;color:var(--accent);line-height:1}
+.about-key-label{font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-top:6px;font-family:var(--mono)}
+.about-key-desc{font-size:.82rem;color:var(--text2);margin-top:10px;line-height:1.5}
+
+@media(max-width:768px){
+    .about-keys{grid-template-columns:1fr 1fr}
+    .about-reel{height:160px}
+    .about-reel-item{width:240px}
+}
+
+/* ═══ TIMELINE / MOJA DROGA ═══ */
+.tl-slider-section{position:relative;overflow:hidden;padding:0}
+.tl-slider-section .sec-head{padding:80px 40px 0;max-width:1200px;margin:0 auto}
+.tl-slider-outer{position:relative;width:100%;height:100vh;overflow:hidden}
+.tl-slider-track{
+    display:flex;align-items:center;height:100%;
+    position:absolute;left:0;top:0;will-change:transform;
+}
+.tl-slider-track::before{
+    content:'';position:absolute;top:50%;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent3),transparent);
+    transform:translateY(-50%);z-index:0;
+}
+.tl-progress-wrap{
+    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+    width:min(400px,60vw);height:4px;background:var(--border);border-radius:2px;z-index:10;
+}
+.tl-progress-bar{
+    height:100%;width:0%;border-radius:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    transition:width .1s linear;
+}
+.tl-progress-label{
+    position:absolute;top:-28px;left:50%;transform:translateX(-50%);
+    font-family:var(--mono);font-size:.65rem;color:var(--text3);letter-spacing:2px;text-transform:uppercase;
+    white-space:nowrap;
+}
+.tl-card{
+    position:relative;z-index:2;flex-shrink:0;
+    width:380px;margin:0 30px;padding:48px 36px;
+    background:var(--bg);border:1px solid var(--border);border-radius:24px;
+    transition:all .5s cubic-bezier(.16,1,.3,1);
+    opacity:.4;transform:scale(.88) translateY(20px);
+    overflow:hidden;
+}
+.tl-card-canvas{
+    position:absolute;inset:0;width:100%;height:100%;
+    opacity:.12;transition:opacity .5s;pointer-events:none;z-index:0;
+}
+.tl-card.tl-active .tl-card-canvas{opacity:.2}
+.tl-card-content{position:relative;z-index:1}
+.tl-card.tl-active{
+    opacity:1;transform:scale(1) translateY(0);
+    border-color:rgba(181,112,123,.25);
+    box-shadow:0 24px 80px rgba(181,112,123,.08),0 0 0 1px rgba(181,112,123,.06);
+}
+.tl-card:hover{border-color:rgba(181,112,123,.3);box-shadow:0 30px 80px rgba(181,112,123,.1)}
+.tl-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:24px 24px 0 0;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    opacity:0;transition:opacity .4s;
+}
+.tl-card.tl-active::before{opacity:1}
+.tl-card-dot{
+    width:18px;height:18px;border-radius:50%;
+    border:3px solid var(--accent);background:var(--bg);
+    position:absolute;top:-38px;left:50%;transform:translateX(-50%);
+    transition:all .4s ease;z-index:3;
+}
+.tl-card.tl-active .tl-card-dot{
+    background:var(--accent);
+    box-shadow:0 0 0 8px rgba(181,112,123,.15),0 0 20px rgba(181,112,123,.2);
+}
+.tl-card.tl-now .tl-card-dot{animation:tlPulse 2s ease infinite}
+@keyframes tlPulse{0%,100%{box-shadow:0 0 0 8px rgba(181,112,123,.15)}50%{box-shadow:0 0 0 16px rgba(181,112,123,0)}}
+.tl-card-connector{
+    position:absolute;top:-20px;left:50%;width:2px;height:20px;
+    background:var(--accent);transform:translateX(-50%);opacity:.3;
+    transition:opacity .4s;
+}
+.tl-card.tl-active .tl-card-connector{opacity:1}
+.tl-card-year{
+    font-family:var(--mono);font-size:.8rem;font-weight:700;letter-spacing:4px;
+    color:var(--accent);text-transform:uppercase;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+}
+.tl-card-year::after{
+    content:'';flex:1;height:1px;background:var(--border);
+}
+.tl-card-title{
+    font-family:var(--display);font-size:1.5rem;font-weight:700;color:var(--text);
+    line-height:1.25;margin-bottom:12px;letter-spacing:-.5px;
+}
+.tl-card-desc{font-size:.9rem;color:var(--text2);line-height:1.75;font-weight:300}
+.tl-card-badge{
+    display:inline-block;margin-top:16px;font-family:var(--mono);font-size:.62rem;letter-spacing:2px;
+    text-transform:uppercase;padding:6px 16px;border-radius:50px;
+    border:1px solid var(--border);color:var(--text3);background:var(--surface);
+    transition:all .3s;
+}
+.tl-card.tl-active .tl-card-badge{border-color:rgba(181,112,123,.2);color:var(--accent);background:rgba(181,112,123,.04)}
+.tl-nav{
+    position:absolute;top:50%;right:40px;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:8px;z-index:10;
+}
+.tl-nav-dot{
+    width:10px;height:10px;border-radius:50%;border:2px solid var(--border);
+    background:transparent;cursor:pointer;transition:all .3s;padding:0;
+}
+.tl-nav-dot.active{background:var(--accent);border-color:var(--accent);transform:scale(1.3)}
+.tl-scroll-hint{
+    position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
+    font-family:var(--mono);font-size:.65rem;color:var(--text3);letter-spacing:2px;
+    text-transform:uppercase;display:flex;align-items:center;gap:8px;
+    animation:hintFade 2s ease infinite;z-index:10;
+}
+.tl-scroll-hint svg{width:20px;height:20px;stroke:var(--text3)}
+@keyframes hintFade{0%,100%{opacity:.6}50%{opacity:1}}
+@media(max-width:768px){
+    .tl-card{width:280px;margin:0 16px;padding:36px 24px}
+    .tl-card-title{font-size:1.2rem}
+    .tl-nav{display:none}
+    .tl-slider-section .sec-head{padding:60px 20px 0}
+}
+
+/* ═══ CARDS ═══ */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{
+    padding:40px 30px;border-radius:22px;position:relative;overflow:hidden;
+    background:var(--bg);border:1px solid var(--border);transition:all .5s cubic-bezier(.16,1,.3,1);
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity .3s}
+.card:hover{border-color:rgba(181,112,123,.2);transform:translateY(-6px);box-shadow:0 20px 60px rgba(181,112,123,.06)}
+.card:hover::before{opacity:1}
+.card-icon{width:56px;height:56px;border-radius:16px;margin-bottom:24px;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.ci1{background:rgba(181,112,123,.06);border:1px solid rgba(181,112,123,.12)}
+.ci2{background:rgba(107,91,123,.06);border:1px solid rgba(107,91,123,.12)}
+.ci3{background:rgba(91,123,123,.06);border:1px solid rgba(91,123,123,.12)}
+.ci4{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12)}
+.ci5{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.12)}
+.ci6{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12)}
+.card h3{font-family:var(--display);font-size:1.3rem;font-weight:700;margin-bottom:12px;letter-spacing:-.5px}
+.card p{font-size:.88rem;color:var(--text2);line-height:1.7;font-weight:300}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.card-tag{font-family:var(--mono);font-size:.62rem;padding:5px 10px;border-radius:6px;background:var(--surface);color:var(--text3);border:1px solid var(--border)}
+/* dark section card overrides */
+.sec-dark .card{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)}
+.sec-dark .card:hover{border-color:rgba(255,255,255,.2);box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.sec-dark .card h3{color:#fff}
+.sec-dark .card p{color:rgba(255,255,255,.6)}
+.sec-dark .card-tag{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.1)}
+.sec-dark .card-icon{border-color:rgba(255,255,255,.12)}
+
+/* ═══ MEDIA GALLERY ═══ */
+.media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+.media-item{
+    position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/10;
+    background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;transition:all .4s;cursor:none;
+}
+.media-item.span-2{grid-column:span 2}
+.media-item::after{content:'📷';font-size:2rem;opacity:.2}
+.media-item:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(181,112,123,.06);border-color:var(--accent)}
+.media-overlay{
+    position:absolute;inset:0;background:rgba(42,31,34,.7);display:flex;align-items:flex-end;
+    padding:20px;opacity:0;transition:opacity .3s;
+}
+.media-item:hover .media-overlay{opacity:1}
+.media-overlay span{color:#fff;font-size:.82rem;font-weight:500}
+
+/* ═══ CASE STUDIES ═══ */
+.case-list{display:flex;flex-direction:column;gap:12px;margin-top:48px;max-width:850px}
+.case-study{
+    display:flex;flex-direction:column;gap:8px;padding:24px 28px;border-radius:16px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:all .35s;
+}
+.case-study:hover{background:rgba(255,255,255,.1);transform:translateX(8px);border-color:rgba(255,255,255,.16)}
+.case-meta{display:flex;align-items:center;gap:12px}
+.case-tag{font-family:var(--mono);font-size:.62rem;font-weight:600;padding:3px 10px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px;background:rgba(181,112,123,.15);color:var(--accent-l)}
+.case-year{font-family:var(--mono);font-size:.78rem;color:rgba(255,255,255,.4)}
+.case-study h4{font-size:1rem;font-weight:600;color:#fff;letter-spacing:-.2px}
+.case-study p{font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.7;font-weight:300}
+
+/* ═══ TIMELINE ═══ */
+.tl-wrap{max-width:720px;margin:48px auto 0;position:relative;padding-left:48px}
+.tl-wrap::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent-l),var(--bg3));border-radius:1px}
+.tl{position:relative;margin-bottom:52px;padding-left:40px}
+.tl::before{
+    content:'';position:absolute;left:-53px;top:8px;width:10px;height:10px;border-radius:50%;
+    border:2.5px solid var(--accent);background:var(--bg2);transition:all .3s;
+}
+.tl:hover::before{background:var(--accent);box-shadow:0 0 0 6px rgba(181,112,123,.1)}
+.tl-yr{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--accent);letter-spacing:1.5px;margin-bottom:6px}
+.tl h4{font-family:var(--display);font-size:1.25rem;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
+.tl p{font-size:.88rem;color:var(--text3);line-height:1.7;font-weight:300}
+.event-tag{
+    display:inline-block;font-family:var(--mono);font-size:.58rem;font-weight:600;padding:3px 10px;
+    border-radius:6px;text-transform:uppercase;letter-spacing:.5px;margin-top:8px;
+}
+.event-tag-konferencja{background:rgba(181,112,123,.08);color:var(--accent)}
+.event-tag-warsztat{background:rgba(91,123,123,.08);color:var(--accent3)}
+.event-tag-webinar{background:rgba(107,91,123,.08);color:var(--accent2)}
+
+/* ═══ BLOG ═══ */
+.fbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.fg{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.flbl{font-family:var(--mono);font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-right:4px}
+.fb{
+    padding:7px 16px;border-radius:50px;font-family:var(--mono);font-size:.72rem;font-weight:500;
+    cursor:none;background:var(--bg);border:1px solid var(--border);color:var(--text3);transition:all .25s;
+}
+.fb:hover{border-color:var(--accent);color:var(--accent)}
+.fb.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sbox{
+    display:flex;align-items:center;gap:8px;background:var(--bg);
+    border:1px solid var(--border);border-radius:50px;padding:0 16px;margin-left:auto;transition:border .3s;
+}
+.sbox:focus-within{border-color:var(--accent)}
+.sbox svg{width:14px;height:14px;stroke:var(--text3);stroke-width:2;fill:none;flex-shrink:0}
+.sbox input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:.78rem;padding:9px 0;width:160px;cursor:none}
+.sbox input::placeholder{color:var(--text3)}
+.blog-count{font-family:var(--mono);font-size:.7rem;color:var(--text3);margin:14px 0 24px}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.blog-card{
+    background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:26px;
+    transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;
+}
+.blog-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);opacity:0;transition:opacity .3s}
+.blog-card:hover{border-color:rgba(181,112,123,.2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(181,112,123,.06)}
+.blog-card:hover::before{opacity:1}
+.blog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.blog-episode{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--accent);background:rgba(181,112,123,.06);padding:3px 10px;border-radius:8px}
+.blog-time{font-family:var(--mono);font-size:.62rem;color:var(--text3)}
+.blog-cat{font-family:var(--mono);font-size:.62rem;font-weight:600;padding:3px 10px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:inline-block}
+.bc-edukacja{background:rgba(181,112,123,.06);color:var(--accent)}
+.bc-ai{background:rgba(107,91,123,.06);color:var(--accent2)}
+.bc-biznes{background:rgba(91,123,123,.06);color:var(--accent3)}
+.blog-title{font-family:var(--display);font-size:1.15rem;font-weight:700;margin-bottom:10px;letter-spacing:-.3px;line-height:1.3}
+.blog-excerpt{font-size:.88rem;color:var(--text2);line-height:1.7;font-weight:300;margin-bottom:14px}
+.blog-foot{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)}
+.blog-date{font-family:var(--mono);font-size:.65rem;color:var(--text3)}
+.blog-author{font-family:var(--hand);font-size:1rem;color:var(--accent);opacity:.5}
+
+/* ═══ CTA BANNER ═══ */
+.cta-banner{
+    padding:100px 7vw;text-align:center;position:relative;z-index:2;
+    background:linear-gradient(135deg,var(--accent),var(--accent-d));color:#fff;
+}
+.cta-title{font-family:var(--display);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+.cta-sub{font-size:1.05rem;font-weight:300;opacity:.85;max-width:560px;margin:0 auto 36px;line-height:1.8}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-cta{
+    padding:14px 34px;border-radius:50px;font-family:var(--sans);font-size:.88rem;font-weight:600;
+    cursor:none;transition:all .35s;border:none;
+}
+.btn-cta-w{background:#fff;color:var(--accent-d)}
+.btn-cta-w:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.2)}
+.btn-cta-g{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+.btn-cta-g:hover{border-color:#fff;transform:translateY(-3px)}
+
+/* ═══ FOOTER ═══ */
+footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relative;z-index:2}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-col .f-logo{font-family:var(--mono);font-size:.88rem;font-weight:600;color:var(--accent);margin-bottom:12px}
+.footer-col .f-desc{font-size:.82rem;color:var(--text3);line-height:1.7;font-weight:300}
+.f-col-title{font-family:var(--display);font-size:.9rem;font-weight:700;margin-bottom:16px;color:var(--text)}
+.f-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.f-links a{font-size:.82rem;color:var(--text3);transition:color .3s;font-weight:300}
+.f-links a:hover{color:var(--accent)}
+.footer-bar{padding-top:28px;border-top:1px solid var(--border);text-align:center;font-size:.72rem;color:var(--text3)}
+
+/* ═══ SCROLL TOP ═══ */
+.stt{
+    position:fixed;bottom:28px;right:28px;z-index:10000;width:48px;height:48px;border-radius:50%;
+    background:var(--bg);border:1px solid var(--border2);box-shadow:0 4px 20px rgba(0,0,0,.04);
+    display:flex;align-items:center;justify-content:center;cursor:none;transition:all .35s;
+    opacity:0;pointer-events:none;
+}
+.stt.show{opacity:1;pointer-events:all}
+.stt:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 30px rgba(181,112,123,.2)}
+.stt svg{width:16px;height:16px;stroke:var(--accent);stroke-width:2.5;fill:none}
+.stt:hover svg{stroke:#fff}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fU{to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}.rv.vis{opacity:1;transform:translateY(0)}
+.rv-l{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(.16,1,.3,1)}.rv-l.vis{opacity:1;transform:translateX(0)}
+.rv-r{opacity:0;transform:translateX(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}.rv-r.vis{opacity:1;transform:translateX(0)}
+.rv-s{opacity:0;transform:scale(.9);transition:all .7s cubic-bezier(.16,1,.3,1)}.rv-s.vis{opacity:1;transform:scale(1)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:960px){
+    body{cursor:auto}.cur,.cur-trail{display:none!important}*{cursor:auto!important}
+    .hero-content{padding:0 24px}
+    .sec{padding:80px 6vw}
+    .kim-grid{grid-template-columns:1fr;gap:48px}
+    .cards-grid{grid-template-columns:1fr}
+    .stats-row{grid-template-columns:1fr 1fr}
+    nav{top:8px;padding:3px}
+    .n-logo{padding:8px 12px;font-size:.7rem}
+    .n-link{padding:8px 12px;font-size:.72rem}
+    .media-grid{grid-template-columns:1fr}
+    .media-item.span-2{grid-column:span 1}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+    .fbar{flex-direction:column;align-items:stretch}.sbox{margin-left:0}
+    .blog-grid{grid-template-columns:1fr}
+    .chip-1{right:-5%}.chip-2{left:-5%}.chip-3{right:-2%}
+    .case-list{max-width:100%}
+}
+@media(max-width:560px){
+    .stats-row{grid-template-columns:1fr}
+    .footer-grid{grid-template-columns:1fr}
+    .cta-actions{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+    <svg id="loaderSvg" viewBox="0 0 520 80">
+        <text x="50%" y="65" text-anchor="middle" font-size="72" id="loaderText">siemek.pl</text>
+    </svg>
+    <div class="loader-sub">AI &middot; EDUKACJA &middot; CONSULTING</div>
+</div>
+
+<!-- CURSOR -->
+<div class="cur cur-dot" id="cDot"></div>
+<div class="cur cur-ring" id="cRing"></div>
+<div id="prog"></div>
+<div class="stt" id="stt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
+
+<!-- NAV -->
+<nav>
+    <a href="#" class="n-logo">TS://</a>
+    <a href="#o-mnie" class="n-link active">O mnie</a>
+    <a href="#edukacja" class="n-link">Edukacja</a>
+    <a href="#biznes" class="n-link">Biznes</a>
+    <a href="#szkolenia" class="n-link">Szkolenia</a>
+    <a href="#blog" class="n-link">Blog</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+    <div class="hero-inner">
+        <div class="hero-content">
+            <div class="hero-pre"><div class="pulse"></div>Mikropoświadczenia · AI · Edukacja</div>
+            <h1 class="hero-name">
+                <span class="line"><span>Tomasz</span></span>
+                <span class="line"><span>Siemek</span></span>
+            </h1>
+            <div class="hero-tw" id="typewriter"></div>
+            <p class="hero-sub"><strong>Dr inż.</strong> — ekspert AI, specjalista od mikropoświadczeń i nowoczesnych systemów egzaminacyjnych. Pomagam uczelniom i firmom wdrażać inteligentne rozwiązania.</p>
+        </div>
+        <div class="hero-photo">
+            <div class="hero-photo-wrap">
+                <img src="siemek.jpg" alt="Dr inż. Tomasz Siemek">
+            </div>
+        </div>
+    </div>
+    <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+    <div class="mq-track">
+        <div class="mq-item"><span class="dot"></span>Mikropoświadczenia</div>
+        <div class="mq-item"><span class="dot"></span>Sztuczna Inteligencja</div>
+        <div class="mq-item"><span class="dot"></span>Systemy Egzaminacyjne</div>
+        <div class="mq-item"><span class="dot"></span>Prompt Engineering</div>
+        <div class="mq-item"><span class="dot"></span>Consulting</div>
+        <div class="mq-item"><span class="dot"></span>Digital Credentials</div>
+        <div class="mq-item"><span class="dot"></span>E-learning</div>
+        <div class="mq-item"><span class="dot"></span>Machine Learning</div>
+        <div class="mq-item"><span class="dot"></span>Mikropoświadczenia</div>
+        <div class="mq-item"><span class="dot"></span>Sztuczna Inteligencja</div>
+        <div class="mq-item"><span class="dot"></span>Systemy Egzaminacyjne</div>
+        <div class="mq-item"><span class="dot"></span>Prompt Engineering</div>
+        <div class="mq-item"><span class="dot"></span>Consulting</div>
+        <div class="mq-item"><span class="dot"></span>Digital Credentials</div>
+        <div class="mq-item"><span class="dot"></span>E-learning</div>
+        <div class="mq-item"><span class="dot"></span>Machine Learning</div>
+    </div>
+</div>
+
+<!-- HORIZONTAL SCROLL -->
+<div class="hz-scroll">
+    <div class="hz-text">
+        <span class="hz-word filled">Sztuczna</span>
+        <span class="hz-word accent">Inteligencja</span>
+        <span class="hz-sep">/</span>
+        <span class="hz-word filled">Mikro&shy;poświadczenia</span>
+        <span class="hz-sep">/</span>
+        <span class="hz-word accent">Edukacja</span>
+        <span class="hz-sep">/</span>
+        <span class="hz-word filled">Prompt</span>
+        <span class="hz-word accent">Engineering</span>
+        <span class="hz-sep">/</span>
+        <span class="hz-word filled">Consulting</span>
+    </div>
+</div>
+
+<!-- O MNIE -->
+<section id="o-mnie" class="sec sec-b">
+    <div class="sec-head rv">
+        <div class="sec-tag">O mnie</div>
+        <div class="sec-title">Naukowiec, trener AI<br><span class="dim">i konsultant edukacyjny.</span></div>
+    </div>
+
+    <div class="about-intro rv">
+        <p><strong>Od ponad 25 lat łączę naukę z praktyką.</strong> Pomagam uczelniom i firmom wdrażać AI, mikropoświadczenia i nowoczesne systemy egzaminacyjne. Wierzę, że technologia ze zrozumieniem to supermoc.</p>
+    </div>
+
+    <!-- Animowany reel/pasek -->
+    <div class="about-reel rv">
+        <div class="about-reel-overlay"></div>
+        <div class="about-reel-track" id="reelTrack"></div>
+    </div>
+
+    <!-- Kluczowe informacje -->
+    <div class="about-keys">
+        <div class="about-key rv-s">
+            <div class="about-key-icon">🎓</div>
+            <div class="about-key-num" data-c="25">0</div>
+            <div class="about-key-label">Lat doświadczenia</div>
+            <div class="about-key-desc">Nauka, dydaktyka i wdrożenia technologiczne</div>
+        </div>
+        <div class="about-key rv-s">
+            <div class="about-key-icon">🤖</div>
+            <div class="about-key-num" data-c="500">0</div>
+            <div class="about-key-label">Przeszkolonych</div>
+            <div class="about-key-desc">Wykładowców, studentów i pracowników firm</div>
+        </div>
+        <div class="about-key rv-s">
+            <div class="about-key-icon">📄</div>
+            <div class="about-key-num" data-c="150">0</div>
+            <div class="about-key-label">Publikacji</div>
+            <div class="about-key-desc">Artykuły naukowe, raporty i ekspertyzy</div>
+        </div>
+        <div class="about-key rv-s">
+            <div class="about-key-icon">⚡</div>
+            <div class="about-key-num" data-c="40">0</div>
+            <div class="about-key-label">Projektów</div>
+            <div class="about-key-desc">Wdrożenia AI, systemy certyfikacji, e-learning</div>
+        </div>
+    </div>
+</section>
+
+<!-- MOJA DROGA -->
+<section class="sec sec-w tl-slider-section" id="moja-droga">
+    <div class="sec-head rv">
+        <div class="sec-tag">Moja droga</div>
+        <div class="sec-title">Od pierwszych wystąpień<br><span class="dim">do własnej wizji edukacji.</span></div>
+    </div>
+    <div class="tl-slider-outer">
+        <div class="tl-slider-track" id="tlTrack">
+            <div class="tl-card" data-index="0" data-anim="ripples">
+                <canvas class="tl-card-canvas"></canvas>
+                <div class="tl-card-dot"></div>
+                <div class="tl-card-connector"></div>
+                <div class="tl-card-content">
+                    <div class="tl-card-year">2000</div>
+                    <div class="tl-card-title">Pierwsze wystąpienia publiczne</div>
+                    <div class="tl-card-desc">Początek drogi — prowadzenie szkoleń, prelekcji i warsztatów. Odkrycie pasji do dzielenia się wiedzą i pracy z ludźmi.</div>
+                    <span class="tl-card-badge">Szkolenia</span>
+                </div>
+            </div>
+            <div class="tl-card" data-index="1" data-anim="grid">
+                <canvas class="tl-card-canvas"></canvas>
+                <div class="tl-card-dot"></div>
+                <div class="tl-card-connector"></div>
+                <div class="tl-card-content">
+                    <div class="tl-card-year">2003</div>
+                    <div class="tl-card-title">Action — Centrum Edukacyjne</div>
+                    <div class="tl-card-desc">Założenie pierwszej firmy. Budowa centrum edukacyjnego od zera — szkolenia, kursy, certyfikacje. Pierwszy krok w przedsiębiorczości.</div>
+                    <span class="tl-card-badge">Założyciel</span>
+                </div>
+            </div>
+            <div class="tl-card" data-index="2" data-anim="particles">
+                <canvas class="tl-card-canvas"></canvas>
+                <div class="tl-card-dot"></div>
+                <div class="tl-card-connector"></div>
+                <div class="tl-card-content">
+                    <div class="tl-card-year">2018</div>
+                    <div class="tl-card-title">Cloud Team — nowy rozdział</div>
+                    <div class="tl-card-desc">Transformacja i rebrand firmy. Przejście w stronę technologii chmurowych, automatyzacji i wdrożeń AI. Nowe kompetencje, nowi klienci.</div>
+                    <span class="tl-card-badge">Transformacja</span>
+                </div>
+            </div>
+            <div class="tl-card" data-index="3" data-anim="helix">
+                <canvas class="tl-card-canvas"></canvas>
+                <div class="tl-card-dot"></div>
+                <div class="tl-card-connector"></div>
+                <div class="tl-card-content">
+                    <div class="tl-card-year">2020</div>
+                    <div class="tl-card-title">Doktorat — Dr inż. Tomasz Siemek</div>
+                    <div class="tl-card-desc">Obrona pracy doktorskiej. Połączenie wieloletniego doświadczenia praktycznego z fundamentem naukowym. Nowy poziom ekspertyzy.</div>
+                    <span class="tl-card-badge">Nauka</span>
+                </div>
+            </div>
+            <div class="tl-card tl-now" data-index="4" data-anim="neural">
+                <canvas class="tl-card-canvas"></canvas>
+                <div class="tl-card-dot"></div>
+                <div class="tl-card-connector"></div>
+                <div class="tl-card-content">
+                    <div class="tl-card-year">2025</div>
+                    <div class="tl-card-title">Tech4Edu — nowa ścieżka</div>
+                    <div class="tl-card-desc">Otwarcie Tech4Edu — platformy łączącej AI, mikropoświadczenia i nowoczesną edukację. Początek nowej wizji kształcenia przyszłości.</div>
+                    <span class="tl-card-badge">Teraz</span>
+                </div>
+            </div>
+        </div>
+        <div class="tl-progress-wrap">
+            <span class="tl-progress-label">przewiń aby odkryć</span>
+            <div class="tl-progress-bar" id="tlProgress"></div>
+        </div>
+        <div class="tl-nav" id="tlNav"></div>
+        <div class="tl-scroll-hint" id="tlHint">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            scroll
+        </div>
+    </div>
+</section>
+
+<!-- ROZWIĄZANIA DLA EDUKACJI -->
+<section id="edukacja" class="sec sec-w">
+    <div class="sec-head rv">
+        <div class="sec-tag">Rozwiązania dla edukacji</div>
+        <div class="sec-title">Wsparcie dla<br><span class="dim">uczelni wyższych.</span></div>
+    </div>
+    <div class="cards-grid">
+        <div class="card rv-s">
+            <div class="card-icon ci1">🎓</div>
+            <h3>Mikropoświadczenia</h3>
+            <p>Projektuję i wdrażam systemy mikropoświadczeń dla uczelni wyższych. Od koncepcji przez platformę po certyfikację — kompleksowe wsparcie w budowie nowoczesnej oferty edukacyjnej.</p>
+            <div class="card-tags"><span class="card-tag">Digital Credentials</span><span class="card-tag">Certyfikacja</span><span class="card-tag">Bologna</span></div>
+        </div>
+        <div class="card rv-s">
+            <div class="card-icon ci2">📋</div>
+            <h3>Systemy egzaminacyjne</h3>
+            <p>Tworzę nowoczesne systemy weryfikacji wiedzy oparte o AI — adaptacyjne testy, automatyczna ocena, analityka wyników. Bezpieczne, skalowalne, zgodne z wymogami.</p>
+            <div class="card-tags"><span class="card-tag">E-assessment</span><span class="card-tag">Adaptacyjne testy</span><span class="card-tag">Analityka</span></div>
+        </div>
+        <div class="card rv-s">
+            <div class="card-icon ci3">🤖</div>
+            <h3>AI w dydaktyce</h3>
+            <p>Pomagam uczelniom wdrażać sztuczną inteligencję w proces dydaktyczny — od personalizacji nauczania po automatyzację procesów administracyjnych.</p>
+            <div class="card-tags"><span class="card-tag">LLM</span><span class="card-tag">Personalizacja</span><span class="card-tag">Automatyzacja</span></div>
+        </div>
+    </div>
+
+    <div class="sec-head rv" style="margin-top:80px">
+        <div class="sec-tag">Galeria</div>
+        <div class="sec-title" style="font-size:1.8rem">Z wykładów <span class="dim">i warsztatów</span></div>
+    </div>
+    <div class="media-grid rv">
+        <div class="media-item"><div class="media-overlay"><span>Warsztat AI — Politechnika Warszawska</span></div></div>
+        <div class="media-item"><div class="media-overlay"><span>Konferencja EdTech 2025</span></div></div>
+        <div class="media-item span-2"><div class="media-overlay"><span>Szkolenie z mikropoświadczeń — MEN</span></div></div>
+        <div class="media-item"><div class="media-overlay"><span>Panel dyskusyjny — AI w edukacji</span></div></div>
+        <div class="media-item"><div class="media-overlay"><span>Wykład gościnny — Uniwersytet Jagielloński</span></div></div>
+    </div>
+</section>
+
+<!-- ROZWIĄZANIA DLA BIZNESU -->
+<section id="biznes" class="sec sec-dark">
+    <div class="sec-head rv">
+        <div class="sec-tag">Rozwiązania dla biznesu</div>
+        <div class="sec-title">AI dla<br><span class="dim">Twojej firmy.</span></div>
+    </div>
+    <div class="cards-grid">
+        <div class="card rv-s">
+            <div class="card-icon ci1">💡</div>
+            <h3>Consulting AI</h3>
+            <p>Pomagam firmom przejść od strategii do realnych wdrożeń AI. Audytuję procesy, identyfikuję szanse automatyzacji i buduję roadmapy transformacji cyfrowej.</p>
+            <div class="card-tags"><span class="card-tag">Strategia</span><span class="card-tag">Wdrożenia</span><span class="card-tag">Audyt</span></div>
+        </div>
+        <div class="card rv-s">
+            <div class="card-icon ci2">⚙️</div>
+            <h3>Automatyzacja procesów</h3>
+            <p>Projektuję inteligentne systemy automatyzacji — od workflow opartych o LLM po dedykowane chatboty i agenty AI dla zespołów.</p>
+            <div class="card-tags"><span class="card-tag">LLM Agents</span><span class="card-tag">RPA</span><span class="card-tag">Chatboty</span></div>
+        </div>
+        <div class="card rv-s">
+            <div class="card-icon ci3">🚀</div>
+            <h3>Szkolenia korporacyjne</h3>
+            <p>Warsztaty dla zespołów — od podstaw AI po zaawansowane prompt engineering. Każde szkolenie dopasowane do branży i poziomu uczestników.</p>
+            <div class="card-tags"><span class="card-tag">Warsztaty</span><span class="card-tag">Prompt Engineering</span><span class="card-tag">Team Training</span></div>
+        </div>
+    </div>
+
+    <div class="sec-head rv" style="margin-top:80px">
+        <div class="sec-tag">Współprace</div>
+        <div class="sec-title" style="font-size:1.8rem">Wybrane <span class="dim">projekty</span></div>
+    </div>
+    <div class="case-list">
+        <div class="case-study rv-r">
+            <div class="case-meta"><span class="case-tag">Consulting</span><span class="case-year">2025</span></div>
+            <h4>Wdrożenie AI w procesach operacyjnych</h4>
+            <p>Kompleksowy audyt i roadmapa AI dla firmy z sektora usług — automatyzacja obsługi klienta, analityka danych, optymalizacja procesów.</p>
+        </div>
+        <div class="case-study rv-r">
+            <div class="case-meta"><span class="case-tag">Edukacja</span><span class="case-year">2024</span></div>
+            <h4>System mikropoświadczeń dla uczelni technicznej</h4>
+            <p>Zaprojektowanie i wdrożenie platformy digital credentials dla 3000+ studentów — od koncepcji po integrację z systemem uczelnianym.</p>
+        </div>
+        <div class="case-study rv-r">
+            <div class="case-meta"><span class="case-tag">Szkolenia</span><span class="case-year">2024</span></div>
+            <h4>Cykl szkoleń AI dla kadry zarządzającej</h4>
+            <p>12-tygodniowy program szkoleniowy z AI i automatyzacji dla 80+ managerów — od prompt engineering po wdrożenia w codziennej pracy.</p>
+        </div>
+        <div class="case-study rv-r">
+            <div class="case-meta"><span class="case-tag">R&amp;D</span><span class="case-year">2023</span></div>
+            <h4>Nowoczesny system egzaminacyjny oparty o AI</h4>
+            <p>Badania i rozwój adaptacyjnego systemu egzaminowania z wykorzystaniem uczenia maszynowego — pilotaż na dwóch uczelniach.</p>
+        </div>
+    </div>
+</section>
+
+<!-- SZKOLENIA -->
+<section id="szkolenia" class="sec sec-b">
+    <div class="sec-head rv">
+        <div class="sec-tag">Szkolenia & Konferencje</div>
+        <div class="sec-title">Dzielę się wiedzą<br><span class="dim">na żywo.</span></div>
+    </div>
+    <div class="cards-grid">
+        <div class="card rv-s">
+            <div class="card-icon ci4">🧠</div>
+            <h3>AI & Prompt Engineering</h3>
+            <p>Praktyczne warsztaty z wykorzystania AI w codziennej pracy — ChatGPT, Claude, Gemini, automatyzacja z LLM.</p>
+            <div class="card-tags"><span class="card-tag">ChatGPT</span><span class="card-tag">Claude</span><span class="card-tag">LLM</span></div>
+        </div>
+        <div class="card rv-s">
+            <div class="card-icon ci5">🎯</div>
+            <h3>Mikropoświadczenia w praktyce</h3>
+            <p>Jak zaprojektować, wdrożyć i zarządzać systemem mikropoświadczeń na uczelni — kompletny program szkoleniowy.</p>
+            <div class="card-tags"><span class="card-tag">Digital Credentials</span><span class="card-tag">Bologna</span><span class="card-tag">Framework</span></div>
+        </div>
+        <div class="card rv-s">
+            <div class="card-icon ci6">📊</div>
+            <h3>Data Science & ML</h3>
+            <p>Od analizy danych po modele predykcyjne — szkolenia z Python, TensorFlow, analityki i wizualizacji danych.</p>
+            <div class="card-tags"><span class="card-tag">Python</span><span class="card-tag">TensorFlow</span><span class="card-tag">Analityka</span></div>
+        </div>
+    </div>
+
+    <div class="sec-head rv" style="margin-top:80px">
+        <div class="sec-tag">Najbliższe wydarzenia</div>
+        <div class="sec-title" style="font-size:1.8rem">Kalendarium</div>
+    </div>
+    <div class="tl-wrap">
+        <div class="tl rv-l">
+            <div class="tl-yr">2026 — Q2</div>
+            <h4>AI w edukacji — konferencja ogólnopolska</h4>
+            <p>Keynote speaker. Prezentacja wyników wdrożeń mikropoświadczeń na uczelniach wyższych.</p>
+            <span class="event-tag event-tag-konferencja">Konferencja</span>
+        </div>
+        <div class="tl rv-l">
+            <div class="tl-yr">2026 — Q1</div>
+            <h4>Warsztaty mikropoświadczeń — Kraków</h4>
+            <p>Dwudniowe warsztaty dla kadry akademickiej z projektowania i wdrażania digital credentials.</p>
+            <span class="event-tag event-tag-warsztat">Warsztat</span>
+        </div>
+        <div class="tl rv-l">
+            <div class="tl-yr">2025 — Q4</div>
+            <h4>Szkolenie korporacyjne — automatyzacja LLM</h4>
+            <p>Cykl szkoleń z automatyzacji procesów biznesowych z wykorzystaniem dużych modeli językowych.</p>
+            <span class="event-tag event-tag-warsztat">Warsztat</span>
+        </div>
+        <div class="tl rv-l">
+            <div class="tl-yr">2025 — Q3</div>
+            <h4>EdTech Summit — panel AI w egzaminowaniu</h4>
+            <p>Panel dyskusyjny o przyszłości weryfikacji kompetencji w dobie sztucznej inteligencji.</p>
+            <span class="event-tag event-tag-konferencja">Konferencja</span>
+        </div>
+        <div class="tl rv-l">
+            <div class="tl-yr">2025 — Q2</div>
+            <h4>Webinar: Prompt Engineering dla nauczycieli</h4>
+            <p>Bezpłatny webinar — praktyczne zastosowania AI w pracy dydaktycznej.</p>
+            <span class="event-tag event-tag-webinar">Webinar</span>
+        </div>
+    </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" class="sec sec-c">
+    <div class="sec-head rv">
+        <div class="sec-tag">Blog</div>
+        <div class="sec-title">Cotygodniowe<br><span class="dim">wpisy.</span></div>
+    </div>
+    <div class="fbar rv">
+        <div class="fg"><span class="flbl">Filtr:</span>
+            <button class="fb on" data-f="all">Wszystkie</button>
+            <button class="fb" data-f="edukacja">Edukacja</button>
+            <button class="fb" data-f="ai">AI</button>
+            <button class="fb" data-f="biznes">Biznes</button>
+        </div>
+        <div class="sbox"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="blogSearch" placeholder="Szukaj wpisu..."></div>
+    </div>
+    <div class="blog-count" id="blogCount"></div>
+    <div class="blog-grid" id="blogGrid"></div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner rv">
+    <h2 class="cta-title">Gotowy na transformację?</h2>
+    <p class="cta-sub">Umów się na bezpłatną konsultację i odkryj, jak AI i mikropoświadczenia mogą zmienić Twoją uczelnię lub firmę.</p>
+    <div class="cta-actions">
+        <a href="mailto:tomasz@siemek.pl" class="btn-cta btn-cta-w">Napisz do mnie</a>
+        <a href="#o-mnie" class="btn-cta btn-cta-g">Dane kontaktowe</a>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="f-logo">TS://</div>
+            <div class="f-desc">Dr inż. Tomasz Siemek — ekspert AI, mikropoświadczeń i nowoczesnych systemów edukacyjnych. Pomagam uczelniom i firmom wdrażać inteligentne rozwiązania.</div>
+        </div>
+        <div class="footer-col">
+            <div class="f-col-title">Rozwiązania</div>
+            <ul class="f-links">
+                <li><a href="#edukacja">Dla edukacji</a></li>
+                <li><a href="#biznes">Dla biznesu</a></li>
+                <li><a href="#szkolenia">Szkolenia</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <div class="f-col-title">Zasoby</div>
+            <ul class="f-links">
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#o-mnie">O mnie</a></li>
+                <li><a href="#o-mnie">Kontakt</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <div class="f-col-title">Social</div>
+            <ul class="f-links">
+                <li><a href="#">LinkedIn</a></li>
+                <li><a href="#">GitHub</a></li>
+                <li><a href="#">Twitter/X</a></li>
+                <li><a href="#">YouTube</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bar">&copy; 2026 Tomasz Siemek &middot; siemek.pl</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollToPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+
+<script>
+/* ═══ LOADER ═══ */
+{
+const loaderSvg=document.getElementById('loaderSvg');
+const loaderTxt=document.getElementById('loaderText');
+const loaderSub=document.querySelector('.loader-sub');
+const loader=document.getElementById('loader');
+
+gsap.set(loaderSvg,{opacity:1});
+
+const tl=gsap.timeline();
+
+/* Faza 1: rysowanie obrysu */
+tl.fromTo(loaderTxt,
+    {strokeDashoffset:1500},
+    {strokeDashoffset:0, duration:2.2, ease:'power2.inOut'}
+)
+/* Faza 2: wypełnienie kolorem + podpis */
+.to(loaderTxt,{fill:'#fff', strokeWidth:0, duration:.7, ease:'power2.out'},'-=0.2')
+.to(loaderSub,{opacity:1, duration:.5, ease:'power2.out'},'-=0.2')
+/* Faza 3: pauza */
+.to({},{duration:.7})
+/* Faza 4: tekst i podpis delikatnie znikają w górę */
+.to(loaderSvg,{opacity:0, y:-30, scale:1.05, duration:.6, ease:'power2.in'})
+.to(loaderSub,{opacity:0, y:-15, duration:.4, ease:'power2.in'},'-=0.5')
+/* Faza 5: loader — delikatny blur + fade + lekki scale */
+.to(loader,{
+    opacity:0,
+    scale:1.04,
+    filter:'blur(12px)',
+    duration:.8,
+    ease:'power3.inOut',
+    onComplete:()=>loader.classList.add('done')
+},'-=0.2');
+}
+
+
+/* ═══ CURSOR ═══ */
+const cDot=document.getElementById('cDot'),cRing=document.getElementById('cRing');
+let cx=0,cy=0,rx=0,ry=0;
+const trails=Array.from({length:7},()=>{const t=document.createElement('div');t.className='cur-trail';document.body.appendChild(t);return t});
+let trailPos=[];
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;cDot.style.left=cx+'px';cDot.style.top=cy+'px';trailPos.unshift({x:cx,y:cy})});
+(function ac(){
+    rx+=(cx-rx)*.1;ry+=(cy-ry)*.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';
+    trails.forEach((t,i)=>{const p=trailPos[i*3];if(p){t.style.left=p.x+'px';t.style.top=p.y+'px';t.style.opacity=(.12-i*.016);t.style.transform=`translate(-50%,-50%) scale(${1-i*.12})`}});
+    if(trailPos.length>25)trailPos.length=25;
+    requestAnimationFrame(ac);
+})();
+document.querySelectorAll('a,button,.card,.stat,.blog-card,.fb,.chip,.case-study,.media-item').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cRing.style.width='60px';cRing.style.height='60px';cRing.style.borderColor='rgba(181,112,123,.5)'});
+    el.addEventListener('mouseleave',()=>{cRing.style.width='40px';cRing.style.height='40px';cRing.style.borderColor='rgba(181,112,123,.35)'});
+});
+
+/* ═══ SCROLL ═══ */
+addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-innerHeight;
+    document.getElementById('prog').style.width=(scrollY/h*100)+'%';
+    document.getElementById('stt').classList.toggle('show',scrollY>500);
+});
+const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.n-link');
+addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(scrollY>=s.offsetTop-300)c=s.id});navAs.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+c))});
+
+/* ═══ TYPEWRITER ═══ */
+const phrases=['Ekspert AI & mikropoświadczeń','Nowoczesne systemy egzaminacyjne','Szkolenia i consulting dla uczelni','Rozwiązania AI dla biznesu','Dr inż. — naukowiec i praktyk'];
+const twEl=document.getElementById('typewriter');let pi=0,ci2=0,del=false;
+function tw(){const p=phrases[pi];if(!del){twEl.innerHTML=p.slice(0,ci2)+'<span class="tw-c"></span>';ci2++;if(ci2>p.length){del=true;setTimeout(tw,2600);return}setTimeout(tw,45+Math.random()*35)}else{twEl.innerHTML=p.slice(0,ci2)+'<span class="tw-c"></span>';ci2--;if(ci2<0){del=false;pi=(pi+1)%phrases.length;ci2=0;setTimeout(tw,400);return}setTimeout(tw,20)}}
+setTimeout(tw,2200);
+
+/* ═══ REVEAL ═══ */
+const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')})},{threshold:.1});
+document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s').forEach(el=>obs.observe(el));
+document.querySelectorAll('.tl').forEach((el,i)=>{el.style.transitionDelay=(i*.12)+'s'});
+document.querySelectorAll('.card').forEach((el,i)=>{el.style.transitionDelay=(i*.1)+'s'});
+document.querySelectorAll('.stat').forEach((el,i)=>{el.style.transitionDelay=(i*.08)+'s'});
+document.querySelectorAll('.case-study').forEach((el,i)=>{el.style.transitionDelay=(i*.08)+'s'});
+
+/* ═══ COUNTERS ═══ */
+const cO=new IntersectionObserver(e=>{e.forEach(en=>{if(!en.isIntersecting)return;const el=en.target,t=parseInt(el.dataset.c);let c=0;const s=t/50;const ti=setInterval(()=>{c+=s;if(c>=t){el.textContent=t+'+';clearInterval(ti)}else el.textContent=Math.floor(c)},25);cO.unobserve(el)})},{threshold:.5});
+document.querySelectorAll('[data-c]').forEach(el=>cO.observe(el));
+
+/* ═══ BLOG ═══ */
+const blogPosts=[
+    {episode:1,title:'Czym są mikropoświadczenia?',excerpt:'Wprowadzenie do koncepcji mikropoświadczeń w szkolnictwie wyższym — dlaczego uczelnie powinny je wdrażać już teraz.',category:'edukacja',date:'2026-01-06',readingTime:7},
+    {episode:2,title:'AI w nowoczesnym egzaminowaniu',excerpt:'Jak sztuczna inteligencja zmienia podejście do weryfikacji wiedzy — od adaptacyjnych testów po automatyczną ocenę prac.',category:'ai',date:'2026-01-13',readingTime:8},
+    {episode:3,title:'Prompt Engineering dla wykładowców',excerpt:'Praktyczny przewodnik po tworzeniu skutecznych promptów — narzędzie, które powinien znać każdy nauczyciel akademicki.',category:'ai',date:'2026-01-20',readingTime:6},
+    {episode:4,title:'Transformacja cyfrowa na uczelniach',excerpt:'Case study wdrożenia mikropoświadczeń i systemów AI na trzech polskich uczelniach — wnioski i rekomendacje.',category:'edukacja',date:'2026-01-27',readingTime:9},
+    {episode:5,title:'AI w biznesie — od strategii do wdrożenia',excerpt:'Jak pomagam firmom przejść od "chcemy AI" do realnych rezultatów. Roadmapa, pułapki i najlepsze praktyki.',category:'biznes',date:'2026-02-03',readingTime:8},
+    {episode:6,title:'Automatyzacja procesów akademickich',excerpt:'Które procesy na uczelni można zautomatyzować od zaraz? Przegląd narzędzi i gotowych rozwiązań opartych o LLM.',category:'edukacja',date:'2026-02-10',readingTime:7},
+    {episode:7,title:'Etyka AI w edukacji',excerpt:'Gdzie leży granica między wsparciem a oszustwem? Refleksje na temat odpowiedzialnego wdrażania AI w procesie dydaktycznym.',category:'ai',date:'2026-02-17',readingTime:5},
+    {episode:8,title:'Szkolenia AI — co naprawdę działa?',excerpt:'Po przeszkoleniu setek osób wiem, jakie formaty i metody przynoszą najlepsze efekty. Dzielę się sprawdzonymi podejściami.',category:'biznes',date:'2026-02-24',readingTime:6},
+];
+const catLabels={edukacja:'Edukacja',ai:'AI',biznes:'Biznes'};
+const blogGrid=document.getElementById('blogGrid'),blogCount=document.getElementById('blogCount');
+let activeFilter='all';
+
+function renderBlog(f,s=''){
+    blogGrid.innerHTML='';const q=s.toLowerCase().trim();
+    const res=blogPosts.filter(p=>(f==='all'||p.category===f)&&(!q||p.title.toLowerCase().includes(q)||p.excerpt.toLowerCase().includes(q)||('odc.'+p.episode)===q||p.episode.toString()===q));
+    blogCount.textContent=`${res.length} / ${blogPosts.length} wpisów`;
+    res.forEach((item,i)=>{
+        const c=document.createElement('div');c.className='blog-card';c.style.transitionDelay=(i*.04)+'s';
+        c.innerHTML=`<div class="blog-top"><span class="blog-episode">odc. ${item.episode}</span><span class="blog-time">~${item.readingTime} min</span></div><div class="blog-cat bc-${item.category}">${catLabels[item.category]}</div><h3 class="blog-title">${item.title}</h3><p class="blog-excerpt">${item.excerpt}</p><div class="blog-foot"><span class="blog-date">${item.date}</span><span class="blog-author">— T. Siemek</span></div>`;
+        blogGrid.appendChild(c);requestAnimationFrame(()=>requestAnimationFrame(()=>{c.classList.add('rv-s');c.classList.add('vis')}));
+    });
+}
+document.querySelectorAll('.fb').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');activeFilter=b.dataset.f;renderBlog(activeFilter,document.getElementById('blogSearch').value)})});
+document.getElementById('blogSearch').addEventListener('input',e=>renderBlog(activeFilter,e.target.value));
+renderBlog('all');
+
+/* ═══ ABOUT REEL ═══ */
+{
+const reelTrack=document.getElementById('reelTrack');
+const scenes=[
+    {type:'text', label:'AI Expert', sub:'GPT · LLM · ML', color:'#b5707b'},
+    {type:'wave', label:'Edukacja', color:'#6b5b7b'},
+    {type:'text', label:'25+ lat', sub:'doświadczenia', color:'#5b7b7b'},
+    {type:'grid', label:'Consulting', color:'#b5707b'},
+    {type:'text', label:'500+', sub:'przeszkolonych', color:'#6b5b7b'},
+    {type:'pulse', label:'Mikropoświadczenia', color:'#5b7b7b'},
+    {type:'text', label:'Dr inż.', sub:'Tomasz Siemek', color:'#b5707b'},
+    {type:'wave', label:'Prompt Engineering', color:'#6b5b7b'},
+];
+/* Podwajamy dla seamless loop */
+const allScenes=[...scenes,...scenes];
+allScenes.forEach(s=>{
+    const item=document.createElement('div');
+    item.className='about-reel-item';
+    const c=document.createElement('canvas');
+    c.width=320;c.height=220;
+    item.appendChild(c);
+    reelTrack.appendChild(item);
+    const ctx=c.getContext('2d');
+    let t=Math.random()*100;
+    function draw(){
+        t+=0.02;
+        ctx.clearRect(0,0,320,220);
+        /* Tło */
+        ctx.fillStyle='#2a1f22';
+        ctx.fillRect(0,0,320,220);
+        /* Dekoracja */
+        ctx.globalAlpha=0.15;
+        if(s.type==='wave'){
+            ctx.beginPath();
+            for(let x=0;x<320;x++){
+                ctx.lineTo(x,110+Math.sin(x*0.03+t)*30+Math.sin(x*0.01+t*0.7)*20);
+            }
+            ctx.lineTo(320,220);ctx.lineTo(0,220);ctx.closePath();
+            ctx.fillStyle=s.color;ctx.fill();
+        }else if(s.type==='grid'){
+            ctx.strokeStyle=s.color;ctx.lineWidth=0.5;
+            for(let x=0;x<320;x+=20){ctx.beginPath();ctx.moveTo(x+Math.sin(t)*3,0);ctx.lineTo(x,220);ctx.stroke()}
+            for(let y=0;y<220;y+=20){ctx.beginPath();ctx.moveTo(0,y+Math.cos(t)*3);ctx.lineTo(320,y);ctx.stroke()}
+        }else if(s.type==='pulse'){
+            for(let i=0;i<4;i++){
+                const r=30+i*25+Math.sin(t+i)*10;
+                ctx.beginPath();ctx.arc(160,110,r,0,Math.PI*2);ctx.strokeStyle=s.color;ctx.lineWidth=1;ctx.stroke();
+            }
+        }else{
+            for(let i=0;i<5;i++){
+                const x=60+i*55+Math.sin(t+i*1.3)*8;
+                const y=40+Math.cos(t+i*0.9)*15;
+                ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
+            }
+        }
+        ctx.globalAlpha=1;
+        /* Tekst */
+        ctx.fillStyle='#fff';
+        ctx.font='700 22px Syne,sans-serif';
+        ctx.textAlign='center';
+        ctx.fillText(s.label,160,s.sub?100:115);
+        if(s.sub){
+            ctx.fillStyle='rgba(255,255,255,.45)';
+            ctx.font='400 13px "Space Grotesk",sans-serif';
+            ctx.fillText(s.sub,160,125);
+        }
+        /* Linia akcentowa */
+        ctx.fillStyle=s.color;
+        ctx.globalAlpha=0.6;
+        ctx.fillRect(130,145,60,2);
+        ctx.globalAlpha=1;
+        requestAnimationFrame(draw);
+    }
+    draw();
+});
+}
+
+/* ═══ ABOUT COUNTERS ═══ */
+document.querySelectorAll('.about-key-num[data-c]').forEach(el=>{
+    const obs=new IntersectionObserver(([e])=>{
+        if(e.isIntersecting){
+            obs.disconnect();
+            const target=+el.dataset.c;let cur=0;
+            const step=()=>{cur+=Math.ceil(target/40);if(cur>=target){el.textContent=target+'+';return}el.textContent=cur+'+';requestAnimationFrame(step)};step();
+        }
+    },{threshold:.5});
+    obs.observe(el);
+});
+
+/* ═══ SMOOTH SCROLL ═══ */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})})});
+
+/* ═══ PARALLAX ═══ */
+addEventListener('scroll',()=>{
+    const s=scrollY;
+    const hContent=document.querySelector('.hero-content');
+    if(hContent&&s<innerHeight){hContent.style.transform=`translateY(${s*.12}px)`;hContent.style.opacity=1-s/innerHeight*.7}
+});
+
+/* ═══ HORIZONTAL SCROLL (GSAP) ═══ */
+if(typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined'){
+gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);
+const hzWrapper=document.querySelector('.hz-scroll');
+const hzText=document.querySelector('.hz-text');
+if(hzWrapper&&hzText){
+    const scrollTween=gsap.to(hzText,{
+        xPercent:-100,
+        ease:'none',
+        scrollTrigger:{
+            trigger:hzWrapper,
+            pin:true,
+            end:'+=4000px',
+            scrub:true
+        }
+    });
+    const hzWords=hzText.querySelectorAll('.hz-word, .hz-sep');
+    hzWords.forEach(word=>{
+        if(typeof SplitText!=='undefined'){
+            const split=SplitText.create(word,{type:'chars'});
+            split.chars.forEach(ch=>{
+                gsap.from(ch,{
+                    yPercent:gsap.utils.random(-200,200),
+                    rotation:gsap.utils.random(-25,25),
+                    opacity:0,
+                    scale:gsap.utils.random(0.3,0.8),
+                    ease:'back.out(1.2)',
+                    scrollTrigger:{
+                        trigger:ch,
+                        containerAnimation:scrollTween,
+                        start:'left 100%',
+                        end:'left 40%',
+                        scrub:1
+                    }
+                });
+            });
+        }else{
+            gsap.from(word,{
+                yPercent:gsap.utils.random(-150,150),
+                rotation:gsap.utils.random(-15,15),
+                opacity:0,
+                ease:'back.out(1.2)',
+                scrollTrigger:{
+                    trigger:word,
+                    containerAnimation:scrollTween,
+                    start:'left 100%',
+                    end:'left 40%',
+                    scrub:1
+                }
+            });
+        }
+    });
+}
+}
+
+/* ═══ TIMELINE SLIDER (GSAP ScrollTrigger) ═══ */
+(function(){
+const section=document.querySelector('.tl-slider-section');
+const outer=document.querySelector('.tl-slider-outer');
+const track=document.getElementById('tlTrack');
+const cards=document.querySelectorAll('.tl-card');
+const progress=document.getElementById('tlProgress');
+const nav=document.getElementById('tlNav');
+const hint=document.getElementById('tlHint');
+if(!section||!track||!cards.length||typeof gsap==='undefined')return;
+
+// Build nav dots
+cards.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='tl-nav-dot';d.dataset.i=i;
+    d.setAttribute('aria-label','Krok '+(i+1));
+    nav.appendChild(d);
+});
+const navDots=nav.querySelectorAll('.tl-nav-dot');
+
+// Calculate total scroll distance
+function getScrollDist(){
+    const trackW=track.scrollWidth;
+    const viewW=outer.offsetWidth;
+    return trackW-viewW+100;
+}
+
+// Center first card initially
+function initPadding(){
+    const vw=outer.offsetWidth;
+    const cw=cards[0].offsetWidth;
+    const pad=Math.max((vw-cw)/2,40);
+    track.style.paddingLeft=pad+'px';
+    track.style.paddingRight=pad+'px';
+}
+initPadding();
+window.addEventListener('resize',()=>{initPadding();ScrollTrigger.refresh()});
+
+// GSAP animation
+const scrollTween=gsap.to(track,{
+    x:()=>-getScrollDist(),
+    ease:'none',
+    scrollTrigger:{
+        trigger:section,
+        pin:outer,
+        start:'top top',
+        end:()=>'+='+(getScrollDist()+window.innerHeight*.5),
+        scrub:1.2,
+        invalidateOnRefresh:true,
+        onUpdate:function(self){
+            const p=self.progress;
+            // Progress bar
+            progress.style.width=(p*100)+'%';
+            // Hide hint after scrolling
+            if(p>.05&&hint)hint.style.opacity='0';
+            // Active card
+            const centerX=outer.offsetWidth/2;
+            let closest=0,minDist=Infinity;
+            cards.forEach((c,i)=>{
+                const rect=c.getBoundingClientRect();
+                const cardCenter=rect.left+rect.width/2;
+                const dist=Math.abs(cardCenter-centerX);
+                if(dist<minDist){minDist=dist;closest=i}
+            });
+            cards.forEach((c,i)=>{
+                c.classList.toggle('tl-active',i===closest);
+            });
+            navDots.forEach((d,i)=>{
+                d.classList.toggle('active',i===closest);
+            });
+        }
+    }
+});
+
+// Animate cards in from below on first appearance
+cards.forEach((card,i)=>{
+    gsap.from(card,{
+        y:60,opacity:0,scale:.85,
+        duration:1,
+        ease:'power3.out',
+        scrollTrigger:{
+            trigger:card,
+            containerAnimation:scrollTween,
+            start:'left 90%',
+            end:'left 60%',
+            scrub:1
+        }
+    });
+});
+
+// Nav dot click
+navDots.forEach(d=>{
+    d.addEventListener('click',()=>{
+        const i=parseInt(d.dataset.i);
+        const totalCards=cards.length;
+        const targetProgress=i/(totalCards-1);
+        const st=scrollTween.scrollTrigger;
+        const scrollTo=st.start+(st.end-st.start)*targetProgress;
+        gsap.to(window,{scrollTo:scrollTo,duration:.8,ease:'power2.inOut'});
+    });
+});
+})();
+
+/* ═══ TIMELINE CARD CANVAS ANIMATIONS ═══ */
+(function(){
+const canvasCards=document.querySelectorAll('.tl-card[data-anim]');
+if(!canvasCards.length)return;
+
+const colors={
+    ripples:['181,112,123','107,91,123'],
+    grid:['107,91,123','91,123,123'],
+    particles:['91,123,123','181,112,123'],
+    helix:['181,112,123','59,130,246'],
+    neural:['181,112,123','107,91,123','91,123,123']
+};
+
+canvasCards.forEach(card=>{
+    const canvas=card.querySelector('.tl-card-canvas');
+    if(!canvas)return;
+    const ctx=canvas.getContext('2d');
+    const type=card.dataset.anim;
+    let raf,w,h;
+
+    function resize(){
+        const r=window.devicePixelRatio||1;
+        w=card.offsetWidth;h=card.offsetHeight;
+        canvas.width=w*r;canvas.height=h*r;
+        ctx.scale(r,r);
+    }
+    resize();
+
+    // — RIPPLES: concentric expanding rings (2000 - szkolenia, fale wiedzy)
+    if(type==='ripples'){
+        const rings=[];
+        function spawnRing(){rings.push({x:w*.3+Math.random()*w*.4,y:h*.3+Math.random()*h*.4,r:0,max:Math.max(w,h)*.7,speed:.4+Math.random()*.3})}
+        for(let i=0;i<3;i++)spawnRing();
+        (function draw(t){
+            ctx.clearRect(0,0,w,h);
+            rings.forEach((ring,i)=>{
+                ring.r+=ring.speed;
+                const alpha=1-ring.r/ring.max;
+                if(alpha<=0){rings[i]={x:w*.3+Math.random()*w*.4,y:h*.3+Math.random()*h*.4,r:0,max:Math.max(w,h)*.7,speed:.4+Math.random()*.3};return}
+                ctx.beginPath();ctx.arc(ring.x,ring.y,ring.r,0,Math.PI*2);
+                ctx.strokeStyle=`rgba(${colors.ripples[i%2]},${alpha*.6})`;
+                ctx.lineWidth=1.5;ctx.stroke();
+            });
+            if(rings.length<5&&Math.random()<.008)spawnRing();
+            raf=requestAnimationFrame(draw);
+        })();
+    }
+
+    // — GRID: pulsating dot grid (2003 - budowanie struktury)
+    if(type==='grid'){
+        const gap=28;const dots=[];
+        for(let x=gap;x<w;x+=gap)for(let y=gap;y<h;y+=gap)dots.push({x,y,base:.3+Math.random()*.4,phase:Math.random()*Math.PI*2});
+        (function draw(t){
+            t=t||0;ctx.clearRect(0,0,w,h);
+            dots.forEach(d=>{
+                const pulse=Math.sin(t*.001+d.phase)*.5+.5;
+                const r=1.5+pulse*2;
+                const alpha=d.base*pulse;
+                ctx.beginPath();ctx.arc(d.x,d.y,r,0,Math.PI*2);
+                ctx.fillStyle=`rgba(${colors.grid[0]},${alpha})`;ctx.fill();
+                // connecting lines to neighbors
+                if(pulse>.6){
+                    ctx.beginPath();
+                    ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+gap,d.y);
+                    ctx.strokeStyle=`rgba(${colors.grid[1]},${alpha*.3})`;
+                    ctx.lineWidth=.5;ctx.stroke();
+                }
+            });
+            raf=requestAnimationFrame(draw);
+        })();
+    }
+
+    // — PARTICLES: floating particles with connections (2018 - chmura, transformacja)
+    if(type==='particles'){
+        const pts=[];const count=35;
+        for(let i=0;i<count;i++)pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:1+Math.random()*2});
+        (function draw(){
+            ctx.clearRect(0,0,w,h);
+            pts.forEach(p=>{
+                p.x+=p.vx;p.y+=p.vy;
+                if(p.x<0)p.x=w;if(p.x>w)p.x=0;
+                if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+                ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+                ctx.fillStyle=`rgba(${colors.particles[0]},.5)`;ctx.fill();
+            });
+            // connections
+            for(let i=0;i<count;i++){
+                for(let j=i+1;j<count;j++){
+                    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y;
+                    const dist=Math.sqrt(dx*dx+dy*dy);
+                    if(dist<80){
+                        ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+                        ctx.strokeStyle=`rgba(${colors.particles[1]},${(1-dist/80)*.4})`;
+                        ctx.lineWidth=.6;ctx.stroke();
+                    }
+                }
+            }
+            raf=requestAnimationFrame(draw);
+        })();
+    }
+
+    // — HELIX: DNA-like double helix (2020 - nauka, doktorat)
+    if(type==='helix'){
+        (function draw(t){
+            t=t||0;ctx.clearRect(0,0,w,h);
+            const cx=w/2;const amp=w*.2;const steps=20;
+            for(let i=0;i<steps;i++){
+                const y=(h/(steps-1))*i;
+                const offset=t*.002+i*.4;
+                const x1=cx+Math.sin(offset)*amp;
+                const x2=cx+Math.sin(offset+Math.PI)*amp;
+                const sz=2+Math.abs(Math.sin(offset))*3;
+                // strand 1
+                ctx.beginPath();ctx.arc(x1,y,sz,0,Math.PI*2);
+                ctx.fillStyle=`rgba(${colors.helix[0]},.5)`;ctx.fill();
+                // strand 2
+                ctx.beginPath();ctx.arc(x2,y,sz,0,Math.PI*2);
+                ctx.fillStyle=`rgba(${colors.helix[1]},.5)`;ctx.fill();
+                // connector
+                if(i%3===0){
+                    ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);
+                    ctx.strokeStyle=`rgba(${colors.helix[0]},.2)`;ctx.lineWidth=1;ctx.stroke();
+                }
+            }
+            raf=requestAnimationFrame(draw);
+        })();
+    }
+
+    // — NEURAL: neural network nodes (2025 - AI, edukacja przyszłości)
+    if(type==='neural'){
+        const nodes=[];const layers=[3,5,4,3];
+        let nx=w*.15;
+        layers.forEach((count,li)=>{
+            for(let i=0;i<count;i++){
+                nodes.push({x:nx,y:h*(i+1)/(count+1),layer:li,pulse:Math.random()*Math.PI*2});
+            }
+            nx+=w*.7/(layers.length-1);
+        });
+        (function draw(t){
+            t=t||0;ctx.clearRect(0,0,w,h);
+            // connections
+            nodes.forEach(a=>{
+                nodes.forEach(b=>{
+                    if(b.layer===a.layer+1){
+                        const signal=Math.sin(t*.003+a.pulse+b.pulse)*.5+.5;
+                        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+                        ctx.strokeStyle=`rgba(${colors.neural[a.layer%3]},${signal*.25})`;
+                        ctx.lineWidth=.8;ctx.stroke();
+                        // traveling pulse
+                        const px=a.x+(b.x-a.x)*((t*.001+a.pulse)%1);
+                        const py=a.y+(b.y-a.y)*((t*.001+a.pulse)%1);
+                        ctx.beginPath();ctx.arc(px,py,1.5,0,Math.PI*2);
+                        ctx.fillStyle=`rgba(${colors.neural[(a.layer+1)%3]},${signal*.5})`;ctx.fill();
+                    }
+                });
+            });
+            // nodes
+            nodes.forEach(n=>{
+                const pulse=Math.sin(t*.002+n.pulse)*.5+.5;
+                const r=3+pulse*3;
+                ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+                ctx.fillStyle=`rgba(${colors.neural[n.layer%3]},${.3+pulse*.4})`;ctx.fill();
+                // glow
+                ctx.beginPath();ctx.arc(n.x,n.y,r+4,0,Math.PI*2);
+                ctx.fillStyle=`rgba(${colors.neural[n.layer%3]},${pulse*.1})`;ctx.fill();
+            });
+            raf=requestAnimationFrame(draw);
+        })();
+    }
+
+    window.addEventListener('resize',resize);
+});
+})();
+</script>
+</body>
+</html>
