@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Tomasz Siemek</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══ RESET & TOKENS ═══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --bg:#fefcfc;--bg2:#f9f4f5;--bg3:#f3ebec;
+    --accent:#b5707b;--accent-l:#d4959e;--accent-d:#8e4f5a;
+    --accent2:#6b5b7b;--accent3:#5b7b7b;
+    --glow:rgba(181,112,123,.08);
+    --surface:rgba(181,112,123,.03);--surface2:rgba(181,112,123,.06);
+    --border:rgba(181,112,123,.10);--border2:rgba(181,112,123,.18);
+    --text:#2a1f22;--text2:#6b555b;--text3:#a8919a;
+    --sans:'Space Grotesk',sans-serif;
+    --display:'Syne',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --hand:'Caveat',cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg3);color:var(--text);overflow-x:hidden;line-height:1.65;min-height:100vh}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(181,112,123,.15);color:var(--accent-d)}
+
+/* ═══ LAYOUT ═══ */
+.blog-sec{max-width:1280px;margin:0 auto;padding:80px 7vw 120px}
+.sec-tag{font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-tag::before{content:'';width:24px;height:2px;background:var(--accent);border-radius:1px}
+.sec-title{font-family:var(--display);font-size:clamp(2rem,4vw,3.4rem);font-weight:800;letter-spacing:-1.5px;line-height:1.08;margin-bottom:56px}
+.sec-title .dim{color:var(--text3);font-weight:400}
+
+/* ═══ FILTER BAR ═══ */
+.fbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:16px 20px;background:rgba(254,252,252,.88);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:18px;position:sticky;top:16px;z-index:100}
+.fbar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1}
+.fbar-right{display:flex;align-items:center;gap:8px}
+.sbox{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:50px;padding:0 16px;transition:border .3s;min-width:180px}
+.sbox:focus-within{border-color:var(--accent)}
+.sbox svg{width:14px;height:14px;stroke:var(--text3);stroke-width:2;fill:none;flex-shrink:0}
+.sbox input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:.78rem;padding:9px 0;width:140px}
+.sbox input::placeholder{color:var(--text3)}
+.dd-wrap{position:relative}
+.dd-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:50px;font-family:var(--mono);font-size:.75rem;font-weight:500;background:var(--bg2);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .25s;white-space:nowrap;user-select:none}
+.dd-btn:hover{border-color:var(--accent);color:var(--accent)}
+.dd-btn.open{border-color:var(--accent);color:var(--accent);background:rgba(181,112,123,.04)}
+.dd-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.5;fill:none;transition:transform .25s;flex-shrink:0}
+.dd-btn.open svg{transform:rotate(180deg)}
+.dd-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:#fff;font-size:.6rem;font-weight:700}
+.dd-panel{position:absolute;top:calc(100% + 8px);left:0;min-width:220px;background:rgba(254,252,252,.96);backdrop-filter:blur(20px);border:1px solid var(--border2);border-radius:16px;box-shadow:0 12px 40px rgba(181,112,123,.10),0 4px 16px rgba(0,0,0,.04);padding:8px;z-index:200;opacity:0;pointer-events:none;transform:translateY(6px);transition:opacity .2s,transform .2s}
+.dd-panel.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.dd-panel-title{font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:6px 10px 8px}
+.tag-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:background .2s;font-size:.82rem;color:var(--text2);user-select:none}
+.tag-option:hover{background:var(--surface2)}
+.tag-option input[type=checkbox]{display:none}
+.tag-check{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.tag-option input:checked ~ .tag-check{background:var(--accent);border-color:var(--accent)}
+.tag-option input:checked ~ .tag-check::after{content:'';display:block;width:5px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(42deg) translateY(-1px)}
+.tag-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-left:auto}
+.dd-sep{height:1px;background:var(--border);margin:6px 0}
+.dd-actions{display:flex;gap:6px;padding:6px 4px 2px}
+.dd-act-btn{flex:1;padding:7px;border-radius:8px;font-family:var(--mono);font-size:.68rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.dd-act-clear{background:var(--bg2);color:var(--text3)}
+.dd-act-clear:hover{color:var(--text)}
+.dd-act-apply{background:var(--accent);color:#fff}
+.dd-act-apply:hover{background:var(--accent-d)}
+.time-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:background .2s;font-size:.82rem;color:var(--text2);user-select:none}
+.time-option:hover{background:var(--surface2)}
+.time-option input[type=radio]{display:none}
+.time-radio{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.time-option input:checked ~ .time-radio{border-color:var(--accent)}
+.time-option input:checked ~ .time-radio::after{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.time-option input:checked ~ span{color:var(--accent);font-weight:500}
+.sort-row{display:flex;align-items:center;gap:6px;margin-left:auto}
+.sort-btn{padding:8px 14px;border-radius:50px;font-family:var(--mono);font-size:.72rem;font-weight:500;background:var(--bg2);border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all .25s}
+.sort-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.active-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.active-tags:empty{display:none}
+.tag-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:50px;font-family:var(--mono);font-size:.65rem;font-weight:500;border:1px solid var(--border2);cursor:pointer;transition:all .2s;background:var(--bg)}
+.tag-pill:hover{border-color:var(--accent);color:var(--accent)}
+.tag-pill span{opacity:.6}
+.blog-count{font-family:var(--mono);font-size:.7rem;color:var(--text3);margin:0 0 20px}
+
+/* ═══ GRID ═══ */
+.blog-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:52px 22px;
+}
+
+/* ═══ FOLDER CARD ═══ */
+.folder-card{
+    position:relative;
+    padding-top:30px;   /* room for tab */
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Tab — text only, visual shape handled by .folder-back::before */
+.folder-tab{
+    position:absolute;
+    top:0;
+    height:32px;min-width:86px;padding:0 14px;
+    background:transparent;
+    border:none;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:0px;
+    z-index:2;
+}
+.tab-odc{
+    font-family:var(--mono);font-size:.48rem;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;
+    color:var(--text3);line-height:1;
+}
+.tab-num{
+    font-family:var(--mono);font-size:.82rem;font-weight:700;
+    color:var(--accent);line-height:1;letter-spacing:-.5px;
+}
+
+/* Paper — blank sheet hidden behind folder front, slides up on hover */
+.folder-paper{
+    position:absolute;
+    top:30px;left:8px;right:8px;bottom:0;
+    background:var(--bg);
+    border-radius:3px 3px 4px 4px;
+    z-index:2;
+    transform:translateY(0) translateZ(0);
+    transition:transform .44s cubic-bezier(.16,1,.3,1);
+    will-change:transform;
+    box-shadow:0 -2px 8px rgba(181,112,123,.06);
+}
+
+.folder-card:hover .folder-paper{
+    transform:translateY(-22px) translateZ(0);
+}
+
+/* Folder back — peeking behind the front, slightly open look */
+.folder-back{
+    position:absolute;
+    top:20px;left:0;right:0;bottom:0;
+    background:var(--bg3);
+    border:1px solid var(--border2);
+    border-radius:3px 10px 10px 10px;
+    z-index:1;
+}
+.folder-back::before{
+    content:'';
+    position:absolute;
+    top:-20px;left:-1px;
+    width:88px;height:21px;
+    background:var(--bg3);
+    border:1px solid var(--border2);
+    border-bottom:none;
+    border-radius:8px 8px 0 0;
+}
+
+/* Folder front — the face with all card info */
+.folder-front{
+    position:relative;
+    z-index:3;
+    flex:1;
+    background:var(--bg2);
+    border:1px solid var(--border2);
+    border-radius:10px;
+    padding:26px 26px 22px;
+    box-shadow:0 4px 16px rgba(181,112,123,.05);
+    display:flex;flex-direction:column;
+}
+
+
+/* Tags + reading time */
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:12px}
+.card-tags-row{display:flex;flex-wrap:wrap;gap:5px}
+
+.ct{font-family:var(--mono);font-size:.6rem;font-weight:600;padding:3px 9px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;cursor:pointer;transition:opacity .2s}
+.ct:hover{opacity:.75}
+.ct-edukacja{background:rgba(181,112,123,.08);color:var(--accent);border:1px solid rgba(181,112,123,.15)}
+.ct-ai{background:rgba(107,91,123,.08);color:var(--accent2);border:1px solid rgba(107,91,123,.15)}
+.ct-biznes{background:rgba(91,123,123,.08);color:var(--accent3);border:1px solid rgba(91,123,123,.15)}
+.ct-mik{background:rgba(245,158,11,.08);color:#b07800;border:1px solid rgba(245,158,11,.15)}
+.ct-prompt{background:rgba(59,130,246,.08);color:#2563eb;border:1px solid rgba(59,130,246,.15)}
+.ct-llm{background:rgba(16,185,129,.08);color:#047857;border:1px solid rgba(16,185,129,.15)}
+.ct-ml{background:rgba(239,68,68,.08);color:#b91c1c;border:1px solid rgba(239,68,68,.15)}
+.ct-default{background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+
+.read-time{display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:var(--mono);font-size:.65rem;color:var(--text3);flex-shrink:0}
+.read-time svg{width:12px;height:12px;stroke:var(--text3);stroke-width:2;fill:none}
+
+/* Card body */
+.card-title{font-family:var(--display);font-size:1.12rem;font-weight:700;letter-spacing:-.3px;line-height:1.28;margin-bottom:10px;color:var(--text)}
+.card-excerpt{font-size:.875rem;color:var(--text2);line-height:1.75;font-weight:300;margin-bottom:20px;flex:1}
+.card-divider{height:1px;background:var(--border);margin-bottom:16px}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-author{display:flex;align-items:center;gap:9px}
+.author-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent-l),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;font-weight:700;color:#fff;flex-shrink:0}
+.author-name{font-size:.78rem;font-weight:600;color:var(--text);line-height:1}
+.author-role{font-family:var(--mono);font-size:.6rem;color:var(--text3);margin-top:2px}
+.card-date{text-align:right}
+.date-label{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);display:block;margin-bottom:2px}
+.date-val{font-family:var(--mono);font-size:.67rem;color:var(--text2)}
+
+/* Hover hint */
+.folder-hint{
+    position:absolute;
+    bottom:-24px;left:50%;transform:translateX(-50%);
+    font-family:var(--mono);font-size:.6rem;color:var(--accent);
+    white-space:nowrap;opacity:0;
+    transition:opacity .3s .05s;
+    pointer-events:none;
+    display:flex;align-items:center;gap:6px;
+}
+.folder-hint::before,.folder-hint::after{
+    content:'';display:block;
+    width:14px;height:1px;
+    background:var(--accent-l);
+}
+.folder-card:hover .folder-hint{opacity:1}
+
+/* Empty state */
+.blog-empty{grid-column:1/-1;text-align:center;padding:80px 20px;font-family:var(--mono);font-size:.85rem;color:var(--text3)}
+.blog-empty .empty-icon{font-size:2.5rem;display:block;margin-bottom:12px;opacity:.4}
+
+/* ═══ ARTICLE OVERLAY ═══ */
+.overlay{position:fixed;inset:0;z-index:50000;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.overlay.open{pointer-events:all}
+.overlay-backdrop{position:absolute;inset:0;background:rgba(42,31,34,.6);opacity:0;transition:opacity .25s ease;will-change:opacity}
+.overlay.open .overlay-backdrop{opacity:1}
+.overlay-paper{
+    position:relative;z-index:1;
+    width:min(720px,92vw);
+    background:var(--bg);border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 32px 80px rgba(0,0,0,.25);
+    opacity:0;
+    transform:translateY(32px);
+    transition:opacity .38s ease,transform .42s cubic-bezier(.16,1,.3,1);
+    will-change:transform,opacity;
+}
+.overlay.open .overlay-paper{opacity:1;transform:translateY(0)}
+.overlay-scroll{max-height:88vh;overflow-y:auto;overscroll-behavior:contain}
+.overlay-close{
+    position:sticky;top:0;float:right;
+    width:36px;height:36px;border-radius:50%;
+    background:var(--surface2);border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:background .2s;
+    margin:14px 14px 0 0;z-index:2;
+}
+.overlay-close:hover{background:var(--glow)}
+.overlay-close svg{width:14px;height:14px;stroke:var(--text2);stroke-width:2.5;fill:none}
+
+/* Loading */
+.overlay-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:60px 40px 80px;min-height:380px}
+.pen-wrap{width:44px;height:76px}
+.pen-svg{width:100%;height:100%;animation:penSway 2.2s ease-in-out infinite;transform-origin:50% 18%}
+@keyframes penSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg) translateX(5px)}}
+.writing-lines{display:flex;flex-direction:column;gap:9px;width:140px}
+.wline{height:1.5px;border-radius:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;opacity:0}
+.wline:nth-child(1){animation:writeLine 2.2s ease infinite}
+.wline:nth-child(2){animation:writeLine 2.2s ease .48s infinite}
+.wline:nth-child(3){animation:writeLineShort 2.2s ease .96s infinite}
+@keyframes writeLine{0%{width:0;opacity:0}15%{opacity:.65}75%{opacity:.65}90%,100%{width:100%;opacity:0}}
+@keyframes writeLineShort{0%{width:0;opacity:0}15%{opacity:.65}75%{opacity:.65}90%,100%{width:62%;opacity:0}}
+.loading-text{font-family:var(--mono);font-size:.78rem;color:var(--text3);display:flex;align-items:flex-end;gap:1px;letter-spacing:.5px}
+.ldot{display:inline-block;animation:ldotBounce 1.4s ease infinite;opacity:0}
+.ldot:nth-child(2){animation-delay:.2s}
+.ldot:nth-child(3){animation-delay:.4s}
+@keyframes ldotBounce{0%,60%,100%{opacity:0;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+/* Article content */
+.overlay-content{padding:28px 36px 52px;display:none}
+.oc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.oc-title{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;letter-spacing:-1px;line-height:1.15;color:var(--text);margin-bottom:14px}
+.oc-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.oc-author{display:flex;align-items:center;gap:8px}
+.oc-author-name{font-size:.82rem;font-weight:600;color:var(--text)}
+.oc-author-role{font-family:var(--mono);font-size:.62rem;color:var(--text3)}
+.oc-sep{width:1px;height:20px;background:var(--border)}
+.oc-stat{font-family:var(--mono);font-size:.65rem;color:var(--text3)}
+.oc-body p{font-size:.95rem;color:var(--text2);line-height:1.85;font-weight:300;margin-bottom:18px}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+    .blog-sec{padding:60px 5vw 80px}
+    .blog-grid{grid-template-columns:1fr;gap:48px}
+    .fbar{top:8px}
+    .sbox{flex:1;min-width:0}
+    .sbox input{width:100%}
+}
+@media(max-width:560px){
+    .fbar{flex-direction:column;align-items:stretch}
+    .fbar-left,.fbar-right{width:100%}
+    .sort-row{margin-left:0}
+    .overlay-content{padding:20px 18px 40px}
+}
+@media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="blog-sec">
+    <div class="sec-tag">Blog</div>
+    <div class="sec-title">Cotygodniowe<br><span class="dim">wpisy.</span></div>
+
+    <!-- FILTER BAR -->
+    <div class="fbar">
+        <div class="fbar-left">
+            <div class="sbox">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="blogSearch" placeholder="Szukaj wpisu..." aria-label="Szukaj wpisu">
+            </div>
+            <div class="dd-wrap" id="ddTagsWrap">
+                <button class="dd-btn" id="ddTagsBtn" onclick="toggleDd('tags')">
+                    Tagi<span class="dd-badge" id="tagBadge" style="display:none">0</span>
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel" id="ddTagsPanel">
+                    <div class="dd-panel-title">Wybierz tagi</div>
+                    <div id="tagOptions"></div>
+                    <div class="dd-sep"></div>
+                    <div class="dd-actions">
+                        <button class="dd-act-btn dd-act-clear" onclick="clearTags()">Wyczyść</button>
+                        <button class="dd-act-btn dd-act-apply" onclick="applyTags()">Zastosuj</button>
+                    </div>
+                </div>
+            </div>
+            <div class="dd-wrap" id="ddTimeWrap">
+                <button class="dd-btn" id="ddTimeBtn" onclick="toggleDd('time')">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Czas
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dd-panel" id="ddTimePanel" style="min-width:200px">
+                    <div class="dd-panel-title">Filtruj po dacie</div>
+                    <label class="time-option"><input type="radio" name="timeFilter" value="all" checked><span class="time-radio"></span><span>Wszystkie</span></label>
+                    <label class="time-option"><input type="radio" name="timeFilter" value="1m"><span class="time-radio"></span><span>Ostatni miesiąc</span></label>
+                    <label class="time-option"><input type="radio" name="timeFilter" value="3m"><span class="time-radio"></span><span>Ostatnie 3 miesiące</span></label>
+                    <label class="time-option"><input type="radio" name="timeFilter" value="2026"><span class="time-radio"></span><span>2026</span></label>
+                    <label class="time-option"><input type="radio" name="timeFilter" value="2025"><span class="time-radio"></span><span>2025</span></label>
+                </div>
+            </div>
+        </div>
+        <div class="fbar-right">
+            <div class="sort-row">
+                <button class="sort-btn active" id="sortNew" onclick="setSort('newest')">Najnowsze</button>
+                <button class="sort-btn" id="sortOld" onclick="setSort('oldest')">Najstarsze</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="active-tags" id="activePills"></div>
+    <div class="blog-count" id="blogCount"></div>
+    <div class="blog-grid" id="blogGrid"></div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Artykuł">
+    <div class="overlay-backdrop" id="overlayBackdrop" aria-hidden="true"></div>
+    <div class="overlay-paper" id="overlayPaper">
+        <div class="overlay-scroll">
+        <button class="overlay-close" id="overlayClose" aria-label="Zamknij artykuł">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="overlay-loading" id="overlayLoading" role="status" aria-live="polite">
+            <div class="pen-wrap">
+                <svg class="pen-svg" viewBox="0 0 40 88" fill="none" aria-hidden="true">
+                    <rect x="11" y="2" width="18" height="28" rx="9" fill="#b5707b" opacity=".5"/>
+                    <rect x="13" y="4" width="14" height="24" rx="7" fill="#d4959e" opacity=".25"/>
+                    <rect x="19" y="2" width="3" height="20" rx="1.5" fill="#8e4f5a" opacity=".35"/>
+                    <rect x="10" y="28" width="20" height="5" rx="2" fill="#8e4f5a" opacity=".3"/>
+                    <rect x="12" y="31" width="16" height="26" rx="3" fill="#b5707b" opacity=".7"/>
+                    <rect x="13" y="55" width="14" height="10" rx="3" fill="#8e4f5a" opacity=".55"/>
+                    <path d="M13 65 L20 84 L27 65 Z" fill="#6b5b7b" opacity=".75"/>
+                    <line x1="20" y1="70" x2="20" y2="84" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+                    <circle cx="20" cy="84.5" r="2" fill="#6b5b7b" opacity=".45"/>
+                </svg>
+            </div>
+            <div class="writing-lines">
+                <div class="wline"></div>
+                <div class="wline"></div>
+                <div class="wline"></div>
+            </div>
+            <div class="loading-text">
+                Ładowanie artykułu<span class="ldot">.</span><span class="ldot">.</span><span class="ldot">.</span>
+            </div>
+        </div>
+        <div class="overlay-content" id="overlayContent" aria-live="polite"></div>
+        </div><!-- /overlay-scroll -->
+    </div>
+</div>
+
+<script>
+/* ═══ DATA ═══ */
+const ALL_TAGS=['Edukacja','AI','Biznes','Mikropoświadczenia','Prompt Engineering','LLM','Machine Learning','Consulting','E-assessment','Automatyzacja'];
+const TAG_CLASS={
+    'Edukacja':'ct-edukacja','AI':'ct-ai','Biznes':'ct-biznes',
+    'Mikropoświadczenia':'ct-mik','Prompt Engineering':'ct-prompt',
+    'LLM':'ct-llm','Machine Learning':'ct-ml','Consulting':'ct-biznes',
+    'E-assessment':'ct-ai','Automatyzacja':'ct-llm',
+};
+const TAG_DOT={'Edukacja':'#b5707b','AI':'#6b5b7b','Biznes':'#5b7b7b','Mikropoświadczenia':'#b07800','Prompt Engineering':'#2563eb','LLM':'#047857','Machine Learning':'#b91c1c','Consulting':'#5b7b7b','E-assessment':'#6b5b7b','Automatyzacja':'#047857'};
+const posts=[
+    {id:1,title:'Czym są mikropoświadczenia i dlaczego uczelnie nie mogą ich ignorować?',excerpt:'Koncepcja mikropoświadczeń zdobywa coraz więcej zwolenników w szkolnictwie wyższym. Wyjaśniam, czym dokładnie są, jak działają i dlaczego to właśnie teraz jest najlepszy moment na wdrożenie.',tags:['Edukacja','Mikropoświadczenia'],date:'2026-01-06',readingTime:7,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:2,title:'AI w nowoczesnym egzaminowaniu — szanse i zagrożenia',excerpt:'Sztuczna inteligencja zmienia sposób, w jaki weryfikujemy wiedzę. Adaptacyjne testy, automatyczna ocena, proctoring — co z tego jest gotowe do użycia już dziś?',tags:['AI','Edukacja','E-assessment'],date:'2026-01-13',readingTime:8,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:3,title:'Prompt Engineering dla wykładowców — przewodnik praktyczny',excerpt:'ChatGPT, Claude, Gemini — narzędzia są dostępne dla każdego. Ale jak pisać dobre prompty, żeby rzeczywiście poprawiały pracę dydaktyczną? Kompletny przewodnik.',tags:['AI','Prompt Engineering','Edukacja'],date:'2026-01-20',readingTime:6,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:4,title:'Transformacja cyfrowa polskich uczelni — case study',excerpt:'Raport z wdrożeń mikropoświadczeń i narzędzi AI na trzech polskich uczelniach wyższych. Co zadziałało, co nie wyszło i czego to nauczyło mnie jako konsultanta.',tags:['Edukacja','Mikropoświadczenia','Consulting'],date:'2026-01-27',readingTime:9,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:5,title:'AI w biznesie — od strategii do pierwszego wdrożenia',excerpt:'Jak firma powinna przejść od „chcemy AI" do realnych wyników? Opisuję sprawdzony proces: audyt, roadmapa, pilotaż i skalowanie.',tags:['Biznes','AI','Consulting'],date:'2026-02-03',readingTime:8,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:6,title:'LLM w codziennej pracy — 10 zastosowań, które naprawdę działają',excerpt:'Które zastosowania dużych modeli językowych przynoszą największy zwrot w środowisku akademickim i biznesowym? Lista oparta na realnych wdrożeniach.',tags:['LLM','AI','Automatyzacja'],date:'2026-02-10',readingTime:7,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:7,title:'Etyka AI w edukacji — gdzie jest granica?',excerpt:'Kiedy wsparcie AI staje się nieuczciwą pomocą? Refleksje po rozmowach z setkami wykładowców i studentów.',tags:['AI','Edukacja'],date:'2026-02-17',readingTime:5,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:8,title:'Szkolenia AI — co naprawdę działa po 500 przeszkolonych osobach?',excerpt:'Które formaty szkoleń z AI przynoszą trwałe efekty? Moje wnioski po prowadzeniu warsztatów dla pracowników uczelni i menadżerów.',tags:['Biznes','AI','Prompt Engineering'],date:'2026-02-24',readingTime:6,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:9,title:'Machine Learning w systemach egzaminacyjnych — pod maską',excerpt:'Jak modele ML wpływają na adaptacyjność testów wiedzy? Techniczna strona nowoczesnego e-assessmentu — bez nadmiernej matematyki.',tags:['Machine Learning','E-assessment','AI'],date:'2025-11-18',readingTime:10,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:10,title:'Automatyzacja procesów akademickich — od czego zacząć?',excerpt:'Które procesy uczelniane nadają się do automatyzacji w pierwszej kolejności? Praktyczna lista z narzędziami i szacowanymi oszczędnościami czasu.',tags:['Automatyzacja','LLM','Edukacja'],date:'2025-12-09',readingTime:7,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+];
+
+/* ═══ STATE ═══ */
+let selectedTags=new Set(),pendingTags=new Set();
+let timeFilter='all',sortOrder='newest',searchQuery='',openDd=null;
+
+/* ═══ TAG OPTIONS ═══ */
+const tagOptionsEl=document.getElementById('tagOptions');
+ALL_TAGS.forEach(tag=>{
+    const label=document.createElement('label');
+    label.className='tag-option';
+    label.innerHTML=`<input type="checkbox" value="${tag}"><span class="tag-check"></span><span>${tag}</span><span class="tag-dot" style="background:${TAG_DOT[tag]||'#999'}"></span>`;
+    label.querySelector('input').addEventListener('change',()=>{
+        const v=label.querySelector('input').value;
+        label.querySelector('input').checked?pendingTags.add(v):pendingTags.delete(v);
+        updateTagBadge(pendingTags.size);
+    });
+    tagOptionsEl.appendChild(label);
+});
+
+/* ═══ DROPDOWNS ═══ */
+function toggleDd(w){
+    const P={tags:'ddTagsPanel',time:'ddTimePanel'},B={tags:'ddTagsBtn',time:'ddTimeBtn'};
+    if(openDd&&openDd!==w)closeDd(openDd);
+    const open=document.getElementById(P[w]).classList.contains('open');
+    if(open){closeDd(w);return}
+    document.getElementById(P[w]).classList.add('open');
+    document.getElementById(B[w]).classList.add('open');
+    if(w==='tags'){pendingTags=new Set(selectedTags);syncCb();updateTagBadge(pendingTags.size)}
+    openDd=w;
+}
+function closeDd(w){
+    const P={tags:'ddTagsPanel',time:'ddTimePanel'},B={tags:'ddTagsBtn',time:'ddTimeBtn'};
+    document.getElementById(P[w]).classList.remove('open');
+    document.getElementById(B[w]).classList.remove('open');
+    if(openDd===w)openDd=null;
+}
+document.addEventListener('click',e=>{
+    if(!e.target.closest('#ddTagsWrap'))closeDd('tags');
+    if(!e.target.closest('#ddTimeWrap'))closeDd('time');
+});
+document.querySelectorAll('input[name=timeFilter]').forEach(r=>r.addEventListener('change',()=>{timeFilter=r.value;render()}));
+function syncCb(){tagOptionsEl.querySelectorAll('input').forEach(i=>{i.checked=pendingTags.has(i.value)})}
+function updateTagBadge(n){const b=document.getElementById('tagBadge');b.style.display=n?'inline-flex':'none';b.textContent=n}
+function clearTags(){pendingTags.clear();syncCb();updateTagBadge(0)}
+function applyTags(){selectedTags=new Set(pendingTags);closeDd('tags');updateTagBadge(selectedTags.size);renderPills();render()}
+
+function renderPills(){
+    const c=document.getElementById('activePills');c.innerHTML='';
+    selectedTags.forEach(tag=>{
+        const p=document.createElement('div');p.className='tag-pill';
+        p.innerHTML=`${tag} <span>✕</span>`;
+        p.addEventListener('click',()=>{selectedTags.delete(tag);pendingTags.delete(tag);syncCb();updateTagBadge(pendingTags.size);renderPills();render()});
+        c.appendChild(p);
+    });
+}
+function setSort(o){sortOrder=o;document.getElementById('sortNew').classList.toggle('active',o==='newest');document.getElementById('sortOld').classList.toggle('active',o==='oldest');render()}
+document.getElementById('blogSearch').addEventListener('input',e=>{searchQuery=e.target.value;render()});
+
+function matchesTime(d){
+    if(timeFilter==='all')return true;
+    const dt=new Date(d),now=new Date();
+    if(timeFilter==='1m')return(now-dt)<=30*864e5;
+    if(timeFilter==='3m')return(now-dt)<=90*864e5;
+    if(timeFilter==='2026')return dt.getFullYear()===2026;
+    if(timeFilter==='2025')return dt.getFullYear()===2025;
+    return true;
+}
+function fmtDate(s){return new Date(s).toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'})}
+
+/* ═══ RENDER ═══ */
+function render(){
+    const q=searchQuery.toLowerCase().trim();
+    let res=posts.filter(p=>{
+        if(selectedTags.size>0&&!p.tags.some(t=>selectedTags.has(t)))return false;
+        if(!matchesTime(p.date))return false;
+        if(q&&!p.title.toLowerCase().includes(q)&&!p.excerpt.toLowerCase().includes(q)&&!p.tags.some(t=>t.toLowerCase().includes(q)))return false;
+        return true;
+    }).sort((a,b)=>sortOrder==='newest'?new Date(b.date)-new Date(a.date):new Date(a.date)-new Date(b.date));
+
+    const grid=document.getElementById('blogGrid');
+    document.getElementById('blogCount').textContent=`${res.length} / ${posts.length} wpisów`;
+
+    if(!res.length){
+        grid.innerHTML=`<div class="blog-empty"><span class="empty-icon">🗂</span>Nie znaleziono wpisów pasujących do filtrów.</div>`;
+        return;
+    }
+
+    grid.innerHTML='';
+    res.forEach(post=>{
+        const ep=String(post.id).padStart(2,'0');
+        const tagsHtml=post.tags.map(t=>`<span class="ct ${TAG_CLASS[t]||'ct-default'}" data-tag="${t}" aria-label="tag: ${t}">${t}</span>`).join('');
+
+        const article=document.createElement('article');
+        article.className='folder-card';
+        article.innerHTML=`
+            <div class="folder-back"></div>
+            <div class="folder-tab">
+                <span class="tab-odc">odc.</span>
+                <span class="tab-num">${ep}</span>
+            </div>
+            <div class="folder-paper"></div>
+            <div class="folder-front">
+                <div class="card-head">
+                    <div class="card-tags-row">${tagsHtml}</div>
+                    <div class="read-time" aria-label="szacowany czas czytania: ${post.readingTime} minut">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span aria-hidden="true">${post.readingTime} min</span>
+                    </div>
+                </div>
+                <h3 class="card-title">${post.title}</h3>
+                <p class="card-excerpt">${post.excerpt}</p>
+                <div class="card-divider"></div>
+                <div class="card-foot">
+                    <div class="card-author">
+                        <div class="author-avatar">TS</div>
+                        <div>
+                            <div class="author-name">${post.author.name}</div>
+                            <div class="author-role">${post.author.role}</div>
+                        </div>
+                    </div>
+                    <div class="card-date">
+                        <span class="date-label">Opublikowano</span>
+                        <span class="date-val">${fmtDate(post.date)}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="folder-hint">kliknij, aby czytać</div>
+        `;
+
+        article.querySelectorAll('.ct[data-tag]').forEach(el=>{
+            el.addEventListener('click',e=>{
+                e.stopPropagation();
+                const tag=el.dataset.tag;
+                if(!selectedTags.has(tag)){selectedTags.add(tag);pendingTags.add(tag);syncCb();updateTagBadge(pendingTags.size);renderPills();render()}
+            });
+        });
+
+        article.setAttribute('tabindex','0');
+        article.setAttribute('role','button');
+        article.setAttribute('aria-label',`Otwórz odcinek ${ep}: ${post.title}`);
+        article.addEventListener('click',()=>openArticle(post,article));
+        article.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openArticle(post,article);}});
+        grid.appendChild(article);
+    });
+}
+
+/* ═══ OVERLAY ═══ */
+const overlay=document.getElementById('overlay');
+const overlayLoading=document.getElementById('overlayLoading');
+const overlayContent=document.getElementById('overlayContent');
+let loadTimer=null;
+let lastFocusedCard=null;
+
+function getFocusable(){
+    return Array.from(overlay.querySelectorAll('button,[href],input,[tabindex]:not([tabindex="-1"])')).filter(el=>!el.disabled&&el.offsetParent!==null);
+}
+
+function openArticle(post,triggerEl){
+    lastFocusedCard=triggerEl||document.activeElement;
+    overlayLoading.style.display='flex';
+    overlayContent.style.display='block';
+    overlayContent.innerHTML='';
+    overlay.classList.add('open');
+    clearTimeout(loadTimer);
+    requestAnimationFrame(()=>document.getElementById('overlayClose').focus());
+    loadTimer=setTimeout(()=>showArticle(post),1800);
+}
+function closeOverlay(){
+    overlay.classList.remove('open');
+    clearTimeout(loadTimer);
+    if(lastFocusedCard){lastFocusedCard.focus();lastFocusedCard=null;}
+}
+function showArticle(post){
+    const tagsHtml=post.tags.map(t=>`<span class="ct ${TAG_CLASS[t]||'ct-default'}" aria-label="tag: ${t}">${t}</span>`).join('');
+    overlayContent.innerHTML=`
+        <div class="oc-tags">${tagsHtml}</div>
+        <h2 class="oc-title">${post.title}</h2>
+        <div class="oc-meta">
+            <div class="oc-author">
+                <div class="author-avatar">TS</div>
+                <div><div class="oc-author-name">${post.author.name}</div><div class="oc-author-role">${post.author.role}</div></div>
+            </div>
+            <div class="oc-sep"></div>
+            <span class="oc-stat">${fmtDate(post.date)}</span>
+            <div class="oc-sep"></div>
+            <span class="oc-stat" aria-label="szacowany czas czytania: ${post.readingTime} minut">${post.readingTime} min czytania</span>
+        </div>
+        <div class="oc-body">
+            <p>${post.excerpt}</p>
+            <p>Treść artykułu zostanie tutaj załadowana — docelowo zastąp ten placeholder rzeczywistą zawartością wpisu pobieraną z CMS lub pliku Markdown.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+    `;
+    overlayLoading.style.display='none';
+}
+
+document.getElementById('overlayClose').addEventListener('click',closeOverlay);
+document.getElementById('overlayBackdrop').addEventListener('click',closeOverlay);
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){closeOverlay();return;}
+    if(e.key==='Tab'&&overlay.classList.contains('open')){
+        const focusable=getFocusable();
+        if(!focusable.length){e.preventDefault();return;}
+        const first=focusable[0],last=focusable[focusable.length-1];
+        if(e.shiftKey){if(document.activeElement===first){e.preventDefault();last.focus();}}
+        else{if(document.activeElement===last){e.preventDefault();first.focus();}}
+    }
+});
+
+const overlayScrollEl=document.querySelector('.overlay-scroll');
+overlay.addEventListener('wheel',e=>{
+    if(!overlay.classList.contains('open'))return;
+    if(overlayLoading.style.display==='flex'||!overlayScrollEl.contains(e.target))e.preventDefault();
+},{passive:false});
+
+render();
+</script>
+</body>
+</html>
