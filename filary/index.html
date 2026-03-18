@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filary działalności — Dr Tomasz Siemek</title>
+<meta name="description" content="Trzy główne filary działalności Dr inż. Tomasza Siemka: mikropoświadczenia, systemy egzaminacyjne i sztuczna inteligencja.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --bg:#fefcfc;--bg2:#f9f4f5;--bg3:#f3ebec;
+    --accent:#b5707b;--accent-l:#d4959e;--accent-d:#8e4f5a;
+    --accent2:#6b5b7b;--accent3:#5b7b7b;
+    --surface:rgba(181,112,123,.03);--surface2:rgba(181,112,123,.06);
+    --border:rgba(181,112,123,.10);--border2:rgba(181,112,123,.18);
+    --text:#2a1f22;--text2:#6b555b;--text3:#a8919a;
+    --dark:#1a1215;
+    --sans:'Space Grotesk',sans-serif;
+    --display:'Syne',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --hand:'Caveat',cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(181,112,123,.15);color:var(--accent-d)}
+
+.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:20px 40px;display:flex;align-items:center;justify-content:space-between;
+    background:rgba(254,252,252,.85);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-1px}
+.nav-links{display:flex;gap:28px}
+.nav-link{font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:color .3s}
+.nav-link:hover{color:var(--accent)}
+
+.hero{padding:160px 40px 80px;max-width:900px;margin:0 auto}
+.hero-tag{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;
+    text-transform:uppercase;color:var(--accent);margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;
+}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--accent);border-radius:1px}
+.hero-title{
+    font-family:var(--display);font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;
+    letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px;
+}
+.hero-title .dim{color:var(--text3);font-weight:400}
+.hero-intro{font-size:1.1rem;color:var(--text2);line-height:1.8;font-weight:300;max-width:640px}
+
+/* ═══ FILAR SECTION ═══ */
+.filar-sec{max-width:900px;margin:0 auto;padding:80px 40px;border-top:1px solid var(--border)}
+.filar-sec:first-of-type{border-top:none}
+.filar-header{display:flex;align-items:flex-start;gap:24px;margin-bottom:36px}
+.filar-icon{
+    width:72px;height:72px;border-radius:20px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:2rem;
+}
+.fi-1{background:rgba(181,112,123,.06);border:1px solid rgba(181,112,123,.12)}
+.fi-2{background:rgba(107,91,123,.06);border:1px solid rgba(107,91,123,.12)}
+.fi-3{background:rgba(91,123,123,.06);border:1px solid rgba(91,123,123,.12)}
+.filar-num{font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:3px;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.filar-title{font-family:var(--display);font-size:1.8rem;font-weight:800;letter-spacing:-1px;line-height:1.2}
+.filar-body{font-size:1rem;color:var(--text2);line-height:1.85;font-weight:300}
+.filar-body p{margin-bottom:16px}
+.filar-body strong{color:var(--text);font-weight:600}
+
+.filar-features{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px;
+}
+.feat{
+    padding:24px;border-radius:16px;background:var(--bg2);border:1px solid var(--border);
+    transition:all .3s;
+}
+.feat:hover{border-color:rgba(181,112,123,.2);transform:translateY(-2px)}
+.feat h4{font-family:var(--display);font-size:1rem;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
+.feat p{font-size:.82rem;color:var(--text3);line-height:1.65;font-weight:300}
+
+.cta{
+    text-align:center;padding:80px 40px;
+    background:linear-gradient(135deg,var(--dark) 0%,#2a1f22 100%);
+}
+.cta h2{font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:12px}
+.cta p{font-size:.95rem;color:rgba(255,255,255,.5);margin-bottom:32px;font-weight:300}
+.cta-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:1px;
+    text-transform:uppercase;padding:16px 36px;border-radius:50px;
+    background:#fff;color:var(--dark);text-decoration:none;
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+
+.footer{
+    padding:40px;text-align:center;
+    font-family:var(--mono);font-size:.68rem;color:var(--text3);letter-spacing:1px;
+    border-top:1px solid var(--border);
+}
+
+.rv{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+    .hero{padding:120px 20px 60px}
+    .filar-sec{padding:60px 20px}
+    .filar-header{flex-direction:column;gap:16px}
+    .filar-features{grid-template-columns:1fr}
+    .nav{padding:16px 20px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+    <a href="../" class="nav-logo">TS://</a>
+    <div class="nav-links">
+        <a href="../" class="nav-link">Strona główna</a>
+        <a href="../#o-mnie" class="nav-link">O mnie</a>
+        <a href="../#szkolenia" class="nav-link">Szkolenia</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="hero-tag rv">Filary działalności</div>
+    <h1 class="hero-title rv" style="transition-delay:.08s">Główne filary<br><span class="dim">mojej działalności.</span></h1>
+    <p class="hero-intro rv" style="transition-delay:.16s">Moja praca koncentruje się wokół trzech wzajemnie powiązanych obszarów — mikropoświadczeń, nowoczesnych systemów egzaminacyjnych i sztucznej inteligencji w edukacji i biznesie.</p>
+</div>
+
+<!-- MIKROPOŚWIADCZENIA -->
+<div class="filar-sec rv" id="mikro">
+    <div class="filar-header">
+        <div class="filar-icon fi-1">🏅</div>
+        <div>
+            <div class="filar-num">Filar 01</div>
+            <div class="filar-title">Mikropoświadczenia</div>
+        </div>
+    </div>
+    <div class="filar-body">
+        <p>Mikropoświadczenia to krótkie, certyfikowane potwierdzenia konkretnych kompetencji. W przeciwieństwie do tradycyjnych dyplomów — są precyzyjne, elastyczne i odpowiadają na realne potrzeby rynku pracy.</p>
+        <p><strong>Projektuję i wdrażam kompletne systemy mikropoświadczeń</strong> dla uczelni wyższych — od analizy potrzeb, przez architekturę platformy, po certyfikację zgodną z europejskimi standardami (Bologna Process, ECTS, European Digital Credentials).</p>
+        <p>Pomagam uczelniom budować nowoczesną ofertę edukacyjną, która jest atrakcyjna dla studentów i rozpoznawalna przez pracodawców.</p>
+    </div>
+    <div class="filar-features">
+        <div class="feat rv" style="transition-delay:.05s">
+            <h4>Projektowanie frameworków</h4>
+            <p>Tworzenie struktur mikropoświadczeń dopasowanych do programów kształcenia i potrzeb rynku pracy.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.1s">
+            <h4>Wdrożenia platform</h4>
+            <p>Dobór i konfiguracja platform do wydawania i zarządzania digital credentials.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.15s">
+            <h4>Zgodność z regulacjami</h4>
+            <p>Certyfikaty zgodne z Bologna Process, ECTS i europejskimi standardami cyfrowych poświadczeń.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.2s">
+            <h4>Szkolenia dla kadry</h4>
+            <p>Warsztaty dla wykładowców i administracji z projektowania i zarządzania mikropoświadczeniami.</p>
+        </div>
+    </div>
+</div>
+
+<!-- SYSTEMY EGZAMINACYJNE -->
+<div class="filar-sec rv" id="egzaminy">
+    <div class="filar-header">
+        <div class="filar-icon fi-2">📋</div>
+        <div>
+            <div class="filar-num">Filar 02</div>
+            <div class="filar-title">Nowoczesne systemy egzaminacyjne</div>
+        </div>
+    </div>
+    <div class="filar-body">
+        <p>Tradycyjne egzaminy nie nadążają za potrzebami współczesnej edukacji. Projektuję <strong>systemy weryfikacji wiedzy nowej generacji</strong> — oparte o sztuczną inteligencję, adaptacyjne i skalowalne.</p>
+        <p>Moje rozwiązania pozwalają uczelniom i firmom szkoleniowym precyzyjnie mierzyć kompetencje, automatyzować ocenianie i uzyskiwać wgląd w rzeczywisty poziom wiedzy uczestników — w czasie rzeczywistym.</p>
+        <p>Każdy system jest projektowany z myślą o bezpieczeństwie, dostępności i zgodności z wymogami akredytacyjnymi.</p>
+    </div>
+    <div class="filar-features">
+        <div class="feat rv" style="transition-delay:.05s">
+            <h4>Testy adaptacyjne</h4>
+            <p>Egzaminy, które dynamicznie dostosowują poziom trudności do odpowiedzi zdającego.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.1s">
+            <h4>Automatyczna ocena</h4>
+            <p>AI oceniające odpowiedzi otwarte, eseje i zadania projektowe z dokładnością eksperta.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.15s">
+            <h4>Analityka wyników</h4>
+            <p>Dashboardy z real-time analityką — luki kompetencyjne, trendy, porównania kohort.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.2s">
+            <h4>Bezpieczeństwo egzaminów</h4>
+            <p>Proctoring, randomizacja pytań, detekcja oszustw — egzaminy odporne na manipulacje.</p>
+        </div>
+    </div>
+</div>
+
+<!-- SZTUCZNA INTELIGENCJA -->
+<div class="filar-sec rv" id="ai">
+    <div class="filar-header">
+        <div class="filar-icon fi-3">🤖</div>
+        <div>
+            <div class="filar-num">Filar 03</div>
+            <div class="filar-title">Sztuczna inteligencja</div>
+        </div>
+    </div>
+    <div class="filar-body">
+        <p>Sztuczna inteligencja to nie przyszłość — to teraźniejszość. <strong>Pomagam uczelniom i firmom wdrażać AI</strong> w sposób przemyślany, etyczny i dający mierzalne rezultaty.</p>
+        <p>Od personalizacji nauczania, przez automatyzację procesów administracyjnych, po budowanie agentów AI i systemów opartych o duże modele językowe (LLM) — dostarczam rozwiązania na każdym etapie transformacji.</p>
+        <p>Łączę wiedzę naukową z doświadczeniem praktycznym — jako naukowiec badam, jako konsultant wdrażam, jako trener uczę.</p>
+    </div>
+    <div class="filar-features">
+        <div class="feat rv" style="transition-delay:.05s">
+            <h4>AI w dydaktyce</h4>
+            <p>Personalizacja nauczania, automatyczne tworzenie materiałów, inteligentni asystenci studentów.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.1s">
+            <h4>Consulting & strategia</h4>
+            <p>Audyt procesów, identyfikacja szans automatyzacji, budowa roadmapy wdrożeń AI.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.15s">
+            <h4>LLM & agenci AI</h4>
+            <p>Budowa chatbotów, agentów AI i workflow opartych o ChatGPT, Claude i inne modele.</p>
+        </div>
+        <div class="feat rv" style="transition-delay:.2s">
+            <h4>Prompt Engineering</h4>
+            <p>Szkolenia i wdrożenia zaawansowanych technik promptingu — chain-of-thought, RAG, fine-tuning.</p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+    <h2 class="rv">Chcesz wdrożyć jedno z tych rozwiązań?</h2>
+    <p class="rv" style="transition-delay:.06s">Napisz — porozmawiajmy o Twoich potrzebach.</p>
+    <a href="mailto:tomasz@siemek.pl" class="cta-btn rv" style="transition-delay:.12s">Skontaktuj się</a>
+</div>
+
+<div class="footer">&copy; 2026 Tomasz Siemek &middot; siemek.pl</div>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')})},{threshold:.1});
+document.querySelectorAll('.rv,.feat').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

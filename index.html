@@ -61,6 +61,27 @@ nav{
 .n-link{font-size:.78rem;font-weight:500;color:var(--text3);padding:10px 18px;border-radius:50px;transition:all .3s}
 .n-link:hover{color:var(--text)}
 .n-link.active{color:#fff;background:var(--accent);box-shadow:0 4px 16px rgba(181,112,123,.25)}
+/* ═══ SECTION INDICATOR ═══ */
+.sec-indicator{
+    position:fixed;top:0;left:0;right:0;z-index:9999;
+    height:3px;pointer-events:none;
+}
+.sec-indicator-bar{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+    transition:width .15s linear;
+}
+.sec-indicator-label{
+    position:fixed;top:68px;left:50%;transform:translateX(-50%);z-index:9999;
+    font-family:var(--mono);font-size:.58rem;font-weight:600;letter-spacing:2.5px;
+    text-transform:uppercase;color:var(--accent);
+    padding:5px 16px;border-radius:20px;
+    background:rgba(254,252,252,.85);backdrop-filter:blur(12px);
+    border:1px solid var(--border);
+    opacity:0;transform:translateX(-50%) translateY(-8px);
+    transition:opacity .3s,transform .3s;pointer-events:none;
+}
+.sec-indicator-label.vis{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ═══ HERO ═══ */
 .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;background:linear-gradient(160deg,var(--bg),var(--bg2),var(--bg3))}
@@ -183,118 +204,111 @@ nav{
 }
 
 /* ═══ TIMELINE / MOJA DROGA ═══ */
-.tl-slider-section{position:relative;overflow:hidden;padding:0}
-.tl-slider-section .sec-head{padding:80px 40px 0;max-width:1200px;margin:0 auto}
-.tl-slider-outer{position:relative;width:100%;height:100vh;overflow:hidden}
-.tl-slider-track{
-    display:flex;align-items:center;height:100%;
-    position:absolute;left:0;top:0;will-change:transform;
+.tl-axis{position:relative;margin-top:56px;max-width:1100px;margin-left:auto;margin-right:auto}
+/* labels */
+.tl-axis-labels{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:6px;padding:0 10px;
 }
-.tl-slider-track::before{
-    content:'';position:absolute;top:50%;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent3),transparent);
-    transform:translateY(-50%);z-index:0;
+.tl-axis-label{
+    font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:2.5px;
+    text-transform:uppercase;color:var(--text3);
 }
-.tl-progress-wrap{
-    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
-    width:min(400px,60vw);height:4px;background:var(--border);border-radius:2px;z-index:10;
+.tl-axis-label.now{color:var(--accent)}
+/* line with arrow */
+.tl-axis-line{
+    position:relative;height:3px;border-radius:2px;
+    background:linear-gradient(90deg,var(--bg3),var(--accent-l),var(--accent),var(--accent-d));
+    margin-bottom:0;
 }
-.tl-progress-bar{
-    height:100%;width:0%;border-radius:2px;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    transition:width .1s linear;
+.tl-axis-arrow{
+    position:absolute;right:-6px;top:50%;transform:translateY(-50%);
+    width:0;height:0;
+    border-top:7px solid transparent;border-bottom:7px solid transparent;
+    border-left:10px solid var(--accent-d);
 }
-.tl-progress-label{
-    position:absolute;top:-28px;left:50%;transform:translateX(-50%);
-    font-family:var(--mono);font-size:.65rem;color:var(--text3);letter-spacing:2px;text-transform:uppercase;
-    white-space:nowrap;
+.tl-grid{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+    position:relative;
 }
-.tl-card{
-    position:relative;z-index:2;flex-shrink:0;
-    width:380px;margin:0 30px;padding:48px 36px;
-    background:var(--bg);border:1px solid var(--border);border-radius:24px;
-    transition:all .5s cubic-bezier(.16,1,.3,1);
-    opacity:.4;transform:scale(.88) translateY(20px);
-    overflow:hidden;
+.tl-tile{
+    position:relative;padding:24px 20px 28px;text-align:center;
+    cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);
 }
-.tl-card-canvas{
-    position:absolute;inset:0;width:100%;height:100%;
-    opacity:.12;transition:opacity .5s;pointer-events:none;z-index:0;
+.tl-tile:hover{transform:translateY(-6px)}
+/* connector from line to card */
+.tl-tile::before{
+    content:'';position:absolute;top:0;left:50%;width:2px;height:24px;
+    background:var(--accent);transform:translateX(-50%);
+    opacity:var(--tile-opacity,.25);
 }
-.tl-card.tl-active .tl-card-canvas{opacity:.2}
-.tl-card-content{position:relative;z-index:1}
-.tl-card.tl-active{
-    opacity:1;transform:scale(1) translateY(0);
-    border-color:rgba(181,112,123,.25);
-    box-shadow:0 24px 80px rgba(181,112,123,.08),0 0 0 1px rgba(181,112,123,.06);
-}
-.tl-card:hover{border-color:rgba(181,112,123,.3);box-shadow:0 30px 80px rgba(181,112,123,.1)}
-.tl-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:24px 24px 0 0;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    opacity:0;transition:opacity .4s;
-}
-.tl-card.tl-active::before{opacity:1}
-.tl-card-dot{
-    width:18px;height:18px;border-radius:50%;
+.tl-tile-dot{
+    width:16px;height:16px;border-radius:50%;
     border:3px solid var(--accent);background:var(--bg);
-    position:absolute;top:-38px;left:50%;transform:translateX(-50%);
-    transition:all .4s ease;z-index:3;
+    position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+    z-index:2;transition:all .4s;
 }
-.tl-card.tl-active .tl-card-dot{
+/* progressive opacity: oldest=dim, newest=full */
+.tl-tile:nth-child(1){--tile-opacity:.25}
+.tl-tile:nth-child(1) .tl-tile-inner{opacity:.55}
+.tl-tile:nth-child(1) .tl-tile-dot{border-color:var(--accent-l);width:12px;height:12px;top:-6px}
+.tl-tile:nth-child(2){--tile-opacity:.35}
+.tl-tile:nth-child(2) .tl-tile-inner{opacity:.65}
+.tl-tile:nth-child(2) .tl-tile-dot{border-color:var(--accent-l);width:13px;height:13px;top:-7px}
+.tl-tile:nth-child(3){--tile-opacity:.5}
+.tl-tile:nth-child(3) .tl-tile-inner{opacity:.78}
+.tl-tile:nth-child(4){--tile-opacity:.7}
+.tl-tile:nth-child(4) .tl-tile-inner{opacity:.88}
+.tl-tile:nth-child(5){--tile-opacity:1}
+.tl-tile:nth-child(5) .tl-tile-inner{opacity:1}
+.tl-tile:hover .tl-tile-inner{opacity:1!important}
+.tl-tile:hover .tl-tile-dot{
     background:var(--accent);
-    box-shadow:0 0 0 8px rgba(181,112,123,.15),0 0 20px rgba(181,112,123,.2);
+    box-shadow:0 0 0 8px rgba(181,112,123,.12);
 }
-.tl-card.tl-now .tl-card-dot{animation:tlPulse 2s ease infinite}
-@keyframes tlPulse{0%,100%{box-shadow:0 0 0 8px rgba(181,112,123,.15)}50%{box-shadow:0 0 0 16px rgba(181,112,123,0)}}
-.tl-card-connector{
-    position:absolute;top:-20px;left:50%;width:2px;height:20px;
-    background:var(--accent);transform:translateX(-50%);opacity:.3;
-    transition:opacity .4s;
+.tl-tile.tl-now .tl-tile-dot{
+    background:var(--accent);width:18px;height:18px;top:-9px;
+    box-shadow:0 0 0 6px rgba(181,112,123,.15);
+    animation:tlPulse 2s ease infinite;
 }
-.tl-card.tl-active .tl-card-connector{opacity:1}
-.tl-card-year{
-    font-family:var(--mono);font-size:.8rem;font-weight:700;letter-spacing:4px;
-    color:var(--accent);text-transform:uppercase;margin-bottom:14px;
-    display:flex;align-items:center;gap:10px;
+@keyframes tlPulse{0%,100%{box-shadow:0 0 0 6px rgba(181,112,123,.15)}50%{box-shadow:0 0 0 14px rgba(181,112,123,0)}}
+.tl-tile-inner{
+    padding:24px 16px;border-radius:18px;
+    background:var(--bg);border:1px solid var(--border);
+    transition:all .4s cubic-bezier(.16,1,.3,1);
+    height:100%;display:flex;flex-direction:column;
 }
-.tl-card-year::after{
-    content:'';flex:1;height:1px;background:var(--border);
+.tl-tile:hover .tl-tile-inner{
+    border-color:rgba(181,112,123,.25);
+    box-shadow:0 16px 48px rgba(181,112,123,.07);
 }
-.tl-card-title{
-    font-family:var(--display);font-size:1.5rem;font-weight:700;color:var(--text);
-    line-height:1.25;margin-bottom:12px;letter-spacing:-.5px;
+.tl-tile-year{
+    font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:3px;
+    color:var(--accent);margin-bottom:10px;
 }
-.tl-card-desc{font-size:.9rem;color:var(--text2);line-height:1.75;font-weight:300}
-.tl-card-badge{
-    display:inline-block;margin-top:16px;font-family:var(--mono);font-size:.62rem;letter-spacing:2px;
-    text-transform:uppercase;padding:6px 16px;border-radius:50px;
+.tl-tile-title{
+    font-family:var(--display);font-size:1.05rem;font-weight:700;color:var(--text);
+    line-height:1.3;margin-bottom:8px;letter-spacing:-.3px;
+}
+.tl-tile-desc{
+    font-size:.78rem;color:var(--text3);line-height:1.6;font-weight:300;
+    flex:1;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.tl-tile-badge{
+    display:inline-block;margin-top:12px;font-family:var(--mono);font-size:.58rem;letter-spacing:1.5px;
+    text-transform:uppercase;padding:4px 12px;border-radius:50px;
     border:1px solid var(--border);color:var(--text3);background:var(--surface);
-    transition:all .3s;
 }
-.tl-card.tl-active .tl-card-badge{border-color:rgba(181,112,123,.2);color:var(--accent);background:rgba(181,112,123,.04)}
-.tl-nav{
-    position:absolute;top:50%;right:40px;transform:translateY(-50%);
-    display:flex;flex-direction:column;gap:8px;z-index:10;
+@media(max-width:900px){
+    .tl-grid{grid-template-columns:repeat(3,1fr);gap:12px}
 }
-.tl-nav-dot{
-    width:10px;height:10px;border-radius:50%;border:2px solid var(--border);
-    background:transparent;cursor:pointer;transition:all .3s;padding:0;
-}
-.tl-nav-dot.active{background:var(--accent);border-color:var(--accent);transform:scale(1.3)}
-.tl-scroll-hint{
-    position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
-    font-family:var(--mono);font-size:.65rem;color:var(--text3);letter-spacing:2px;
-    text-transform:uppercase;display:flex;align-items:center;gap:8px;
-    animation:hintFade 2s ease infinite;z-index:10;
-}
-.tl-scroll-hint svg{width:20px;height:20px;stroke:var(--text3)}
-@keyframes hintFade{0%,100%{opacity:.6}50%{opacity:1}}
-@media(max-width:768px){
-    .tl-card{width:280px;margin:0 16px;padding:36px 24px}
-    .tl-card-title{font-size:1.2rem}
-    .tl-nav{display:none}
-    .tl-slider-section .sec-head{padding:60px 20px 0}
+@media(max-width:600px){
+    .tl-grid{grid-template-columns:1fr 1fr;gap:10px}
+    .tl-grid::before{display:none}
+    .tl-tile::before{display:none}
+    .tl-tile-dot{display:none}
+    .tl-tile{padding-top:10px}
 }
 
 /* ═══ CARDS ═══ */
@@ -324,6 +338,181 @@ nav{
 .sec-dark .card p{color:rgba(255,255,255,.6)}
 .sec-dark .card-tag{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.1)}
 .sec-dark .card-icon{border-color:rgba(255,255,255,.12)}
+
+/* ═══ SZKOLENIA CARDS ═══ */
+.szkol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.szkol-card{
+    position:relative;overflow:hidden;border-radius:28px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    transition:all .6s cubic-bezier(.16,1,.3,1);
+    min-height:380px;display:flex;flex-direction:column;
+}
+.szkol-card::before{
+    content:'';position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(42,31,34,.9) 0%,rgba(42,31,34,.65) 40%,rgba(42,31,34,.95) 100%);
+    transition:background .6s;pointer-events:none;
+}
+.szkol-card:hover::before{
+    background:linear-gradient(180deg,rgba(42,31,34,.55) 0%,rgba(42,31,34,.25) 40%,rgba(42,31,34,.7) 100%);
+}
+.szkol-card::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;height:4px;z-index:3;
+    border-radius:0 0 28px 28px;opacity:0;transition:opacity .4s;
+}
+.szkol-card:nth-child(1)::after{background:linear-gradient(90deg,var(--accent),var(--accent-l))}
+.szkol-card:nth-child(2)::after{background:linear-gradient(90deg,var(--accent-l),var(--accent2))}
+.szkol-card:nth-child(3)::after{background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.szkol-card:hover::after{opacity:1}
+.szkol-card:hover{
+    border-color:rgba(255,255,255,.15);
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:0 32px 80px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06);
+}
+.szkol-bg{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:.6;pointer-events:none;z-index:0;
+    transform:scale(1.15);
+    filter:saturate(.5) brightness(.5) sepia(.25) hue-rotate(-10deg);
+    transition:all 1.2s cubic-bezier(.16,1,.3,1);
+}
+.szkol-card:hover .szkol-bg{
+    opacity:.8;
+    transform:scale(1.02);
+    filter:saturate(.7) brightness(.6) sepia(.15) hue-rotate(-10deg);
+}
+.szkol-content{position:relative;z-index:2;padding:44px 32px;flex:1;display:flex;flex-direction:column}
+.szkol-num{
+    font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:3px;
+    color:rgba(255,255,255,.2);text-transform:uppercase;margin-bottom:20px;
+    transition:color .4s;
+}
+.szkol-card:hover .szkol-num{color:var(--accent-l)}
+.szkol-icon{
+    width:60px;height:60px;border-radius:18px;margin-bottom:20px;
+    display:flex;align-items:center;justify-content:center;font-size:1.8rem;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+    transition:all .5s cubic-bezier(.16,1,.3,1);
+    backdrop-filter:blur(10px);
+}
+.szkol-card:hover .szkol-icon{
+    background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);
+    transform:scale(1.1) translateY(-4px);
+    box-shadow:0 8px 24px rgba(0,0,0,.2);
+}
+.szkol-card h3{
+    font-family:var(--display);font-size:1.5rem;font-weight:700;
+    margin-bottom:10px;letter-spacing:-.5px;color:#fff;
+    transition:transform .4s;
+}
+.szkol-card:hover h3{transform:translateX(4px)}
+.szkol-card p{
+    font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.75;font-weight:300;
+    flex:1;transition:color .4s;
+}
+.szkol-card:hover p{color:rgba(255,255,255,.65)}
+.szkol-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.szkol-tag{
+    font-family:var(--mono);font-size:.6rem;padding:6px 12px;border-radius:8px;
+    background:rgba(255,255,255,.04);color:rgba(255,255,255,.35);
+    border:1px solid rgba(255,255,255,.06);
+    transition:all .4s;backdrop-filter:blur(4px);
+}
+.szkol-card:hover .szkol-tag{
+    background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);
+    border-color:rgba(255,255,255,.12);
+}
+@media(max-width:900px){
+    .szkol-grid{grid-template-columns:1fr;max-width:500px;margin:0 auto}
+    .szkol-card{min-height:auto}
+    .szkol-card h3{font-size:1.3rem}
+}
+
+/* ═══ FILARY ═══ */
+.filary-section{position:relative;overflow:hidden;background:var(--bg2)}
+.filary-pin{position:relative;width:100%;height:100vh;overflow:hidden}
+.filary-header{
+    position:absolute;top:60px;left:0;right:0;z-index:10;text-align:center;
+    pointer-events:none;
+}
+.filary-header .sec-tag,.filary-header .sec-title{pointer-events:auto}
+.filary-track{
+    display:flex;align-items:center;gap:40px;
+    position:absolute;left:0;top:0;height:100%;
+    will-change:transform;padding:0 calc(50vw - 200px);
+}
+.filar{
+    position:relative;flex-shrink:0;width:420px;
+    padding:48px 36px;border-radius:28px;overflow:hidden;
+    background:var(--bg);border:1px solid var(--border);
+    box-shadow:0 4px 24px rgba(181,112,123,.04);
+    transition:all .5s cubic-bezier(.16,1,.3,1);
+    opacity:.5;transform:scale(.92);
+}
+.filar.active{
+    opacity:1;transform:scale(1);
+    border-color:rgba(181,112,123,.2);
+    box-shadow:0 24px 80px rgba(181,112,123,.08);
+}
+.filar::after{
+    content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:28px 28px 0 0;
+    opacity:0;transition:opacity .5s;
+}
+.filar:nth-child(1)::after{background:linear-gradient(90deg,var(--accent),var(--accent-l))}
+.filar:nth-child(2)::after{background:linear-gradient(90deg,var(--accent2),#8b7b9b)}
+.filar:nth-child(3)::after{background:linear-gradient(90deg,var(--accent3),#7b9b9b)}
+.filar.active::after{opacity:1}
+.filar-num{
+    font-family:var(--mono);font-size:.58rem;font-weight:600;letter-spacing:3px;
+    color:var(--text3);text-transform:uppercase;margin-bottom:20px;
+}
+.filar-icon{
+    font-size:2.4rem;margin-bottom:18px;
+    transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.filar.active .filar-icon{transform:scale(1.15)}
+.filar h3{
+    font-family:var(--display);font-size:1.5rem;font-weight:700;
+    letter-spacing:-.5px;margin-bottom:12px;line-height:1.25;
+}
+.filar p{font-size:.88rem;color:var(--text2);line-height:1.75;font-weight:300}
+.filar-link{
+    display:inline-flex;align-items:center;gap:6px;margin-top:20px;
+    font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:1px;
+    text-transform:uppercase;color:var(--accent);transition:gap .3s;
+}
+.filar.active .filar-link{gap:10px}
+.filar-link svg{width:14px;height:14px}
+.filary-dots{
+    position:absolute;bottom:48px;left:50%;transform:translateX(-50%);
+    display:flex;gap:10px;z-index:10;
+}
+.filary-dot{
+    width:10px;height:10px;border-radius:50%;border:2px solid var(--border);
+    background:transparent;cursor:pointer;transition:all .3s;padding:0;
+}
+.filary-dot.on{background:var(--accent);border-color:var(--accent);transform:scale(1.3)}
+.filary-cta{
+    position:absolute;bottom:100px;left:50%;transform:translateX(-50%);z-index:10;
+}
+.filary-cta a{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:1px;
+    text-transform:uppercase;color:var(--accent);padding:12px 28px;border-radius:50px;
+    border:1.5px solid var(--accent);background:rgba(254,252,252,.9);
+    backdrop-filter:blur(10px);text-decoration:none;
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.filary-cta a:hover{
+    background:var(--accent);color:#fff;
+    box-shadow:0 8px 32px rgba(181,112,123,.2);transform:translateY(-2px);
+}
+.filary-cta a svg{width:14px;height:14px}
+@media(max-width:768px){
+    .filar{width:300px;padding:36px 24px}
+    .filar h3{font-size:1.2rem}
+    .filary-track{padding:0 calc(50vw - 150px);gap:24px}
+}
 
 /* ═══ MEDIA GALLERY ═══ */
 .media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
@@ -505,13 +694,14 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 <div class="stt" id="stt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></div>
 
 <!-- NAV -->
+<div class="sec-indicator"><div class="sec-indicator-bar" id="secBar"></div></div>
+<div class="sec-indicator-label" id="secLabel"></div>
 <nav>
     <a href="#" class="n-logo">TS://</a>
-    <a href="#o-mnie" class="n-link active">O mnie</a>
-    <a href="#edukacja" class="n-link">Edukacja</a>
-    <a href="#biznes" class="n-link">Biznes</a>
+    <a href="#o-mnie" class="n-link">O mnie</a>
+    <a href="#filary" class="n-link">Filary</a>
+    <a href="#moja-droga" class="n-link">Moja droga</a>
     <a href="#szkolenia" class="n-link">Szkolenia</a>
-    <a href="#blog" class="n-link">Blog</a>
 </nav>
 
 <!-- HERO -->
@@ -528,7 +718,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         </div>
         <div class="hero-photo">
             <div class="hero-photo-wrap">
-                <img src="siemek.jpg" alt="Dr inż. Tomasz Siemek">
+                <img src="assets/images/siemek.jpg" alt="Dr inż. Tomasz Siemek">
             </div>
         </div>
     </div>
@@ -620,176 +810,112 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
     </div>
 </section>
 
+<!-- FILARY -->
+<section class="filary-section" id="filary">
+    <div class="filary-pin">
+        <div class="filary-header">
+            <div class="sec-tag">Filary działalności</div>
+            <div class="sec-title" style="font-size:clamp(1.6rem,3vw,2.2rem)">Trzy obszary<br><span class="dim">w których działam.</span></div>
+        </div>
+        <div class="filary-track" id="filaryTrack">
+            <div class="filar" data-i="0">
+                <div class="filar-num">01 / filar</div>
+                <div class="filar-icon">🏅</div>
+                <h3>Mikropoświadczenia</h3>
+                <p>Projektuję i wdrażam systemy mikropoświadczeń dla uczelni wyższych — od koncepcji po certyfikację zgodną z europejskimi standardami Bologna Process.</p>
+                <a href="filary/#mikro" class="filar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+            <div class="filar" data-i="1">
+                <div class="filar-num">02 / filar</div>
+                <div class="filar-icon">📋</div>
+                <h3>Nowoczesne systemy egzaminacyjne</h3>
+                <p>Tworzę systemy weryfikacji wiedzy oparte o AI — adaptacyjne testy, automatyczna ocena, analityka wyników w czasie rzeczywistym.</p>
+                <a href="filary/#egzaminy" class="filar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+            <div class="filar" data-i="2">
+                <div class="filar-num">03 / filar</div>
+                <div class="filar-icon">🤖</div>
+                <h3>Sztuczna inteligencja</h3>
+                <p>Pomagam uczelniom i firmom wdrażać AI w procesy edukacyjne i biznesowe — od strategii po gotowe rozwiązania oparte o LLM.</p>
+                <a href="filary/#ai" class="filar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+        </div>
+        <div class="filary-dots" id="filaryDots">
+            <button class="filary-dot on" data-i="0"></button>
+            <button class="filary-dot" data-i="1"></button>
+            <button class="filary-dot" data-i="2"></button>
+        </div>
+        <div class="filary-cta">
+            <a href="filary/">Dowiedz się więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+    </div>
+</section>
+
 <!-- MOJA DROGA -->
-<section class="sec sec-w tl-slider-section" id="moja-droga">
+<section class="sec sec-w" id="moja-droga">
     <div class="sec-head rv">
         <div class="sec-tag">Moja droga</div>
         <div class="sec-title">Od pierwszych wystąpień<br><span class="dim">do własnej wizji edukacji.</span></div>
     </div>
-    <div class="tl-slider-outer">
-        <div class="tl-slider-track" id="tlTrack">
-            <div class="tl-card" data-index="0" data-anim="ripples">
-                <canvas class="tl-card-canvas"></canvas>
-                <div class="tl-card-dot"></div>
-                <div class="tl-card-connector"></div>
-                <div class="tl-card-content">
-                    <div class="tl-card-year">2000</div>
-                    <div class="tl-card-title">Pierwsze wystąpienia publiczne</div>
-                    <div class="tl-card-desc">Początek drogi — prowadzenie szkoleń, prelekcji i warsztatów. Odkrycie pasji do dzielenia się wiedzą i pracy z ludźmi.</div>
-                    <span class="tl-card-badge">Szkolenia</span>
-                </div>
-            </div>
-            <div class="tl-card" data-index="1" data-anim="grid">
-                <canvas class="tl-card-canvas"></canvas>
-                <div class="tl-card-dot"></div>
-                <div class="tl-card-connector"></div>
-                <div class="tl-card-content">
-                    <div class="tl-card-year">2003</div>
-                    <div class="tl-card-title">Action — Centrum Edukacyjne</div>
-                    <div class="tl-card-desc">Założenie pierwszej firmy. Budowa centrum edukacyjnego od zera — szkolenia, kursy, certyfikacje. Pierwszy krok w przedsiębiorczości.</div>
-                    <span class="tl-card-badge">Założyciel</span>
-                </div>
-            </div>
-            <div class="tl-card" data-index="2" data-anim="particles">
-                <canvas class="tl-card-canvas"></canvas>
-                <div class="tl-card-dot"></div>
-                <div class="tl-card-connector"></div>
-                <div class="tl-card-content">
-                    <div class="tl-card-year">2018</div>
-                    <div class="tl-card-title">Cloud Team — nowy rozdział</div>
-                    <div class="tl-card-desc">Transformacja i rebrand firmy. Przejście w stronę technologii chmurowych, automatyzacji i wdrożeń AI. Nowe kompetencje, nowi klienci.</div>
-                    <span class="tl-card-badge">Transformacja</span>
-                </div>
-            </div>
-            <div class="tl-card" data-index="3" data-anim="helix">
-                <canvas class="tl-card-canvas"></canvas>
-                <div class="tl-card-dot"></div>
-                <div class="tl-card-connector"></div>
-                <div class="tl-card-content">
-                    <div class="tl-card-year">2020</div>
-                    <div class="tl-card-title">Doktorat — Dr inż. Tomasz Siemek</div>
-                    <div class="tl-card-desc">Obrona pracy doktorskiej. Połączenie wieloletniego doświadczenia praktycznego z fundamentem naukowym. Nowy poziom ekspertyzy.</div>
-                    <span class="tl-card-badge">Nauka</span>
-                </div>
-            </div>
-            <div class="tl-card tl-now" data-index="4" data-anim="neural">
-                <canvas class="tl-card-canvas"></canvas>
-                <div class="tl-card-dot"></div>
-                <div class="tl-card-connector"></div>
-                <div class="tl-card-content">
-                    <div class="tl-card-year">2025</div>
-                    <div class="tl-card-title">Tech4Edu — nowa ścieżka</div>
-                    <div class="tl-card-desc">Otwarcie Tech4Edu — platformy łączącej AI, mikropoświadczenia i nowoczesną edukację. Początek nowej wizji kształcenia przyszłości.</div>
-                    <span class="tl-card-badge">Teraz</span>
-                </div>
+    <div class="tl-axis">
+        <div class="tl-axis-labels">
+            <span class="tl-axis-label">dawniej</span>
+            <span class="tl-axis-label now">teraz</span>
+        </div>
+        <div class="tl-axis-line"><div class="tl-axis-arrow"></div></div>
+    <div class="tl-grid">
+        <div class="tl-tile rv" style="transition-delay:.05s">
+            <div class="tl-tile-dot"></div>
+            <div class="tl-tile-inner">
+                <div class="tl-tile-year">2000</div>
+                <div class="tl-tile-title">Pierwsze wystąpienia</div>
+                <div class="tl-tile-desc">Prowadzenie szkoleń, prelekcji i warsztatów. Odkrycie pasji do dzielenia się wiedzą.</div>
+                <span class="tl-tile-badge">Szkolenia</span>
             </div>
         </div>
-        <div class="tl-progress-wrap">
-            <span class="tl-progress-label">przewiń aby odkryć</span>
-            <div class="tl-progress-bar" id="tlProgress"></div>
+        <div class="tl-tile rv" style="transition-delay:.12s">
+            <div class="tl-tile-dot"></div>
+            <div class="tl-tile-inner">
+                <div class="tl-tile-year">2003</div>
+                <div class="tl-tile-title">Action — Centrum Edukacyjne</div>
+                <div class="tl-tile-desc">Założenie pierwszej firmy. Szkolenia, kursy, certyfikacje — pierwszy krok w przedsiębiorczości.</div>
+                <span class="tl-tile-badge">Założyciel</span>
+            </div>
         </div>
-        <div class="tl-nav" id="tlNav"></div>
-        <div class="tl-scroll-hint" id="tlHint">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            scroll
+        <div class="tl-tile rv" style="transition-delay:.19s">
+            <div class="tl-tile-dot"></div>
+            <div class="tl-tile-inner">
+                <div class="tl-tile-year">2018</div>
+                <div class="tl-tile-title">Cloud Team</div>
+                <div class="tl-tile-desc">Rebrand firmy. Przejście w stronę technologii chmurowych, automatyzacji i wdrożeń AI.</div>
+                <span class="tl-tile-badge">Transformacja</span>
+            </div>
         </div>
+        <div class="tl-tile rv" style="transition-delay:.26s">
+            <div class="tl-tile-dot"></div>
+            <div class="tl-tile-inner">
+                <div class="tl-tile-year">2020</div>
+                <div class="tl-tile-title">Doktorat</div>
+                <div class="tl-tile-desc">Obrona pracy doktorskiej. Połączenie doświadczenia praktycznego z fundamentem naukowym.</div>
+                <span class="tl-tile-badge">Nauka</span>
+            </div>
+        </div>
+        <div class="tl-tile tl-now rv" style="transition-delay:.33s">
+            <div class="tl-tile-dot"></div>
+            <div class="tl-tile-inner">
+                <div class="tl-tile-year">2025</div>
+                <div class="tl-tile-title">Tech4Edu</div>
+                <div class="tl-tile-desc">Platforma łącząca AI, mikropoświadczenia i nowoczesną edukację przyszłości.</div>
+                <span class="tl-tile-badge">Teraz</span>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;margin-top:40px" class="rv">
+        <a href="droga/" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent);padding:14px 32px;border-radius:50px;border:1.5px solid var(--accent);background:transparent;transition:all .35s cubic-bezier(.16,1,.3,1);text-decoration:none" onmouseover="this.style.background='var(--accent)';this.style.color='#fff';this.style.boxShadow='0 8px 32px rgba(181,112,123,.2)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='transparent';this.style.color='var(--accent)';this.style.boxShadow='none';this.style.transform='none'">Dowiedz się więcej <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
     </div>
 </section>
 
-<!-- ROZWIĄZANIA DLA EDUKACJI -->
-<section id="edukacja" class="sec sec-w">
-    <div class="sec-head rv">
-        <div class="sec-tag">Rozwiązania dla edukacji</div>
-        <div class="sec-title">Wsparcie dla<br><span class="dim">uczelni wyższych.</span></div>
-    </div>
-    <div class="cards-grid">
-        <div class="card rv-s">
-            <div class="card-icon ci1">🎓</div>
-            <h3>Mikropoświadczenia</h3>
-            <p>Projektuję i wdrażam systemy mikropoświadczeń dla uczelni wyższych. Od koncepcji przez platformę po certyfikację — kompleksowe wsparcie w budowie nowoczesnej oferty edukacyjnej.</p>
-            <div class="card-tags"><span class="card-tag">Digital Credentials</span><span class="card-tag">Certyfikacja</span><span class="card-tag">Bologna</span></div>
-        </div>
-        <div class="card rv-s">
-            <div class="card-icon ci2">📋</div>
-            <h3>Systemy egzaminacyjne</h3>
-            <p>Tworzę nowoczesne systemy weryfikacji wiedzy oparte o AI — adaptacyjne testy, automatyczna ocena, analityka wyników. Bezpieczne, skalowalne, zgodne z wymogami.</p>
-            <div class="card-tags"><span class="card-tag">E-assessment</span><span class="card-tag">Adaptacyjne testy</span><span class="card-tag">Analityka</span></div>
-        </div>
-        <div class="card rv-s">
-            <div class="card-icon ci3">🤖</div>
-            <h3>AI w dydaktyce</h3>
-            <p>Pomagam uczelniom wdrażać sztuczną inteligencję w proces dydaktyczny — od personalizacji nauczania po automatyzację procesów administracyjnych.</p>
-            <div class="card-tags"><span class="card-tag">LLM</span><span class="card-tag">Personalizacja</span><span class="card-tag">Automatyzacja</span></div>
-        </div>
-    </div>
-
-    <div class="sec-head rv" style="margin-top:80px">
-        <div class="sec-tag">Galeria</div>
-        <div class="sec-title" style="font-size:1.8rem">Z wykładów <span class="dim">i warsztatów</span></div>
-    </div>
-    <div class="media-grid rv">
-        <div class="media-item"><div class="media-overlay"><span>Warsztat AI — Politechnika Warszawska</span></div></div>
-        <div class="media-item"><div class="media-overlay"><span>Konferencja EdTech 2025</span></div></div>
-        <div class="media-item span-2"><div class="media-overlay"><span>Szkolenie z mikropoświadczeń — MEN</span></div></div>
-        <div class="media-item"><div class="media-overlay"><span>Panel dyskusyjny — AI w edukacji</span></div></div>
-        <div class="media-item"><div class="media-overlay"><span>Wykład gościnny — Uniwersytet Jagielloński</span></div></div>
-    </div>
-</section>
-
-<!-- ROZWIĄZANIA DLA BIZNESU -->
-<section id="biznes" class="sec sec-dark">
-    <div class="sec-head rv">
-        <div class="sec-tag">Rozwiązania dla biznesu</div>
-        <div class="sec-title">AI dla<br><span class="dim">Twojej firmy.</span></div>
-    </div>
-    <div class="cards-grid">
-        <div class="card rv-s">
-            <div class="card-icon ci1">💡</div>
-            <h3>Consulting AI</h3>
-            <p>Pomagam firmom przejść od strategii do realnych wdrożeń AI. Audytuję procesy, identyfikuję szanse automatyzacji i buduję roadmapy transformacji cyfrowej.</p>
-            <div class="card-tags"><span class="card-tag">Strategia</span><span class="card-tag">Wdrożenia</span><span class="card-tag">Audyt</span></div>
-        </div>
-        <div class="card rv-s">
-            <div class="card-icon ci2">⚙️</div>
-            <h3>Automatyzacja procesów</h3>
-            <p>Projektuję inteligentne systemy automatyzacji — od workflow opartych o LLM po dedykowane chatboty i agenty AI dla zespołów.</p>
-            <div class="card-tags"><span class="card-tag">LLM Agents</span><span class="card-tag">RPA</span><span class="card-tag">Chatboty</span></div>
-        </div>
-        <div class="card rv-s">
-            <div class="card-icon ci3">🚀</div>
-            <h3>Szkolenia korporacyjne</h3>
-            <p>Warsztaty dla zespołów — od podstaw AI po zaawansowane prompt engineering. Każde szkolenie dopasowane do branży i poziomu uczestników.</p>
-            <div class="card-tags"><span class="card-tag">Warsztaty</span><span class="card-tag">Prompt Engineering</span><span class="card-tag">Team Training</span></div>
-        </div>
-    </div>
-
-    <div class="sec-head rv" style="margin-top:80px">
-        <div class="sec-tag">Współprace</div>
-        <div class="sec-title" style="font-size:1.8rem">Wybrane <span class="dim">projekty</span></div>
-    </div>
-    <div class="case-list">
-        <div class="case-study rv-r">
-            <div class="case-meta"><span class="case-tag">Consulting</span><span class="case-year">2025</span></div>
-            <h4>Wdrożenie AI w procesach operacyjnych</h4>
-            <p>Kompleksowy audyt i roadmapa AI dla firmy z sektora usług — automatyzacja obsługi klienta, analityka danych, optymalizacja procesów.</p>
-        </div>
-        <div class="case-study rv-r">
-            <div class="case-meta"><span class="case-tag">Edukacja</span><span class="case-year">2024</span></div>
-            <h4>System mikropoświadczeń dla uczelni technicznej</h4>
-            <p>Zaprojektowanie i wdrożenie platformy digital credentials dla 3000+ studentów — od koncepcji po integrację z systemem uczelnianym.</p>
-        </div>
-        <div class="case-study rv-r">
-            <div class="case-meta"><span class="case-tag">Szkolenia</span><span class="case-year">2024</span></div>
-            <h4>Cykl szkoleń AI dla kadry zarządzającej</h4>
-            <p>12-tygodniowy program szkoleniowy z AI i automatyzacji dla 80+ managerów — od prompt engineering po wdrożenia w codziennej pracy.</p>
-        </div>
-        <div class="case-study rv-r">
-            <div class="case-meta"><span class="case-tag">R&amp;D</span><span class="case-year">2023</span></div>
-            <h4>Nowoczesny system egzaminacyjny oparty o AI</h4>
-            <p>Badania i rozwój adaptacyjnego systemu egzaminowania z wykorzystaniem uczenia maszynowego — pilotaż na dwóch uczelniach.</p>
-        </div>
-    </div>
-</section>
 
 <!-- SZKOLENIA -->
 <section id="szkolenia" class="sec sec-b">
@@ -797,25 +923,40 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         <div class="sec-tag">Szkolenia & Konferencje</div>
         <div class="sec-title">Dzielę się wiedzą<br><span class="dim">na żywo.</span></div>
     </div>
-    <div class="cards-grid">
-        <div class="card rv-s">
-            <div class="card-icon ci4">🧠</div>
-            <h3>AI & Prompt Engineering</h3>
-            <p>Praktyczne warsztaty z wykorzystania AI w codziennej pracy — ChatGPT, Claude, Gemini, automatyzacja z LLM.</p>
-            <div class="card-tags"><span class="card-tag">ChatGPT</span><span class="card-tag">Claude</span><span class="card-tag">LLM</span></div>
+    <div class="szkol-grid">
+        <div class="szkol-card rv-s" style="transition-delay:.05s">
+            <video class="szkol-bg" src="assets/videos/ai.mp4" muted loop playsinline autoplay preload="auto"></video>
+            <div class="szkol-content">
+                <div class="szkol-num">01 / szkolenie</div>
+                <div class="szkol-icon">🧠</div>
+                <h3>AI & Prompt Engineering</h3>
+                <p>Praktyczne warsztaty z wykorzystania AI w codziennej pracy — ChatGPT, Claude, Gemini, automatyzacja z LLM.</p>
+                <div class="szkol-tags"><span class="szkol-tag">ChatGPT</span><span class="szkol-tag">Claude</span><span class="szkol-tag">LLM</span></div>
+            </div>
         </div>
-        <div class="card rv-s">
-            <div class="card-icon ci5">🎯</div>
-            <h3>Mikropoświadczenia w praktyce</h3>
-            <p>Jak zaprojektować, wdrożyć i zarządzać systemem mikropoświadczeń na uczelni — kompletny program szkoleniowy.</p>
-            <div class="card-tags"><span class="card-tag">Digital Credentials</span><span class="card-tag">Bologna</span><span class="card-tag">Framework</span></div>
+        <div class="szkol-card rv-s" style="transition-delay:.15s">
+            <video class="szkol-bg" src="assets/videos/micro.mp4" muted loop playsinline autoplay preload="auto"></video>
+            <div class="szkol-content">
+                <div class="szkol-num">02 / szkolenie</div>
+                <div class="szkol-icon">🎯</div>
+                <h3>Mikropoświadczenia w praktyce</h3>
+                <p>Jak zaprojektować, wdrożyć i zarządzać systemem mikropoświadczeń na uczelni — kompletny program.</p>
+                <div class="szkol-tags"><span class="szkol-tag">Digital Credentials</span><span class="szkol-tag">Bologna</span><span class="szkol-tag">Framework</span></div>
+            </div>
         </div>
-        <div class="card rv-s">
-            <div class="card-icon ci6">📊</div>
-            <h3>Data Science & ML</h3>
-            <p>Od analizy danych po modele predykcyjne — szkolenia z Python, TensorFlow, analityki i wizualizacji danych.</p>
-            <div class="card-tags"><span class="card-tag">Python</span><span class="card-tag">TensorFlow</span><span class="card-tag">Analityka</span></div>
+        <div class="szkol-card rv-s" style="transition-delay:.25s">
+            <video class="szkol-bg" src="assets/videos/data.mp4" muted loop playsinline autoplay preload="auto"></video>
+            <div class="szkol-content">
+                <div class="szkol-num">03 / szkolenie</div>
+                <div class="szkol-icon">📊</div>
+                <h3>Data Science & ML</h3>
+                <p>Od analizy danych po modele predykcyjne — szkolenia z Python, TensorFlow, analityki i wizualizacji.</p>
+                <div class="szkol-tags"><span class="szkol-tag">Python</span><span class="szkol-tag">TensorFlow</span><span class="szkol-tag">Analityka</span></div>
+            </div>
         </div>
+    </div>
+    <div style="text-align:center;margin-top:48px" class="rv">
+        <a href="szkolenia/" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#fff;padding:14px 32px;border-radius:50px;border:1.5px solid rgba(255,255,255,.3);background:transparent;transition:all .35s cubic-bezier(.16,1,.3,1);text-decoration:none" onmouseover="this.style.borderColor='#fff';this.style.boxShadow='0 8px 32px rgba(255,255,255,.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(255,255,255,.3)';this.style.boxShadow='none';this.style.transform='none'">Zobacz wszystkie szkolenia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
     </div>
 
     <div class="sec-head rv" style="margin-top:80px">
@@ -856,24 +997,6 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
     </div>
 </section>
 
-<!-- BLOG -->
-<section id="blog" class="sec sec-c">
-    <div class="sec-head rv">
-        <div class="sec-tag">Blog</div>
-        <div class="sec-title">Cotygodniowe<br><span class="dim">wpisy.</span></div>
-    </div>
-    <div class="fbar rv">
-        <div class="fg"><span class="flbl">Filtr:</span>
-            <button class="fb on" data-f="all">Wszystkie</button>
-            <button class="fb" data-f="edukacja">Edukacja</button>
-            <button class="fb" data-f="ai">AI</button>
-            <button class="fb" data-f="biznes">Biznes</button>
-        </div>
-        <div class="sbox"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="blogSearch" placeholder="Szukaj wpisu..."></div>
-    </div>
-    <div class="blog-count" id="blogCount"></div>
-    <div class="blog-grid" id="blogGrid"></div>
-</section>
 
 <!-- CTA -->
 <div class="cta-banner rv">
@@ -987,7 +1110,25 @@ addEventListener('scroll',()=>{
     document.getElementById('stt').classList.toggle('show',scrollY>500);
 });
 const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.n-link');
-addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(scrollY>=s.offsetTop-300)c=s.id});navAs.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+c))});
+const secBar=document.getElementById('secBar'),secLabel=document.getElementById('secLabel');
+const secNames={'o-mnie':'O mnie','filary':'Filary działalności','moja-droga':'Moja droga','szkolenia':'Szkolenia & Konferencje'};
+let labelTimer;
+addEventListener('scroll',()=>{
+    let c='';
+    secs.forEach(s=>{if(scrollY>=s.offsetTop-300)c=s.id});
+    navAs.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+c));
+    // progress bar
+    const docH=document.documentElement.scrollHeight-innerHeight;
+    const pct=docH>0?Math.min(scrollY/docH*100,100):0;
+    if(secBar)secBar.style.width=pct+'%';
+    // section label
+    if(secLabel&&c&&secNames[c]){
+        secLabel.textContent=secNames[c];
+        secLabel.classList.add('vis');
+        clearTimeout(labelTimer);
+        labelTimer=setTimeout(()=>secLabel.classList.remove('vis'),1500);
+    }
+});
 
 /* ═══ TYPEWRITER ═══ */
 const phrases=['Ekspert AI & mikropoświadczeń','Nowoczesne systemy egzaminacyjne','Szkolenia i consulting dla uczelni','Rozwiązania AI dla biznesu','Dr inż. — naukowiec i praktyk'];
@@ -1007,34 +1148,6 @@ document.querySelectorAll('.case-study').forEach((el,i)=>{el.style.transitionDel
 const cO=new IntersectionObserver(e=>{e.forEach(en=>{if(!en.isIntersecting)return;const el=en.target,t=parseInt(el.dataset.c);let c=0;const s=t/50;const ti=setInterval(()=>{c+=s;if(c>=t){el.textContent=t+'+';clearInterval(ti)}else el.textContent=Math.floor(c)},25);cO.unobserve(el)})},{threshold:.5});
 document.querySelectorAll('[data-c]').forEach(el=>cO.observe(el));
 
-/* ═══ BLOG ═══ */
-const blogPosts=[
-    {episode:1,title:'Czym są mikropoświadczenia?',excerpt:'Wprowadzenie do koncepcji mikropoświadczeń w szkolnictwie wyższym — dlaczego uczelnie powinny je wdrażać już teraz.',category:'edukacja',date:'2026-01-06',readingTime:7},
-    {episode:2,title:'AI w nowoczesnym egzaminowaniu',excerpt:'Jak sztuczna inteligencja zmienia podejście do weryfikacji wiedzy — od adaptacyjnych testów po automatyczną ocenę prac.',category:'ai',date:'2026-01-13',readingTime:8},
-    {episode:3,title:'Prompt Engineering dla wykładowców',excerpt:'Praktyczny przewodnik po tworzeniu skutecznych promptów — narzędzie, które powinien znać każdy nauczyciel akademicki.',category:'ai',date:'2026-01-20',readingTime:6},
-    {episode:4,title:'Transformacja cyfrowa na uczelniach',excerpt:'Case study wdrożenia mikropoświadczeń i systemów AI na trzech polskich uczelniach — wnioski i rekomendacje.',category:'edukacja',date:'2026-01-27',readingTime:9},
-    {episode:5,title:'AI w biznesie — od strategii do wdrożenia',excerpt:'Jak pomagam firmom przejść od "chcemy AI" do realnych rezultatów. Roadmapa, pułapki i najlepsze praktyki.',category:'biznes',date:'2026-02-03',readingTime:8},
-    {episode:6,title:'Automatyzacja procesów akademickich',excerpt:'Które procesy na uczelni można zautomatyzować od zaraz? Przegląd narzędzi i gotowych rozwiązań opartych o LLM.',category:'edukacja',date:'2026-02-10',readingTime:7},
-    {episode:7,title:'Etyka AI w edukacji',excerpt:'Gdzie leży granica między wsparciem a oszustwem? Refleksje na temat odpowiedzialnego wdrażania AI w procesie dydaktycznym.',category:'ai',date:'2026-02-17',readingTime:5},
-    {episode:8,title:'Szkolenia AI — co naprawdę działa?',excerpt:'Po przeszkoleniu setek osób wiem, jakie formaty i metody przynoszą najlepsze efekty. Dzielę się sprawdzonymi podejściami.',category:'biznes',date:'2026-02-24',readingTime:6},
-];
-const catLabels={edukacja:'Edukacja',ai:'AI',biznes:'Biznes'};
-const blogGrid=document.getElementById('blogGrid'),blogCount=document.getElementById('blogCount');
-let activeFilter='all';
-
-function renderBlog(f,s=''){
-    blogGrid.innerHTML='';const q=s.toLowerCase().trim();
-    const res=blogPosts.filter(p=>(f==='all'||p.category===f)&&(!q||p.title.toLowerCase().includes(q)||p.excerpt.toLowerCase().includes(q)||('odc.'+p.episode)===q||p.episode.toString()===q));
-    blogCount.textContent=`${res.length} / ${blogPosts.length} wpisów`;
-    res.forEach((item,i)=>{
-        const c=document.createElement('div');c.className='blog-card';c.style.transitionDelay=(i*.04)+'s';
-        c.innerHTML=`<div class="blog-top"><span class="blog-episode">odc. ${item.episode}</span><span class="blog-time">~${item.readingTime} min</span></div><div class="blog-cat bc-${item.category}">${catLabels[item.category]}</div><h3 class="blog-title">${item.title}</h3><p class="blog-excerpt">${item.excerpt}</p><div class="blog-foot"><span class="blog-date">${item.date}</span><span class="blog-author">— T. Siemek</span></div>`;
-        blogGrid.appendChild(c);requestAnimationFrame(()=>requestAnimationFrame(()=>{c.classList.add('rv-s');c.classList.add('vis')}));
-    });
-}
-document.querySelectorAll('.fb').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');activeFilter=b.dataset.f;renderBlog(activeFilter,document.getElementById('blogSearch').value)})});
-document.getElementById('blogSearch').addEventListener('input',e=>renderBlog(activeFilter,e.target.value));
-renderBlog('all');
 
 /* ═══ ABOUT REEL ═══ */
 {
@@ -1190,282 +1303,80 @@ if(hzWrapper&&hzText){
 }
 }
 
-/* ═══ TIMELINE SLIDER (GSAP ScrollTrigger) ═══ */
+/* ═══ SZKOLENIA VIDEOS AUTOPLAY ═══ */
+{
+const szkolObs=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+        const vid=en.target.querySelector('video.szkol-bg');
+        if(!vid)return;
+        if(en.isIntersecting){vid.play().catch(()=>{})}
+        else{vid.pause()}
+    });
+},{threshold:.2});
+document.querySelectorAll('.szkol-card').forEach(c=>szkolObs.observe(c));
+}
+
+/* ═══ FILARY HORIZONTAL SCROLL ═══ */
 (function(){
-const section=document.querySelector('.tl-slider-section');
-const outer=document.querySelector('.tl-slider-outer');
-const track=document.getElementById('tlTrack');
-const cards=document.querySelectorAll('.tl-card');
-const progress=document.getElementById('tlProgress');
-const nav=document.getElementById('tlNav');
-const hint=document.getElementById('tlHint');
-if(!section||!track||!cards.length||typeof gsap==='undefined')return;
+const section=document.querySelector('.filary-section');
+const pin=document.querySelector('.filary-pin');
+const track=document.getElementById('filaryTrack');
+const filars=document.querySelectorAll('.filar');
+const dots=document.querySelectorAll('.filary-dot');
+if(!section||!track||!filars.length||typeof gsap==='undefined')return;
 
-// Build nav dots
-cards.forEach((_,i)=>{
-    const d=document.createElement('button');
-    d.className='tl-nav-dot';d.dataset.i=i;
-    d.setAttribute('aria-label','Krok '+(i+1));
-    nav.appendChild(d);
-});
-const navDots=nav.querySelectorAll('.tl-nav-dot');
+const totalCards=filars.length;
 
-// Calculate total scroll distance
-function getScrollDist(){
-    const trackW=track.scrollWidth;
-    const viewW=outer.offsetWidth;
-    return trackW-viewW+100;
+function getMaxX(){
+    return track.scrollWidth-pin.offsetWidth;
 }
 
-// Center first card initially
-function initPadding(){
-    const vw=outer.offsetWidth;
-    const cw=cards[0].offsetWidth;
-    const pad=Math.max((vw-cw)/2,40);
-    track.style.paddingLeft=pad+'px';
-    track.style.paddingRight=pad+'px';
-}
-initPadding();
-window.addEventListener('resize',()=>{initPadding();ScrollTrigger.refresh()});
-
-// GSAP animation
-const scrollTween=gsap.to(track,{
-    x:()=>-getScrollDist(),
+const tween=gsap.to(track,{
+    x:()=>-getMaxX(),
     ease:'none',
     scrollTrigger:{
         trigger:section,
-        pin:outer,
+        pin:pin,
         start:'top top',
-        end:()=>'+='+(getScrollDist()+window.innerHeight*.5),
-        scrub:1.2,
+        end:()=>'+='+(getMaxX()+window.innerHeight*.3),
+        scrub:.8,
+        snap:{
+            snapTo:1/(totalCards-1),
+            duration:{min:.2,max:.5},
+            ease:'power1.inOut'
+        },
         invalidateOnRefresh:true,
         onUpdate:function(self){
             const p=self.progress;
-            // Progress bar
-            progress.style.width=(p*100)+'%';
-            // Hide hint after scrolling
-            if(p>.05&&hint)hint.style.opacity='0';
-            // Active card
-            const centerX=outer.offsetWidth/2;
+            const centerX=pin.offsetWidth/2;
             let closest=0,minDist=Infinity;
-            cards.forEach((c,i)=>{
-                const rect=c.getBoundingClientRect();
-                const cardCenter=rect.left+rect.width/2;
-                const dist=Math.abs(cardCenter-centerX);
+            filars.forEach((f,i)=>{
+                const rect=f.getBoundingClientRect();
+                const fc=rect.left+rect.width/2;
+                const dist=Math.abs(fc-centerX);
                 if(dist<minDist){minDist=dist;closest=i}
             });
-            cards.forEach((c,i)=>{
-                c.classList.toggle('tl-active',i===closest);
-            });
-            navDots.forEach((d,i)=>{
-                d.classList.toggle('active',i===closest);
-            });
+            filars.forEach((f,i)=>f.classList.toggle('active',i===closest));
+            dots.forEach((d,i)=>d.classList.toggle('on',i===closest));
         }
     }
 });
 
-// Animate cards in from below on first appearance
-cards.forEach((card,i)=>{
-    gsap.from(card,{
-        y:60,opacity:0,scale:.85,
-        duration:1,
-        ease:'power3.out',
-        scrollTrigger:{
-            trigger:card,
-            containerAnimation:scrollTween,
-            start:'left 90%',
-            end:'left 60%',
-            scrub:1
-        }
-    });
-});
-
-// Nav dot click
-navDots.forEach(d=>{
+// Dot click navigation
+dots.forEach(d=>{
     d.addEventListener('click',()=>{
         const i=parseInt(d.dataset.i);
-        const totalCards=cards.length;
-        const targetProgress=i/(totalCards-1);
-        const st=scrollTween.scrollTrigger;
-        const scrollTo=st.start+(st.end-st.start)*targetProgress;
-        gsap.to(window,{scrollTo:scrollTo,duration:.8,ease:'power2.inOut'});
+        const progress=i/(totalCards-1);
+        const st=tween.scrollTrigger;
+        const target=st.start+(st.end-st.start)*progress;
+        gsap.to(window,{scrollTo:target,duration:.6,ease:'power2.inOut'});
     });
 });
+
+// Activate first card
+filars[0].classList.add('active');
 })();
 
-/* ═══ TIMELINE CARD CANVAS ANIMATIONS ═══ */
-(function(){
-const canvasCards=document.querySelectorAll('.tl-card[data-anim]');
-if(!canvasCards.length)return;
-
-const colors={
-    ripples:['181,112,123','107,91,123'],
-    grid:['107,91,123','91,123,123'],
-    particles:['91,123,123','181,112,123'],
-    helix:['181,112,123','59,130,246'],
-    neural:['181,112,123','107,91,123','91,123,123']
-};
-
-canvasCards.forEach(card=>{
-    const canvas=card.querySelector('.tl-card-canvas');
-    if(!canvas)return;
-    const ctx=canvas.getContext('2d');
-    const type=card.dataset.anim;
-    let raf,w,h;
-
-    function resize(){
-        const r=window.devicePixelRatio||1;
-        w=card.offsetWidth;h=card.offsetHeight;
-        canvas.width=w*r;canvas.height=h*r;
-        ctx.scale(r,r);
-    }
-    resize();
-
-    // — RIPPLES: concentric expanding rings (2000 - szkolenia, fale wiedzy)
-    if(type==='ripples'){
-        const rings=[];
-        function spawnRing(){rings.push({x:w*.3+Math.random()*w*.4,y:h*.3+Math.random()*h*.4,r:0,max:Math.max(w,h)*.7,speed:.4+Math.random()*.3})}
-        for(let i=0;i<3;i++)spawnRing();
-        (function draw(t){
-            ctx.clearRect(0,0,w,h);
-            rings.forEach((ring,i)=>{
-                ring.r+=ring.speed;
-                const alpha=1-ring.r/ring.max;
-                if(alpha<=0){rings[i]={x:w*.3+Math.random()*w*.4,y:h*.3+Math.random()*h*.4,r:0,max:Math.max(w,h)*.7,speed:.4+Math.random()*.3};return}
-                ctx.beginPath();ctx.arc(ring.x,ring.y,ring.r,0,Math.PI*2);
-                ctx.strokeStyle=`rgba(${colors.ripples[i%2]},${alpha*.6})`;
-                ctx.lineWidth=1.5;ctx.stroke();
-            });
-            if(rings.length<5&&Math.random()<.008)spawnRing();
-            raf=requestAnimationFrame(draw);
-        })();
-    }
-
-    // — GRID: pulsating dot grid (2003 - budowanie struktury)
-    if(type==='grid'){
-        const gap=28;const dots=[];
-        for(let x=gap;x<w;x+=gap)for(let y=gap;y<h;y+=gap)dots.push({x,y,base:.3+Math.random()*.4,phase:Math.random()*Math.PI*2});
-        (function draw(t){
-            t=t||0;ctx.clearRect(0,0,w,h);
-            dots.forEach(d=>{
-                const pulse=Math.sin(t*.001+d.phase)*.5+.5;
-                const r=1.5+pulse*2;
-                const alpha=d.base*pulse;
-                ctx.beginPath();ctx.arc(d.x,d.y,r,0,Math.PI*2);
-                ctx.fillStyle=`rgba(${colors.grid[0]},${alpha})`;ctx.fill();
-                // connecting lines to neighbors
-                if(pulse>.6){
-                    ctx.beginPath();
-                    ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+gap,d.y);
-                    ctx.strokeStyle=`rgba(${colors.grid[1]},${alpha*.3})`;
-                    ctx.lineWidth=.5;ctx.stroke();
-                }
-            });
-            raf=requestAnimationFrame(draw);
-        })();
-    }
-
-    // — PARTICLES: floating particles with connections (2018 - chmura, transformacja)
-    if(type==='particles'){
-        const pts=[];const count=35;
-        for(let i=0;i<count;i++)pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:1+Math.random()*2});
-        (function draw(){
-            ctx.clearRect(0,0,w,h);
-            pts.forEach(p=>{
-                p.x+=p.vx;p.y+=p.vy;
-                if(p.x<0)p.x=w;if(p.x>w)p.x=0;
-                if(p.y<0)p.y=h;if(p.y>h)p.y=0;
-                ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-                ctx.fillStyle=`rgba(${colors.particles[0]},.5)`;ctx.fill();
-            });
-            // connections
-            for(let i=0;i<count;i++){
-                for(let j=i+1;j<count;j++){
-                    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y;
-                    const dist=Math.sqrt(dx*dx+dy*dy);
-                    if(dist<80){
-                        ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
-                        ctx.strokeStyle=`rgba(${colors.particles[1]},${(1-dist/80)*.4})`;
-                        ctx.lineWidth=.6;ctx.stroke();
-                    }
-                }
-            }
-            raf=requestAnimationFrame(draw);
-        })();
-    }
-
-    // — HELIX: DNA-like double helix (2020 - nauka, doktorat)
-    if(type==='helix'){
-        (function draw(t){
-            t=t||0;ctx.clearRect(0,0,w,h);
-            const cx=w/2;const amp=w*.2;const steps=20;
-            for(let i=0;i<steps;i++){
-                const y=(h/(steps-1))*i;
-                const offset=t*.002+i*.4;
-                const x1=cx+Math.sin(offset)*amp;
-                const x2=cx+Math.sin(offset+Math.PI)*amp;
-                const sz=2+Math.abs(Math.sin(offset))*3;
-                // strand 1
-                ctx.beginPath();ctx.arc(x1,y,sz,0,Math.PI*2);
-                ctx.fillStyle=`rgba(${colors.helix[0]},.5)`;ctx.fill();
-                // strand 2
-                ctx.beginPath();ctx.arc(x2,y,sz,0,Math.PI*2);
-                ctx.fillStyle=`rgba(${colors.helix[1]},.5)`;ctx.fill();
-                // connector
-                if(i%3===0){
-                    ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);
-                    ctx.strokeStyle=`rgba(${colors.helix[0]},.2)`;ctx.lineWidth=1;ctx.stroke();
-                }
-            }
-            raf=requestAnimationFrame(draw);
-        })();
-    }
-
-    // — NEURAL: neural network nodes (2025 - AI, edukacja przyszłości)
-    if(type==='neural'){
-        const nodes=[];const layers=[3,5,4,3];
-        let nx=w*.15;
-        layers.forEach((count,li)=>{
-            for(let i=0;i<count;i++){
-                nodes.push({x:nx,y:h*(i+1)/(count+1),layer:li,pulse:Math.random()*Math.PI*2});
-            }
-            nx+=w*.7/(layers.length-1);
-        });
-        (function draw(t){
-            t=t||0;ctx.clearRect(0,0,w,h);
-            // connections
-            nodes.forEach(a=>{
-                nodes.forEach(b=>{
-                    if(b.layer===a.layer+1){
-                        const signal=Math.sin(t*.003+a.pulse+b.pulse)*.5+.5;
-                        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-                        ctx.strokeStyle=`rgba(${colors.neural[a.layer%3]},${signal*.25})`;
-                        ctx.lineWidth=.8;ctx.stroke();
-                        // traveling pulse
-                        const px=a.x+(b.x-a.x)*((t*.001+a.pulse)%1);
-                        const py=a.y+(b.y-a.y)*((t*.001+a.pulse)%1);
-                        ctx.beginPath();ctx.arc(px,py,1.5,0,Math.PI*2);
-                        ctx.fillStyle=`rgba(${colors.neural[(a.layer+1)%3]},${signal*.5})`;ctx.fill();
-                    }
-                });
-            });
-            // nodes
-            nodes.forEach(n=>{
-                const pulse=Math.sin(t*.002+n.pulse)*.5+.5;
-                const r=3+pulse*3;
-                ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
-                ctx.fillStyle=`rgba(${colors.neural[n.layer%3]},${.3+pulse*.4})`;ctx.fill();
-                // glow
-                ctx.beginPath();ctx.arc(n.x,n.y,r+4,0,Math.PI*2);
-                ctx.fillStyle=`rgba(${colors.neural[n.layer%3]},${pulse*.1})`;ctx.fill();
-            });
-            raf=requestAnimationFrame(draw);
-        })();
-    }
-
-    window.addEventListener('resize',resize);
-});
-})();
 </script>
 </body>
 </html>

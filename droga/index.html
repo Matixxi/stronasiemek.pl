@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moja droga — Dr Tomasz Siemek</title>
+<meta name="description" content="Pełna historia kariery Dr inż. Tomasza Siemka — od pierwszych wystąpień po Tech4Edu.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --bg:#fefcfc;--bg2:#f9f4f5;--bg3:#f3ebec;
+    --accent:#b5707b;--accent-l:#d4959e;--accent-d:#8e4f5a;
+    --accent2:#6b5b7b;--accent3:#5b7b7b;
+    --surface:rgba(181,112,123,.03);
+    --border:rgba(181,112,123,.10);--border2:rgba(181,112,123,.18);
+    --text:#2a1f22;--text2:#6b555b;--text3:#a8919a;
+    --sans:'Space Grotesk',sans-serif;
+    --display:'Syne',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --hand:'Caveat',cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(181,112,123,.15);color:var(--accent-d)}
+
+/* ═══ LAYOUT ═══ */
+.page{max-width:900px;margin:0 auto;padding:80px 32px 120px}
+.back-link{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:.75rem;font-weight:500;letter-spacing:1px;
+    color:var(--text3);text-transform:uppercase;
+    margin-bottom:48px;transition:color .3s;
+}
+.back-link:hover{color:var(--accent)}
+.back-link svg{width:16px;height:16px;transition:transform .3s}
+.back-link:hover svg{transform:translateX(-4px)}
+.page-tag{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;
+    text-transform:uppercase;color:var(--accent);margin-bottom:12px;
+}
+.page-title{
+    font-family:var(--display);font-size:clamp(2rem,5vw,3.2rem);font-weight:800;
+    letter-spacing:-1.5px;line-height:1.15;margin-bottom:16px;
+}
+.page-title .dim{color:var(--text3);font-weight:400}
+.page-intro{font-size:1.05rem;color:var(--text2);line-height:1.8;font-weight:300;max-width:640px;margin-bottom:64px}
+
+/* ═══ COMING SOON ═══ */
+.coming-soon{
+    position:relative;padding:80px 40px;text-align:center;
+    border-radius:24px;border:2px dashed var(--border2);
+    background:var(--bg2);
+}
+.coming-icon{font-size:3rem;margin-bottom:24px;opacity:.6}
+.coming-title{
+    font-family:var(--display);font-size:1.6rem;font-weight:700;
+    letter-spacing:-.5px;margin-bottom:12px;
+}
+.coming-desc{font-size:.92rem;color:var(--text3);line-height:1.7;font-weight:300;max-width:420px;margin:0 auto}
+.coming-badge{
+    display:inline-block;margin-top:24px;font-family:var(--mono);font-size:.62rem;
+    letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:50px;
+    border:1px solid var(--accent);color:var(--accent);background:rgba(181,112,123,.04);
+}
+
+/* ═══ PREVIEW TIMELINE ═══ */
+.preview-tl{margin-top:64px}
+.preview-item{
+    display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--border);
+    opacity:.5;transition:opacity .3s;
+}
+.preview-item:hover{opacity:.8}
+.preview-year{
+    font-family:var(--mono);font-size:.78rem;font-weight:700;letter-spacing:2px;
+    color:var(--accent);min-width:80px;padding-top:4px;
+}
+.preview-title{font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:4px;letter-spacing:-.3px}
+.preview-desc{font-size:.85rem;color:var(--text3);line-height:1.6;font-weight:300}
+</style>
+</head>
+<body>
+
+<div class="page">
+    <a href="../" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Powrót
+    </a>
+
+    <div class="page-tag">Moja droga</div>
+    <h1 class="page-title">Od pierwszych wystąpień<br><span class="dim">do własnej wizji edukacji.</span></h1>
+    <p class="page-intro">Ponad 25 lat doświadczeń — od prowadzenia szkoleń, przez budowę firm, doktorat, aż po platformę łączącą AI z edukacją przyszłości.</p>
+
+    <div class="coming-soon">
+        <div class="coming-icon">&#128679;</div>
+        <div class="coming-title">Ta strona jest w przygotowaniu</div>
+        <div class="coming-desc">Pełna, rozbudowana oś czasu z opisami, zdjęciami i materiałami pojawi się wkrótce.</div>
+        <span class="coming-badge">Wkrótce</span>
+    </div>
+
+    <div class="preview-tl">
+        <div class="preview-item">
+            <div class="preview-year">2000</div>
+            <div>
+                <div class="preview-title">Pierwsze wystąpienia publiczne</div>
+                <div class="preview-desc">Prowadzenie szkoleń, prelekcji i warsztatów. Odkrycie pasji do dzielenia się wiedzą i pracy z ludźmi.</div>
+            </div>
+        </div>
+        <div class="preview-item">
+            <div class="preview-year">2003</div>
+            <div>
+                <div class="preview-title">Action — Centrum Edukacyjne</div>
+                <div class="preview-desc">Założenie pierwszej firmy. Budowa centrum edukacyjnego od zera — szkolenia, kursy, certyfikacje.</div>
+            </div>
+        </div>
+        <div class="preview-item">
+            <div class="preview-year">2018</div>
+            <div>
+                <div class="preview-title">Cloud Team — nowy rozdział</div>
+                <div class="preview-desc">Transformacja i rebrand firmy. Przejście w stronę technologii chmurowych, automatyzacji i wdrożeń AI.</div>
+            </div>
+        </div>
+        <div class="preview-item">
+            <div class="preview-year">2020</div>
+            <div>
+                <div class="preview-title">Doktorat — Dr inż. Tomasz Siemek</div>
+                <div class="preview-desc">Obrona pracy doktorskiej. Połączenie wieloletniego doświadczenia praktycznego z fundamentem naukowym.</div>
+            </div>
+        </div>
+        <div class="preview-item">
+            <div class="preview-year">2025</div>
+            <div>
+                <div class="preview-title">Tech4Edu — nowa ścieżka</div>
+                <div class="preview-desc">Platforma łącząca AI, mikropoświadczenia i nowoczesną edukację przyszłości.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

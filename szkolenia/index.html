@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Szkolenia & Kompetencje — Dr Tomasz Siemek</title>
+<meta name="description" content="Pełna oferta szkoleń Dr inż. Tomasza Siemka — AI, Prompt Engineering, Mikropoświadczenia, Data Science i więcej.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --bg:#fefcfc;--bg2:#f9f4f5;--bg3:#f3ebec;
+    --accent:#b5707b;--accent-l:#d4959e;--accent-d:#8e4f5a;
+    --accent2:#6b5b7b;--accent3:#5b7b7b;
+    --surface:rgba(181,112,123,.03);--surface2:rgba(181,112,123,.06);
+    --border:rgba(181,112,123,.10);--border2:rgba(181,112,123,.18);
+    --text:#2a1f22;--text2:#6b555b;--text3:#a8919a;
+    --dark:#1a1215;--dark2:#231a1d;
+    --sans:'Space Grotesk',sans-serif;
+    --display:'Syne',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --hand:'Caveat',cursive;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(181,112,123,.15);color:var(--accent-d)}
+
+/* ═══ NAV ═══ */
+.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:20px 40px;display:flex;align-items:center;justify-content:space-between;
+    background:rgba(254,252,252,.85);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-1px}
+.nav-links{display:flex;gap:28px}
+.nav-link{
+    font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:1px;
+    text-transform:uppercase;color:var(--text3);transition:color .3s;
+}
+.nav-link:hover{color:var(--accent)}
+
+/* ═══ HERO ═══ */
+.hero{
+    padding:160px 40px 80px;max-width:900px;margin:0 auto;
+}
+.hero-tag{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;
+    text-transform:uppercase;color:var(--accent);margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;
+}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--accent);border-radius:1px}
+.hero-title{
+    font-family:var(--display);font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;
+    letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px;
+}
+.hero-title .dim{color:var(--text3);font-weight:400}
+.hero-intro{font-size:1.1rem;color:var(--text2);line-height:1.8;font-weight:300;max-width:640px}
+
+/* ═══ STATS BAR ═══ */
+.stats-bar{
+    display:flex;gap:0;margin:64px 0;border-radius:20px;overflow:hidden;
+    border:1px solid var(--border);background:var(--bg2);
+}
+.stat-item{
+    flex:1;padding:28px 24px;text-align:center;
+    border-right:1px solid var(--border);transition:background .3s;
+}
+.stat-item:last-child{border-right:none}
+.stat-item:hover{background:var(--bg3)}
+.stat-num{font-family:var(--display);font-size:2rem;font-weight:800;color:var(--accent);letter-spacing:-1px}
+.stat-label{font-family:var(--mono);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-top:4px}
+
+/* ═══ SECTION ═══ */
+.sec{max-width:1100px;margin:0 auto;padding:80px 40px}
+.sec-dark{background:var(--dark);color:#fff;max-width:100%;padding:80px 40px}
+.sec-dark .sec-inner{max-width:1100px;margin:0 auto}
+.sec-tag{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;
+    text-transform:uppercase;color:var(--accent);margin-bottom:12px;
+}
+.sec-title{
+    font-family:var(--display);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;
+    letter-spacing:-1px;line-height:1.15;margin-bottom:48px;
+}
+.sec-title .dim{color:var(--text3);font-weight:400}
+.sec-dark .sec-title .dim{color:rgba(255,255,255,.35)}
+
+/* ═══ TRAINING CARDS ═══ */
+.train-grid{display:grid;grid-template-columns:1fr;gap:20px}
+.train-card{
+    display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:28px;
+    padding:36px;border-radius:20px;
+    border:1px solid var(--border);background:var(--bg);
+    transition:all .4s cubic-bezier(.16,1,.3,1);
+    opacity:0;transform:translateY(20px);
+}
+.train-card.vis{opacity:1;transform:translateY(0)}
+.train-card:hover{
+    border-color:rgba(181,112,123,.2);
+    box-shadow:0 16px 48px rgba(181,112,123,.06);
+    transform:translateY(-4px);
+}
+.train-icon{
+    width:56px;height:56px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+    background:var(--surface2);border:1px solid var(--border);
+    flex-shrink:0;transition:transform .3s;
+}
+.train-card:hover .train-icon{transform:scale(1.08)}
+.train-body h3{
+    font-family:var(--display);font-size:1.25rem;font-weight:700;
+    letter-spacing:-.4px;margin-bottom:8px;
+}
+.train-body p{font-size:.88rem;color:var(--text2);line-height:1.7;font-weight:300}
+.train-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.train-tag{
+    font-family:var(--mono);font-size:.58rem;padding:4px 10px;border-radius:6px;
+    background:var(--surface);color:var(--text3);border:1px solid var(--border);
+}
+.train-level{
+    font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:1.5px;
+    text-transform:uppercase;padding:6px 14px;border-radius:50px;
+    white-space:nowrap;flex-shrink:0;margin-top:4px;
+}
+.lvl-basic{background:rgba(91,123,123,.08);color:var(--accent3);border:1px solid rgba(91,123,123,.15)}
+.lvl-mid{background:rgba(107,91,123,.08);color:var(--accent2);border:1px solid rgba(107,91,123,.15)}
+.lvl-adv{background:rgba(181,112,123,.08);color:var(--accent);border:1px solid rgba(181,112,123,.15)}
+
+/* ═══ KOMPETENCJE ═══ */
+.komp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.komp{
+    padding:28px 20px;border-radius:16px;text-align:center;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+    transition:all .4s cubic-bezier(.16,1,.3,1);
+    opacity:0;transform:translateY(16px);
+}
+.komp.vis{opacity:1;transform:translateY(0)}
+.komp:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);transform:translateY(-4px)}
+.komp-icon{font-size:1.8rem;margin-bottom:12px}
+.komp-name{font-family:var(--display);font-size:.95rem;font-weight:700;color:#fff;margin-bottom:4px}
+.komp-sub{font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase}
+
+/* ═══ CTA ═══ */
+.cta{
+    text-align:center;padding:80px 40px;margin:0;
+    background:linear-gradient(135deg,var(--dark) 0%,#2a1f22 100%);
+}
+.cta h2{font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:12px}
+.cta p{font-size:.95rem;color:rgba(255,255,255,.5);margin-bottom:32px;font-weight:300}
+.cta-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:1px;
+    text-transform:uppercase;padding:16px 36px;border-radius:50px;
+    background:#fff;color:var(--dark);text-decoration:none;
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+
+/* ═══ FOOTER ═══ */
+.footer{
+    padding:40px;text-align:center;
+    font-family:var(--mono);font-size:.68rem;color:var(--text3);letter-spacing:1px;
+    border-top:1px solid var(--border);
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+    .hero{padding:120px 20px 60px}
+    .stats-bar{flex-direction:column}
+    .stat-item{border-right:none;border-bottom:1px solid var(--border)}
+    .stat-item:last-child{border-bottom:none}
+    .train-card{grid-template-columns:1fr;gap:16px}
+    .train-level{align-self:start}
+    .komp-grid{grid-template-columns:repeat(2,1fr)}
+    .sec,.sec-dark{padding:60px 20px}
+    .nav{padding:16px 20px}
+}
+
+/* ═══ ANIMATIONS ═══ */
+.rv{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="../" class="nav-logo">TS://</a>
+    <div class="nav-links">
+        <a href="../" class="nav-link">Strona główna</a>
+        <a href="../#o-mnie" class="nav-link">O mnie</a>
+        <a href="../#szkolenia" class="nav-link">Szkolenia</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-tag rv">Szkolenia & Kompetencje</div>
+    <h1 class="hero-title rv" style="transition-delay:.08s">Pełna oferta szkoleń<br><span class="dim">i obszary ekspertyzy.</span></h1>
+    <p class="hero-intro rv" style="transition-delay:.16s">Prowadzę warsztaty, szkolenia i wykłady z zakresu AI, mikropoświadczeń, data science i nowoczesnych technologii edukacyjnych. Każde szkolenie dopasowuję do poziomu i potrzeb grupy.</p>
+</div>
+
+<!-- STATS -->
+<div class="sec" style="padding-top:0">
+    <div class="stats-bar rv" style="transition-delay:.24s">
+        <div class="stat-item">
+            <div class="stat-num">500+</div>
+            <div class="stat-label">Przeszkolonych</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">25+</div>
+            <div class="stat-label">Lat doświadczenia</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">12</div>
+            <div class="stat-label">Tematów szkoleniowych</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Poziomy zaawansowania</div>
+        </div>
+    </div>
+</div>
+
+<!-- SZKOLENIA -->
+<div class="sec">
+    <div class="sec-tag rv">Oferta szkoleniowa</div>
+    <div class="sec-title rv" style="transition-delay:.06s">Wszystkie szkolenia<br><span class="dim">które prowadzę.</span></div>
+
+    <div class="train-grid">
+        <div class="train-card" style="transition-delay:.05s">
+            <div class="train-icon" style="background:rgba(181,112,123,.06);border-color:rgba(181,112,123,.12)">🧠</div>
+            <div class="train-body">
+                <h3>AI & Prompt Engineering</h3>
+                <p>Praktyczne warsztaty z wykorzystania AI w codziennej pracy — ChatGPT, Claude, Gemini, automatyzacja z LLM. Od podstaw po zaawansowane techniki chain-of-thought i budowanie agentów.</p>
+                <div class="train-tags"><span class="train-tag">ChatGPT</span><span class="train-tag">Claude</span><span class="train-tag">Gemini</span><span class="train-tag">LLM</span><span class="train-tag">Agenci AI</span></div>
+            </div>
+            <span class="train-level lvl-basic">Podstawowy — Zaawansowany</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.1s">
+            <div class="train-icon" style="background:rgba(107,91,123,.06);border-color:rgba(107,91,123,.12)">🎯</div>
+            <div class="train-body">
+                <h3>Mikropoświadczenia w praktyce</h3>
+                <p>Jak zaprojektować, wdrożyć i zarządzać systemem mikropoświadczeń na uczelni. Kompletny program od koncepcji przez platformę po certyfikację zgodną z europejskimi standardami.</p>
+                <div class="train-tags"><span class="train-tag">Digital Credentials</span><span class="train-tag">Bologna</span><span class="train-tag">Framework</span><span class="train-tag">ECTS</span></div>
+            </div>
+            <span class="train-level lvl-mid">Średniozaawansowany</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.15s">
+            <div class="train-icon" style="background:rgba(91,123,123,.06);border-color:rgba(91,123,123,.12)">📊</div>
+            <div class="train-body">
+                <h3>Data Science & Machine Learning</h3>
+                <p>Od analizy danych po modele predykcyjne — szkolenia z Python, TensorFlow, analityki i wizualizacji danych. Praktyczne projekty na rzeczywistych zbiorach danych.</p>
+                <div class="train-tags"><span class="train-tag">Python</span><span class="train-tag">TensorFlow</span><span class="train-tag">Pandas</span><span class="train-tag">Analityka</span></div>
+            </div>
+            <span class="train-level lvl-adv">Zaawansowany</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.2s">
+            <div class="train-icon" style="background:rgba(181,112,123,.06);border-color:rgba(181,112,123,.12)">📋</div>
+            <div class="train-body">
+                <h3>Systemy egzaminacyjne oparte o AI</h3>
+                <p>Projektowanie nowoczesnych systemów weryfikacji wiedzy — adaptacyjne testy, automatyczna ocena, analityka wyników. Wdrożenia na uczelniach i w firmach.</p>
+                <div class="train-tags"><span class="train-tag">E-assessment</span><span class="train-tag">Adaptacyjne testy</span><span class="train-tag">Analityka</span></div>
+            </div>
+            <span class="train-level lvl-mid">Średniozaawansowany</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.25s">
+            <div class="train-icon" style="background:rgba(91,123,123,.06);border-color:rgba(91,123,123,.12)">⚙️</div>
+            <div class="train-body">
+                <h3>Automatyzacja procesów z LLM</h3>
+                <p>Budowa inteligentnych workflow opartych o duże modele językowe — chatboty, agenci AI, automatyzacja dokumentów, integracje z narzędziami biznesowymi.</p>
+                <div class="train-tags"><span class="train-tag">LLM Agents</span><span class="train-tag">RPA</span><span class="train-tag">Chatboty</span><span class="train-tag">API</span></div>
+            </div>
+            <span class="train-level lvl-adv">Zaawansowany</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.3s">
+            <div class="train-icon" style="background:rgba(107,91,123,.06);border-color:rgba(107,91,123,.12)">🎓</div>
+            <div class="train-body">
+                <h3>AI w dydaktyce akademickiej</h3>
+                <p>Warsztaty dla wykładowców i kadry akademickiej — jak wykorzystywać AI w nauczaniu, tworzeniu materiałów i ocenie studentów. Etyka i odpowiedzialne wdrażanie.</p>
+                <div class="train-tags"><span class="train-tag">Dydaktyka</span><span class="train-tag">Etyka AI</span><span class="train-tag">E-learning</span></div>
+            </div>
+            <span class="train-level lvl-basic">Podstawowy</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.35s">
+            <div class="train-icon" style="background:rgba(181,112,123,.06);border-color:rgba(181,112,123,.12)">💡</div>
+            <div class="train-body">
+                <h3>Consulting AI — strategia i wdrożenia</h3>
+                <p>Warsztat strategiczny dla kadry zarządzającej — audyt procesów, identyfikacja szans automatyzacji, budowa roadmapy transformacji cyfrowej.</p>
+                <div class="train-tags"><span class="train-tag">Strategia</span><span class="train-tag">Audyt</span><span class="train-tag">Roadmapa</span><span class="train-tag">Transformacja</span></div>
+            </div>
+            <span class="train-level lvl-mid">Średniozaawansowany</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.4s">
+            <div class="train-icon" style="background:rgba(91,123,123,.06);border-color:rgba(91,123,123,.12)">🚀</div>
+            <div class="train-body">
+                <h3>Szkolenia korporacyjne — AI dla zespołów</h3>
+                <p>Dopasowane programy szkoleniowe dla firm — od podstaw AI po wdrożenia w codziennej pracy zespołów. Warsztaty hands-on z konkretnymi narzędziami.</p>
+                <div class="train-tags"><span class="train-tag">Team Training</span><span class="train-tag">Warsztaty</span><span class="train-tag">Wdrożenia</span></div>
+            </div>
+            <span class="train-level lvl-basic">Podstawowy — Zaawansowany</span>
+        </div>
+
+        <div class="train-card" style="transition-delay:.45s">
+            <div class="train-icon" style="background:rgba(107,91,123,.06);border-color:rgba(107,91,123,.12)">🌐</div>
+            <div class="train-body">
+                <h3>Technologie chmurowe</h3>
+                <p>Migracja do chmury, architektura cloud-native, bezpieczeństwo danych i optymalizacja kosztów. Praktyczne szkolenia z AWS, Azure i GCP.</p>
+                <div class="train-tags"><span class="train-tag">AWS</span><span class="train-tag">Azure</span><span class="train-tag">GCP</span><span class="train-tag">Cloud</span></div>
+            </div>
+            <span class="train-level lvl-mid">Średniozaawansowany</span>
+        </div>
+    </div>
+</div>
+
+<!-- KOMPETENCJE -->
+<div class="sec-dark">
+    <div class="sec-inner">
+        <div class="sec-tag rv">Kompetencje</div>
+        <div class="sec-title rv" style="transition-delay:.06s;color:#fff">Obszary <span class="dim">ekspertyzy</span></div>
+
+        <div class="komp-grid">
+            <div class="komp" style="transition-delay:.05s">
+                <div class="komp-icon">🤖</div>
+                <div class="komp-name">Sztuczna Inteligencja</div>
+                <div class="komp-sub">LLM, GPT, ML, NLP</div>
+            </div>
+            <div class="komp" style="transition-delay:.1s">
+                <div class="komp-icon">🎓</div>
+                <div class="komp-name">Edukacja cyfrowa</div>
+                <div class="komp-sub">E-learning, LMS, MOOC</div>
+            </div>
+            <div class="komp" style="transition-delay:.15s">
+                <div class="komp-icon">🏅</div>
+                <div class="komp-name">Mikropoświadczenia</div>
+                <div class="komp-sub">Digital Credentials, Bologna</div>
+            </div>
+            <div class="komp" style="transition-delay:.2s">
+                <div class="komp-icon">📊</div>
+                <div class="komp-name">Data Science</div>
+                <div class="komp-sub">Python, TensorFlow, Analytics</div>
+            </div>
+            <div class="komp" style="transition-delay:.25s">
+                <div class="komp-icon">☁️</div>
+                <div class="komp-name">Cloud Computing</div>
+                <div class="komp-sub">AWS, Azure, GCP</div>
+            </div>
+            <div class="komp" style="transition-delay:.3s">
+                <div class="komp-icon">⚙️</div>
+                <div class="komp-name">Automatyzacja</div>
+                <div class="komp-sub">RPA, Agenci AI, API</div>
+            </div>
+            <div class="komp" style="transition-delay:.35s">
+                <div class="komp-icon">📋</div>
+                <div class="komp-name">E-assessment</div>
+                <div class="komp-sub">Adaptacyjne testy, Weryfikacja</div>
+            </div>
+            <div class="komp" style="transition-delay:.4s">
+                <div class="komp-icon">💼</div>
+                <div class="komp-name">Consulting</div>
+                <div class="komp-sub">Strategia, Transformacja, Audyt</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+    <h2 class="rv">Zainteresowany szkoleniem?</h2>
+    <p class="rv" style="transition-delay:.06s">Napisz do mnie — dopasuję program do Twoich potrzeb.</p>
+    <a href="mailto:tomasz@siemek.pl" class="cta-btn rv" style="transition-delay:.12s">Umów szkolenie</a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">&copy; 2026 Tomasz Siemek &middot; siemek.pl</div>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')})},{threshold:.1});
+document.querySelectorAll('.rv,.train-card,.komp').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
