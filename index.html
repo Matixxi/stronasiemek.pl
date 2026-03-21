@@ -84,52 +84,98 @@ nav{
 .sec-indicator-label.vis{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ═══ HERO ═══ */
-.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;background:linear-gradient(160deg,var(--bg),var(--bg2),var(--bg3))}
-.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;width:100%;max-width:1400px;margin:0 auto;padding:0 7vw}
-.hero-content{text-align:left}
-.hero-photo{display:flex;justify-content:flex-end;align-items:center}
-.hero-photo-wrap{
-    width:100%;max-width:520px;aspect-ratio:3/4;border-radius:28px;overflow:hidden;position:relative;
-    box-shadow:0 40px 100px rgba(181,112,123,.15),0 10px 30px rgba(0,0,0,.06);
-    border:1px solid var(--border2);
-    opacity:0;animation:fU .8s ease 1.2s forwards;
+.hero{
+    min-height:100vh;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    background:#140f11;z-index:1;
 }
-.hero-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 6s ease}
-.hero-photo-wrap:hover img{transform:scale(1.04)}
-.hero-photo-wrap::after{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(180deg,transparent 50%,rgba(42,31,34,.2));
-    pointer-events:none;
+.hero-video{
+    position:absolute;inset:0;z-index:1;
+    width:100%;height:100%;object-fit:cover;
+    opacity:0;transition:opacity 1.5s ease;
 }
-.hero-pre{
-    font-family:var(--mono);font-size:.72rem;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:28px;
-    display:inline-flex;align-items:center;gap:10px;background:var(--surface2);padding:8px 20px;border-radius:50px;border:1px solid var(--border);
-    opacity:0;animation:fU .8s ease .8s forwards;
+.hero-video.loaded{opacity:1}
+.hero-overlay{
+    position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:
+        radial-gradient(ellipse at 50% 50%,rgba(20,15,17,.2) 0%,rgba(20,15,17,.6) 70%),
+        linear-gradient(180deg,transparent 60%,rgba(20,15,17,.8));
 }
-.hero-pre .pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s ease infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(181,112,123,.35)}70%{box-shadow:0 0 0 8px transparent}}
-.hero-name{font-family:var(--display);font-size:clamp(3rem,7vw,7rem);font-weight:800;line-height:.92;letter-spacing:-3px;margin-bottom:16px}
+
+.hero-inner{
+    position:relative;z-index:3;
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    width:100%;max-width:1000px;padding:0 7vw;
+}
+
+/* Avatar */
+.hero-avatar{
+    width:140px;height:140px;border-radius:50%;overflow:hidden;
+    border:3px solid rgba(212,149,158,.25);
+    box-shadow:0 0 60px rgba(181,112,123,.2),0 0 120px rgba(181,112,123,.08);
+    margin-bottom:32px;
+    opacity:0;animation:heroAvIn 1.2s cubic-bezier(.16,1,.3,1) .6s forwards;
+}
+.hero-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes heroAvIn{to{opacity:1}}
+
+/* Name */
+.hero-name{
+    font-family:var(--display);font-size:clamp(2.8rem,8vw,7rem);font-weight:800;
+    line-height:.9;letter-spacing:-3px;margin-bottom:12px;color:#fff;
+}
 .hero-name .line{display:block;overflow:hidden}
-.hero-name .line span{display:inline-block;transform:translateY(115%);animation:nameIn .9s cubic-bezier(.16,1,.3,1) forwards}
-.hero-name .line:nth-child(1) span{animation-delay:1s;color:var(--text)}
-.hero-name .line:nth-child(2) span{animation-delay:1.15s;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-@keyframes nameIn{to{transform:translateY(0)}}
-.hero-tw{font-family:var(--hand);font-size:clamp(1.2rem,2.5vw,1.9rem);color:var(--accent);min-height:2.4rem;margin-bottom:20px;opacity:0;animation:fU .7s ease 1.4s forwards}
-.tw-c{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:2px;vertical-align:text-bottom;animation:blink .7s step-end infinite}
-@keyframes blink{50%{opacity:0}}
-.hero-sub{font-size:1.05rem;color:var(--text2);font-weight:300;line-height:1.8;max-width:520px;margin:0 0 36px;opacity:0;animation:fU .7s ease 1.6s forwards}
-.hero-sub strong{color:var(--text);font-weight:600}
-.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fU .7s ease 2.2s forwards}
-.hero-scroll span{font-family:var(--mono);font-size:.62rem;color:var(--text3);letter-spacing:2px;text-transform:uppercase}
-.scroll-line{width:1px;height:36px;background:linear-gradient(180deg,var(--accent),transparent);animation:scrollP 2s ease infinite}
-@keyframes scrollP{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
-@media(max-width:768px){
-    .hero-inner{grid-template-columns:1fr;text-align:center}
-    .hero-content{order:2}
-    .hero-photo{order:1;justify-content:center}
-    .hero-photo-wrap{max-width:300px}
-    .hero-sub{margin:0 auto 36px}
+.hero-name .line span{
+    display:inline-block;transform:translateY(120%);
+    animation:nameIn .9s cubic-bezier(.16,1,.3,1) forwards;
 }
+.hero-name .line:nth-child(1) span{animation-delay:.8s}
+.hero-name .line:nth-child(2) span{
+    animation-delay:1s;
+    background:linear-gradient(135deg,var(--accent-l),var(--accent),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+@keyframes nameIn{to{transform:translateY(0)}}
+
+/* Glowing divider */
+.hero-line{
+    width:0;height:1.5px;margin:16px auto 24px;
+    background:linear-gradient(90deg,transparent,var(--accent-l),var(--accent),var(--accent-l),transparent);
+    animation:heroLine 1s cubic-bezier(.16,1,.3,1) 1.3s forwards;
+    border-radius:2px;
+}
+@keyframes heroLine{to{width:min(320px,50vw)}}
+
+/* Subtitle / quote */
+.hero-quote{
+    font-size:clamp(.9rem,1.8vw,1.1rem);color:rgba(255,255,255,.45);font-weight:300;
+    line-height:1.8;max-width:520px;margin:0 auto 28px;
+    opacity:0;animation:fU .8s ease 1.5s forwards;
+}
+.hero-quote strong{color:rgba(255,255,255,.75);font-weight:600}
+
+/* Typewriter */
+.hero-tw{
+    font-family:var(--hand);font-size:clamp(1.4rem,3vw,2.2rem);color:var(--accent-l);
+    min-height:2.8rem;
+    opacity:0;animation:fU .8s ease 1.8s forwards;
+}
+.tw-c{display:inline-block;width:2px;height:1em;background:var(--accent-l);margin-left:2px;vertical-align:text-bottom;animation:blink .7s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+
+@media(max-width:768px){
+    .hero-avatar{width:110px;height:110px}
+    .hero-name{letter-spacing:-2px}
+}
+
+.hero-scroll{
+    position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:3;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    opacity:0;animation:fU .7s ease 2s forwards;
+}
+.hero-scroll span{font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.25);letter-spacing:3px;text-transform:uppercase}
+.scroll-line{width:1px;height:36px;background:linear-gradient(180deg,var(--accent-l),transparent);animation:scrollP 2s ease infinite}
+@keyframes scrollP{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
 
 /* ═══ MARQUEE ═══ */
 .marquee{padding:18px 0;overflow:hidden;background:var(--accent);position:relative;z-index:2}
@@ -139,7 +185,7 @@ nav{
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* ═══ HORIZONTAL SCROLL ═══ */
-.hz-scroll{overflow:hidden;height:100vh;display:flex;align-items:center;background:linear-gradient(160deg,#2a1f22,#3a2a30);position:relative;z-index:2}
+.hz-scroll{overflow:hidden;height:100vh;display:flex;align-items:center;background:linear-gradient(160deg,#2a1f22,#3a2a30);position:relative;z-index:2;will-change:transform}
 .hz-text{display:flex;width:max-content;white-space:nowrap;gap:4vw;padding-left:100vw}
 .hz-text .hz-word{font-family:var(--display);font-size:clamp(2.5rem,10vw,10rem);font-weight:800;line-height:1.1;color:transparent;-webkit-text-stroke:1.5px var(--accent-l)}
 .hz-text .hz-word.filled{color:#fff;-webkit-text-stroke:0}
@@ -205,7 +251,6 @@ nav{
 
 /* ═══ TIMELINE / MOJA DROGA ═══ */
 .tl-axis{position:relative;margin-top:56px;max-width:1100px;margin-left:auto;margin-right:auto}
-/* labels */
 .tl-axis-labels{
     display:flex;justify-content:space-between;align-items:center;
     margin-bottom:6px;padding:0 10px;
@@ -215,7 +260,6 @@ nav{
     text-transform:uppercase;color:var(--text3);
 }
 .tl-axis-label.now{color:var(--accent)}
-/* line with arrow */
 .tl-axis-line{
     position:relative;height:3px;border-radius:2px;
     background:linear-gradient(90deg,var(--bg3),var(--accent-l),var(--accent),var(--accent-d));
@@ -231,81 +275,108 @@ nav{
     display:grid;grid-template-columns:repeat(5,1fr);gap:0;
     position:relative;
 }
+
+/* Tile — hidden by default, animated in by JS */
 .tl-tile{
-    position:relative;padding:24px 20px 28px;text-align:center;
-    cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);
+    position:relative;padding:24px 14px 28px;text-align:center;
+    cursor:pointer;transition:all .5s cubic-bezier(.16,1,.3,1);
+    opacity:0;transform:translateY(30px);
 }
-.tl-tile:hover{transform:translateY(-6px)}
-/* connector from line to card */
+.tl-tile.tl-vis{opacity:1;transform:translateY(0)}
+.tl-tile:hover{transform:translateY(-8px)}
+
+/* Connector */
 .tl-tile::before{
     content:'';position:absolute;top:0;left:50%;width:2px;height:24px;
     background:var(--accent);transform:translateX(-50%);
-    opacity:var(--tile-opacity,.25);
+    opacity:.4;
 }
 .tl-tile-dot{
     width:16px;height:16px;border-radius:50%;
     border:3px solid var(--accent);background:var(--bg);
     position:absolute;top:-8px;left:50%;transform:translateX(-50%);
-    z-index:2;transition:all .4s;
+    z-index:2;transition:all .5s;
 }
-/* progressive opacity: oldest=dim, newest=full */
-.tl-tile:nth-child(1){--tile-opacity:.25}
-.tl-tile:nth-child(1) .tl-tile-inner{opacity:.55}
-.tl-tile:nth-child(1) .tl-tile-dot{border-color:var(--accent-l);width:12px;height:12px;top:-6px}
-.tl-tile:nth-child(2){--tile-opacity:.35}
-.tl-tile:nth-child(2) .tl-tile-inner{opacity:.65}
-.tl-tile:nth-child(2) .tl-tile-dot{border-color:var(--accent-l);width:13px;height:13px;top:-7px}
-.tl-tile:nth-child(3){--tile-opacity:.5}
-.tl-tile:nth-child(3) .tl-tile-inner{opacity:.78}
-.tl-tile:nth-child(4){--tile-opacity:.7}
-.tl-tile:nth-child(4) .tl-tile-inner{opacity:.88}
-.tl-tile:nth-child(5){--tile-opacity:1}
-.tl-tile:nth-child(5) .tl-tile-inner{opacity:1}
-.tl-tile:hover .tl-tile-inner{opacity:1!important}
+
+/* "Pop" state — year goes big & bold during reveal */
+.tl-tile.tl-pop .tl-tile-year{
+    font-size:1.4rem;color:var(--accent);letter-spacing:4px;
+    text-shadow:0 0 20px rgba(181,112,123,.3);
+}
+.tl-tile.tl-pop .tl-tile-dot{
+    background:var(--accent);
+    box-shadow:0 0 0 10px rgba(181,112,123,.15);
+    transform:translateX(-50%) scale(1.3);
+}
+.tl-tile.tl-pop .tl-tile-inner{
+    border-color:rgba(181,112,123,.3);
+    box-shadow:0 16px 48px rgba(181,112,123,.1);
+}
+
+/* Hover */
+.tl-tile:hover .tl-tile-inner{
+    border-color:rgba(181,112,123,.25);
+    box-shadow:0 20px 56px rgba(181,112,123,.1);
+}
 .tl-tile:hover .tl-tile-dot{
     background:var(--accent);
     box-shadow:0 0 0 8px rgba(181,112,123,.12);
 }
+
+/* "Now" tile */
 .tl-tile.tl-now .tl-tile-dot{
     background:var(--accent);width:18px;height:18px;top:-9px;
     box-shadow:0 0 0 6px rgba(181,112,123,.15);
     animation:tlPulse 2s ease infinite;
 }
 @keyframes tlPulse{0%,100%{box-shadow:0 0 0 6px rgba(181,112,123,.15)}50%{box-shadow:0 0 0 14px rgba(181,112,123,0)}}
+
+/* Tile inner — vivid cards */
 .tl-tile-inner{
     padding:24px 16px;border-radius:18px;
-    background:var(--bg);border:1px solid var(--border);
-    transition:all .4s cubic-bezier(.16,1,.3,1);
+    background:var(--bg);
+    border:1px solid rgba(181,112,123,.12);
+    box-shadow:0 4px 20px rgba(181,112,123,.04);
+    transition:all .5s cubic-bezier(.16,1,.3,1);
     height:100%;display:flex;flex-direction:column;
 }
-.tl-tile:hover .tl-tile-inner{
-    border-color:rgba(181,112,123,.25);
-    box-shadow:0 16px 48px rgba(181,112,123,.07);
+
+/* Color accent top strip per tile */
+.tl-tile-inner::before{
+    content:'';display:block;height:3px;border-radius:3px;margin:-24px -16px 18px;
+    border-radius:18px 18px 0 0;
 }
+.tl-tile:nth-child(1) .tl-tile-inner::before{background:linear-gradient(90deg,var(--accent-l),var(--accent))}
+.tl-tile:nth-child(2) .tl-tile-inner::before{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.tl-tile:nth-child(3) .tl-tile-inner::before{background:linear-gradient(90deg,var(--accent2),var(--accent3))}
+.tl-tile:nth-child(4) .tl-tile-inner::before{background:linear-gradient(90deg,var(--accent3),var(--accent))}
+.tl-tile:nth-child(5) .tl-tile-inner::before{background:linear-gradient(90deg,var(--accent),var(--accent-l))}
+
 .tl-tile-year{
-    font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:3px;
+    font-family:var(--mono);font-size:.78rem;font-weight:700;letter-spacing:3px;
     color:var(--accent);margin-bottom:10px;
+    transition:all .5s cubic-bezier(.16,1,.3,1);
 }
 .tl-tile-title{
     font-family:var(--display);font-size:1.05rem;font-weight:700;color:var(--text);
     line-height:1.3;margin-bottom:8px;letter-spacing:-.3px;
 }
 .tl-tile-desc{
-    font-size:.78rem;color:var(--text3);line-height:1.6;font-weight:300;
+    font-size:.8rem;color:var(--text2);line-height:1.65;font-weight:300;
     flex:1;
-    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 }
 .tl-tile-badge{
-    display:inline-block;margin-top:12px;font-family:var(--mono);font-size:.58rem;letter-spacing:1.5px;
-    text-transform:uppercase;padding:4px 12px;border-radius:50px;
-    border:1px solid var(--border);color:var(--text3);background:var(--surface);
+    display:inline-block;margin-top:auto;padding-top:12px;
+    font-family:var(--mono);font-size:.58rem;letter-spacing:1.5px;
+    text-transform:uppercase;padding:5px 14px;border-radius:50px;
+    border:1px solid rgba(181,112,123,.15);color:var(--accent);
+    background:rgba(181,112,123,.04);font-weight:600;
 }
 @media(max-width:900px){
     .tl-grid{grid-template-columns:repeat(3,1fr);gap:12px}
 }
 @media(max-width:600px){
     .tl-grid{grid-template-columns:1fr 1fr;gap:10px}
-    .tl-grid::before{display:none}
     .tl-tile::before{display:none}
     .tl-tile-dot{display:none}
     .tl-tile{padding-top:10px}
@@ -428,73 +499,110 @@ nav{
     .szkol-card h3{font-size:1.3rem}
 }
 
-/* ═══ FILARY ═══ */
-.filary-section{position:relative;overflow:hidden;background:var(--bg2)}
-.filary-pin{position:relative;width:100%;height:100vh;overflow:hidden}
-.filary-header{
-    position:absolute;top:60px;left:0;right:0;z-index:10;text-align:center;
-    pointer-events:none;
+/* ═══ FILARY — 3 PILLARS ═══ */
+.filary-section{position:relative;overflow:hidden;background:var(--bg2);padding:120px 0 100px;z-index:2}
+.filary-section .sec-head{text-align:center;margin-bottom:72px}
+.filary-stage{
+    display:flex;justify-content:center;align-items:flex-end;gap:36px;
+    max-width:1100px;margin:0 auto;padding:0 24px;
+    perspective:900px;
 }
-.filary-header .sec-tag,.filary-header .sec-title{pointer-events:auto}
-.filary-track{
-    display:flex;align-items:center;gap:40px;
-    position:absolute;left:0;top:0;height:100%;
-    will-change:transform;padding:0 calc(50vw - 200px);
+.pillar{
+    position:relative;flex:1;max-width:340px;
+    display:flex;flex-direction:column;align-items:center;
+    opacity:0;transform:translateY(80px) rotateX(6deg);
+    transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
 }
-.filar{
-    position:relative;flex-shrink:0;width:420px;
-    padding:48px 36px;border-radius:28px;overflow:hidden;
-    background:var(--bg);border:1px solid var(--border);
-    box-shadow:0 4px 24px rgba(181,112,123,.04);
-    transition:all .5s cubic-bezier(.16,1,.3,1);
-    opacity:.5;transform:scale(.92);
+.pillar.visible{opacity:1;transform:translateY(0) rotateX(0)}
+.pillar:nth-child(1){transition-delay:.1s}
+.pillar:nth-child(2){transition-delay:.3s}
+.pillar:nth-child(3){transition-delay:.5s}
+
+/* Capital — the decorative top */
+.pillar-capital{
+    width:100%;padding:32px 28px 24px;text-align:center;
+    border-radius:20px 20px 0 0;position:relative;z-index:2;
+    border:1px solid var(--border);border-bottom:none;
+    background:var(--bg);
 }
-.filar.active{
-    opacity:1;transform:scale(1);
-    border-color:rgba(181,112,123,.2);
-    box-shadow:0 24px 80px rgba(181,112,123,.08);
+.pillar-capital::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:5px;
+    border-radius:20px 20px 0 0;
 }
-.filar::after{
-    content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:28px 28px 0 0;
-    opacity:0;transition:opacity .5s;
+.pillar:nth-child(1) .pillar-capital::before{background:linear-gradient(90deg,var(--accent),var(--accent-l))}
+.pillar:nth-child(2) .pillar-capital::before{background:linear-gradient(90deg,var(--accent2),#8b7b9b)}
+.pillar:nth-child(3) .pillar-capital::before{background:linear-gradient(90deg,var(--accent3),#7b9b9b)}
+
+.pillar-num{
+    font-family:var(--mono);font-size:.55rem;font-weight:600;letter-spacing:4px;
+    color:var(--text3);text-transform:uppercase;margin-bottom:14px;
 }
-.filar:nth-child(1)::after{background:linear-gradient(90deg,var(--accent),var(--accent-l))}
-.filar:nth-child(2)::after{background:linear-gradient(90deg,var(--accent2),#8b7b9b)}
-.filar:nth-child(3)::after{background:linear-gradient(90deg,var(--accent3),#7b9b9b)}
-.filar.active::after{opacity:1}
-.filar-num{
-    font-family:var(--mono);font-size:.58rem;font-weight:600;letter-spacing:3px;
-    color:var(--text3);text-transform:uppercase;margin-bottom:20px;
-}
-.filar-icon{
-    font-size:2.4rem;margin-bottom:18px;
+.pillar-icon{
+    font-size:2.2rem;margin-bottom:14px;
     transition:transform .5s cubic-bezier(.16,1,.3,1);
 }
-.filar.active .filar-icon{transform:scale(1.15)}
-.filar h3{
-    font-family:var(--display);font-size:1.5rem;font-weight:700;
-    letter-spacing:-.5px;margin-bottom:12px;line-height:1.25;
+.pillar:hover .pillar-icon{transform:scale(1.2) rotate(-5deg)}
+.pillar-capital h3{
+    font-family:var(--display);font-size:1.25rem;font-weight:700;
+    letter-spacing:-.3px;line-height:1.3;
 }
-.filar p{font-size:.88rem;color:var(--text2);line-height:1.75;font-weight:300}
-.filar-link{
+
+/* Shaft — the pillar body */
+.pillar-shaft{
+    width:100%;padding:24px 28px 28px;
+    background:var(--bg);
+    border:1px solid var(--border);border-top:1px solid var(--border);
+    position:relative;flex:1;
+    display:flex;flex-direction:column;
+}
+.pillar-shaft p{
+    font-size:.85rem;color:var(--text2);line-height:1.8;font-weight:300;
+    flex:1;
+}
+.pillar-link{
     display:inline-flex;align-items:center;gap:6px;margin-top:20px;
-    font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:1px;
+    font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:1px;
     text-transform:uppercase;color:var(--accent);transition:gap .3s;
 }
-.filar.active .filar-link{gap:10px}
-.filar-link svg{width:14px;height:14px}
-.filary-dots{
-    position:absolute;bottom:48px;left:50%;transform:translateX(-50%);
-    display:flex;gap:10px;z-index:10;
+.pillar:hover .pillar-link{gap:12px}
+.pillar-link svg{width:14px;height:14px}
+
+/* Base — the foundation */
+.pillar-base{
+    width:calc(100% + 24px);height:18px;
+    background:linear-gradient(180deg,var(--bg3),var(--border));
+    border-radius:0 0 6px 6px;position:relative;
+    box-shadow:0 4px 20px rgba(181,112,123,.08);
 }
-.filary-dot{
-    width:10px;height:10px;border-radius:50%;border:2px solid var(--border);
-    background:transparent;cursor:pointer;transition:all .3s;padding:0;
+.pillar-base::after{
+    content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+    width:calc(100% + 16px);height:8px;
+    background:linear-gradient(180deg,rgba(181,112,123,.06),transparent);
+    border-radius:0 0 8px 8px;
 }
-.filary-dot.on{background:var(--accent);border-color:var(--accent);transform:scale(1.3)}
-.filary-cta{
-    position:absolute;bottom:100px;left:50%;transform:translateX(-50%);z-index:10;
+
+/* Hover lift */
+.pillar{transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1)}
+.pillar.visible:hover{
+    transform:translateY(-12px) rotateX(0);
 }
+.pillar.visible:hover .pillar-capital{
+    box-shadow:0 -8px 40px rgba(181,112,123,.06);
+}
+.pillar.visible:hover .pillar-shaft{
+    box-shadow:0 16px 60px rgba(181,112,123,.08);
+}
+
+/* Accent glow on hover per pillar */
+.pillar:nth-child(1).visible:hover .pillar-shaft{border-color:rgba(181,112,123,.22)}
+.pillar:nth-child(2).visible:hover .pillar-shaft{border-color:rgba(107,91,123,.22)}
+.pillar:nth-child(3).visible:hover .pillar-shaft{border-color:rgba(91,123,123,.22)}
+.pillar:nth-child(1).visible:hover .pillar-capital{border-color:rgba(181,112,123,.22)}
+.pillar:nth-child(2).visible:hover .pillar-capital{border-color:rgba(107,91,123,.22)}
+.pillar:nth-child(3).visible:hover .pillar-capital{border-color:rgba(91,123,123,.22)}
+
+/* CTA */
+.filary-cta{text-align:center;margin-top:64px}
 .filary-cta a{
     display:inline-flex;align-items:center;gap:8px;
     font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:1px;
@@ -508,10 +616,20 @@ nav{
     box-shadow:0 8px 32px rgba(181,112,123,.2);transform:translateY(-2px);
 }
 .filary-cta a svg{width:14px;height:14px}
+
+/* Decorative floor line */
+.pillar-floor{
+    width:100%;max-width:1100px;margin:0 auto;height:2px;
+    background:linear-gradient(90deg,transparent 5%,var(--border) 30%,var(--border) 70%,transparent 95%);
+    margin-top:-1px;position:relative;
+}
+
 @media(max-width:768px){
-    .filar{width:300px;padding:36px 24px}
-    .filar h3{font-size:1.2rem}
-    .filary-track{padding:0 calc(50vw - 150px);gap:24px}
+    .filary-stage{flex-direction:column;align-items:center;gap:32px;perspective:none}
+    .pillar{max-width:400px;width:100%;transform:translateY(60px) rotateX(0)}
+    .pillar.visible:hover{transform:translateY(-8px) rotateX(0)}
+    .pillar-base{width:calc(100% + 16px)}
+    .filary-section{padding:80px 0 60px}
 }
 
 /* ═══ MEDIA GALLERY ═══ */
@@ -545,24 +663,155 @@ nav{
 .case-study p{font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.7;font-weight:300}
 
 /* ═══ TIMELINE ═══ */
-.tl-wrap{max-width:720px;margin:48px auto 0;position:relative;padding-left:48px}
-.tl-wrap::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent-l),var(--bg3));border-radius:1px}
-.tl{position:relative;margin-bottom:52px;padding-left:40px}
-.tl::before{
-    content:'';position:absolute;left:-53px;top:8px;width:10px;height:10px;border-radius:50%;
-    border:2.5px solid var(--accent);background:var(--bg2);transition:all .3s;
+/* ═══ KALENDARIUM — TEAR-OFF CALENDAR ═══ */
+.cal-scene{
+    display:flex;align-items:flex-start;justify-content:center;gap:72px;
+    max-width:1060px;margin:64px auto 0;padding:0 24px;
 }
-.tl:hover::before{background:var(--accent);box-shadow:0 0 0 6px rgba(181,112,123,.1)}
-.tl-yr{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--accent);letter-spacing:1.5px;margin-bottom:6px}
-.tl h4{font-family:var(--display);font-size:1.25rem;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
-.tl p{font-size:.88rem;color:var(--text3);line-height:1.7;font-weight:300}
+
+/* Calendar pad — left side */
+.cal-pad{
+    position:relative;width:380px;flex-shrink:0;
+    perspective:800px;
+}
+.cal-pad-spine{
+    position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+    width:80%;height:12px;border-radius:6px 6px 0 0;
+    background:linear-gradient(180deg,#c4a0a8,var(--accent));
+    z-index:20;
+}
+.cal-pad-rings{
+    position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+    display:flex;gap:40px;z-index:25;
+}
+.cal-pad-ring{
+    width:20px;height:20px;border-radius:50%;
+    border:3px solid #a0727b;background:var(--bg2);
+    box-shadow:0 2px 6px rgba(0,0,0,.12);
+}
+
+/* Stack shadows */
+.cal-pad::before,.cal-pad::after{
+    content:'';position:absolute;border-radius:14px;
+    background:var(--bg);border:1px solid var(--border);
+    transition:opacity .6s;
+}
+.cal-pad::before{bottom:-4px;left:4px;right:4px;height:100%;z-index:-1;opacity:.6}
+.cal-pad::after{bottom:-8px;left:8px;right:8px;height:100%;z-index:-2;opacity:.3}
+.cal-pad.cal-done::before,.cal-pad.cal-done::after{opacity:0}
+
+/* Cards */
+.cal-card{
+    position:absolute;top:0;left:0;width:100%;
+    border-radius:14px;overflow:hidden;
+    background:var(--bg);border:1px solid var(--border);
+    box-shadow:0 4px 24px rgba(181,112,123,.06);
+    transform-origin:bottom center;
+    z-index:1;
+}
+.cal-card.cal-top{z-index:10}
+.cal-card.cal-drop{
+    animation:calDrop .7s cubic-bezier(.22,.68,.36,1) forwards;
+    z-index:15;
+}
+@keyframes calDrop{
+    0%{transform:rotateX(0) translateY(0) scale(1);opacity:1}
+    30%{transform:rotateX(15deg) translateY(10px) scale(1.01);opacity:1}
+    100%{transform:rotateX(0) translateY(calc(100% + 50px)) scale(.88);opacity:0}
+}
+.cal-pad-sizer{visibility:hidden;position:relative}
+
+/* Calendar card inner */
+.cal-header{
+    position:relative;padding:20px 22px 14px;text-align:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent-l));color:#fff;
+}
+.cal-header::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+    background:repeating-linear-gradient(90deg,transparent,transparent 8px,rgba(255,255,255,.15) 8px,rgba(255,255,255,.15) 10px);
+}
+.cal-quarter{
+    font-family:var(--mono);font-size:.55rem;font-weight:600;
+    letter-spacing:3px;text-transform:uppercase;opacity:.8;margin-bottom:2px;
+}
+.cal-year{
+    font-family:var(--display);font-size:2rem;font-weight:800;
+    line-height:1;letter-spacing:-1px;
+}
+.cal-body{padding:20px 22px 24px}
+.cal-body h4{
+    font-family:var(--display);font-size:1rem;font-weight:700;
+    letter-spacing:-.2px;margin-bottom:6px;line-height:1.3;
+}
+.cal-body p{font-size:.8rem;color:var(--text2);line-height:1.7;font-weight:300}
+
+/* Event tags */
 .event-tag{
-    display:inline-block;font-family:var(--mono);font-size:.58rem;font-weight:600;padding:3px 10px;
-    border-radius:6px;text-transform:uppercase;letter-spacing:.5px;margin-top:8px;
+    display:inline-block;font-family:var(--mono);font-size:.55rem;font-weight:600;padding:3px 10px;
+    border-radius:6px;text-transform:uppercase;letter-spacing:.5px;margin-top:10px;
 }
 .event-tag-konferencja{background:rgba(181,112,123,.08);color:var(--accent)}
 .event-tag-warsztat{background:rgba(91,123,123,.08);color:var(--accent3)}
 .event-tag-webinar{background:rgba(107,91,123,.08);color:var(--accent2)}
+
+/* Color variants */
+.cal-card[data-color="1"] .cal-header{background:linear-gradient(135deg,var(--accent),var(--accent-l))}
+.cal-card[data-color="2"] .cal-header{background:linear-gradient(135deg,var(--accent2),#8b7b9b)}
+.cal-card[data-color="3"] .cal-header{background:linear-gradient(135deg,var(--accent3),#7b9b9b)}
+
+/* "Coming soon" under last card */
+.cal-empty-msg{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:28px;z-index:0;
+    border-radius:14px;background:var(--bg);border:1px solid var(--border);
+    opacity:0;transition:opacity .8s .3s;
+}
+.cal-pad.cal-done .cal-empty-msg{opacity:1}
+.cal-empty-icon{font-size:2rem;margin-bottom:10px}
+.cal-empty-title{
+    font-family:var(--display);font-size:1.1rem;font-weight:700;
+    letter-spacing:-.3px;margin-bottom:6px;color:var(--text);
+}
+.cal-empty-sub{font-size:.8rem;color:var(--text3);line-height:1.6;font-weight:300}
+
+/* Right side — list of landed events */
+.cal-list{
+    flex:1;display:flex;flex-direction:column;gap:0;
+}
+.cal-list-item{
+    display:flex;align-items:flex-start;gap:16px;
+    padding:0 0;border-bottom:1px solid var(--border);
+    opacity:0;transform:translateX(20px);
+    max-height:0;overflow:hidden;
+    transition:all .7s cubic-bezier(.16,1,.3,1),max-height .7s cubic-bezier(.16,1,.3,1);
+}
+.cal-list-item.cal-in{
+    opacity:1;transform:translateX(0);
+    max-height:200px;padding:18px 0;
+}
+.cal-list-item:last-child{border-bottom:none}
+.cal-list-date{
+    flex-shrink:0;width:70px;text-align:right;
+    font-family:var(--mono);font-size:.6rem;font-weight:600;
+    color:var(--accent);letter-spacing:1px;line-height:1.8;
+    padding-top:2px;
+}
+.cal-list-body{flex:1}
+.cal-list-body h4{
+    font-family:var(--display);font-size:1rem;font-weight:700;
+    letter-spacing:-.2px;line-height:1.3;margin:0 0 4px;
+}
+.cal-list-body p{
+    font-size:.8rem;color:var(--text3);line-height:1.6;font-weight:300;margin:0;
+}
+.cal-list-body .event-tag{margin-top:8px}
+
+@media(max-width:768px){
+    .cal-scene{flex-direction:column;align-items:center;gap:32px}
+    .cal-pad{width:min(380px,100%)}
+    .cal-list{width:100%}
+}
 
 /* ═══ BLOG ═══ */
 .fbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
@@ -605,21 +854,7 @@ nav{
 .blog-author{font-family:var(--hand);font-size:1rem;color:var(--accent);opacity:.5}
 
 /* ═══ CTA BANNER ═══ */
-.cta-banner{
-    padding:100px 7vw;text-align:center;position:relative;z-index:2;
-    background:linear-gradient(135deg,var(--accent),var(--accent-d));color:#fff;
-}
-.cta-title{font-family:var(--display);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px}
-.cta-sub{font-size:1.05rem;font-weight:300;opacity:.85;max-width:560px;margin:0 auto 36px;line-height:1.8}
-.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn-cta{
-    padding:14px 34px;border-radius:50px;font-family:var(--sans);font-size:.88rem;font-weight:600;
-    cursor:none;transition:all .35s;border:none;
-}
-.btn-cta-w{background:#fff;color:var(--accent-d)}
-.btn-cta-w:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.2)}
-.btn-cta-g{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
-.btn-cta-g:hover{border-color:#fff;transform:translateY(-3px)}
+
 
 /* ═══ FOOTER ═══ */
 footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relative;z-index:2}
@@ -654,7 +889,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:960px){
     body{cursor:auto}.cur,.cur-trail{display:none!important}*{cursor:auto!important}
-    .hero-content{padding:0 24px}
+    .hero-inner{padding:0 24px}
     .sec{padding:80px 6vw}
     .kim-grid{grid-template-columns:1fr;gap:48px}
     .cards-grid{grid-template-columns:1fr}
@@ -673,7 +908,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 @media(max-width:560px){
     .stats-row{grid-template-columns:1fr}
     .footer-grid{grid-template-columns:1fr}
-    .cta-actions{flex-direction:column;align-items:center}
+
 }
 </style>
 </head>
@@ -706,21 +941,19 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 
 <!-- HERO -->
 <section class="hero" id="hero">
+    <video class="hero-video" id="heroVideo" muted loop playsinline preload="auto" src="assets/videos/hero-bg.mp4"></video>
+    <div class="hero-overlay"></div>
     <div class="hero-inner">
-        <div class="hero-content">
-            <div class="hero-pre"><div class="pulse"></div>Mikropoświadczenia · AI · Edukacja</div>
-            <h1 class="hero-name">
-                <span class="line"><span>Tomasz</span></span>
-                <span class="line"><span>Siemek</span></span>
-            </h1>
-            <div class="hero-tw" id="typewriter"></div>
-            <p class="hero-sub"><strong>Dr inż.</strong> — ekspert AI, specjalista od mikropoświadczeń i nowoczesnych systemów egzaminacyjnych. Pomagam uczelniom i firmom wdrażać inteligentne rozwiązania.</p>
+        <div class="hero-avatar">
+            <img src="assets/images/siemek.jpg" alt="Dr inż. Tomasz Siemek">
         </div>
-        <div class="hero-photo">
-            <div class="hero-photo-wrap">
-                <img src="assets/images/siemek.jpg" alt="Dr inż. Tomasz Siemek">
-            </div>
-        </div>
+        <h1 class="hero-name">
+            <span class="line"><span>Tomasz</span></span>
+            <span class="line"><span>Siemek</span></span>
+        </h1>
+        <div class="hero-line"></div>
+        <p class="hero-quote"><strong>Dr inż.</strong> — łączę naukę z technologią, żeby edukacja nadążała za światem.</p>
+        <div class="hero-tw" id="typewriter"></div>
     </div>
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
@@ -782,7 +1015,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
     </div>
 
     <!-- Kluczowe informacje -->
-    <div class="about-keys">
+    <div class="about-keys rv">
         <div class="about-key rv-s">
             <div class="about-key-icon">🎓</div>
             <div class="about-key-num" data-c="25">0</div>
@@ -810,44 +1043,58 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
     </div>
 </section>
 
-<!-- FILARY -->
+<!-- FILARY — 3 PILLARS -->
 <section class="filary-section" id="filary">
-    <div class="filary-pin">
-        <div class="filary-header">
-            <div class="sec-tag">Filary działalności</div>
-            <div class="sec-title" style="font-size:clamp(1.6rem,3vw,2.2rem)">Trzy obszary<br><span class="dim">w których działam.</span></div>
-        </div>
-        <div class="filary-track" id="filaryTrack">
-            <div class="filar" data-i="0">
-                <div class="filar-num">01 / filar</div>
-                <div class="filar-icon">🏅</div>
+    <div class="sec-head rv" style="text-align:center;margin-bottom:72px">
+        <div class="sec-tag">Filary działalności</div>
+        <div class="sec-title" style="font-size:clamp(1.6rem,3vw,2.2rem)">Trzy filary<br><span class="dim">na których buduję.</span></div>
+    </div>
+
+    <div class="filary-stage rv" id="filaryStage">
+        <div class="pillar">
+            <div class="pillar-capital">
+                <div class="pillar-num">I filar</div>
+                <div class="pillar-icon">🏅</div>
                 <h3>Mikropoświadczenia</h3>
+            </div>
+            <div class="pillar-shaft">
                 <p>Projektuję i wdrażam systemy mikropoświadczeń dla uczelni wyższych — od koncepcji po certyfikację zgodną z europejskimi standardami Bologna Process.</p>
-                <a href="filary/#mikro" class="filar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="filary/#mikro" class="pillar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
-            <div class="filar" data-i="1">
-                <div class="filar-num">02 / filar</div>
-                <div class="filar-icon">📋</div>
+            <div class="pillar-base"></div>
+        </div>
+
+        <div class="pillar">
+            <div class="pillar-capital">
+                <div class="pillar-num">II filar</div>
+                <div class="pillar-icon">📋</div>
                 <h3>Nowoczesne systemy egzaminacyjne</h3>
+            </div>
+            <div class="pillar-shaft">
                 <p>Tworzę systemy weryfikacji wiedzy oparte o AI — adaptacyjne testy, automatyczna ocena, analityka wyników w czasie rzeczywistym.</p>
-                <a href="filary/#egzaminy" class="filar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="filary/#egzaminy" class="pillar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
-            <div class="filar" data-i="2">
-                <div class="filar-num">03 / filar</div>
-                <div class="filar-icon">🤖</div>
+            <div class="pillar-base"></div>
+        </div>
+
+        <div class="pillar">
+            <div class="pillar-capital">
+                <div class="pillar-num">III filar</div>
+                <div class="pillar-icon">🤖</div>
                 <h3>Sztuczna inteligencja</h3>
-                <p>Pomagam uczelniom i firmom wdrażać AI w procesy edukacyjne i biznesowe — od strategii po gotowe rozwiązania oparte o LLM.</p>
-                <a href="filary/#ai" class="filar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
+            <div class="pillar-shaft">
+                <p>Pomagam uczelniom i firmom wdrażać AI w procesy edukacyjne i biznesowe — od strategii po gotowe rozwiązania oparte o LLM.</p>
+                <a href="filary/#ai" class="pillar-link">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            </div>
+            <div class="pillar-base"></div>
         </div>
-        <div class="filary-dots" id="filaryDots">
-            <button class="filary-dot on" data-i="0"></button>
-            <button class="filary-dot" data-i="1"></button>
-            <button class="filary-dot" data-i="2"></button>
-        </div>
-        <div class="filary-cta">
-            <a href="filary/">Dowiedz się więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-        </div>
+    </div>
+
+    <div class="pillar-floor rv"></div>
+
+    <div class="filary-cta rv">
+        <a href="filary/">Dowiedz się więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
     </div>
 </section>
 
@@ -857,14 +1104,14 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         <div class="sec-tag">Moja droga</div>
         <div class="sec-title">Od pierwszych wystąpień<br><span class="dim">do własnej wizji edukacji.</span></div>
     </div>
-    <div class="tl-axis">
+    <div class="tl-axis rv">
         <div class="tl-axis-labels">
             <span class="tl-axis-label">dawniej</span>
             <span class="tl-axis-label now">teraz</span>
         </div>
         <div class="tl-axis-line"><div class="tl-axis-arrow"></div></div>
-    <div class="tl-grid">
-        <div class="tl-tile rv" style="transition-delay:.05s">
+    <div class="tl-grid" id="tlGrid">
+        <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
                 <div class="tl-tile-year">2000</div>
@@ -873,7 +1120,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 <span class="tl-tile-badge">Szkolenia</span>
             </div>
         </div>
-        <div class="tl-tile rv" style="transition-delay:.12s">
+        <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
                 <div class="tl-tile-year">2003</div>
@@ -882,7 +1129,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 <span class="tl-tile-badge">Założyciel</span>
             </div>
         </div>
-        <div class="tl-tile rv" style="transition-delay:.19s">
+        <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
                 <div class="tl-tile-year">2018</div>
@@ -891,7 +1138,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 <span class="tl-tile-badge">Transformacja</span>
             </div>
         </div>
-        <div class="tl-tile rv" style="transition-delay:.26s">
+        <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
                 <div class="tl-tile-year">2020</div>
@@ -900,7 +1147,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 <span class="tl-tile-badge">Nauka</span>
             </div>
         </div>
-        <div class="tl-tile tl-now rv" style="transition-delay:.33s">
+        <div class="tl-tile tl-now">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
                 <div class="tl-tile-year">2025</div>
@@ -923,7 +1170,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         <div class="sec-tag">Szkolenia & Konferencje</div>
         <div class="sec-title">Dzielę się wiedzą<br><span class="dim">na żywo.</span></div>
     </div>
-    <div class="szkol-grid">
+    <div class="szkol-grid rv">
         <div class="szkol-card rv-s" style="transition-delay:.05s">
             <video class="szkol-bg" src="assets/videos/ai.mp4" muted loop playsinline autoplay preload="auto"></video>
             <div class="szkol-content">
@@ -963,54 +1210,75 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         <div class="sec-tag">Najbliższe wydarzenia</div>
         <div class="sec-title" style="font-size:1.8rem">Kalendarium</div>
     </div>
-    <div class="tl-wrap">
-        <div class="tl rv-l">
-            <div class="tl-yr">2026 — Q2</div>
-            <h4>AI w edukacji — konferencja ogólnopolska</h4>
-            <p>Keynote speaker. Prezentacja wyników wdrożeń mikropoświadczeń na uczelniach wyższych.</p>
-            <span class="event-tag event-tag-konferencja">Konferencja</span>
+    <div class="cal-scene" id="calScene">
+        <div class="cal-pad" id="calPad">
+            <div class="cal-pad-spine"></div>
+            <div class="cal-pad-rings"><div class="cal-pad-ring"></div><div class="cal-pad-ring"></div><div class="cal-pad-ring"></div></div>
+
+            <div class="cal-card cal-top" data-color="1" data-date="2026 — Q2" data-title="AI w edukacji — konferencja ogólnopolska" data-desc="Keynote speaker. Prezentacja wyników wdrożeń mikropoświadczeń na uczelniach wyższych." data-tag="konferencja" data-tag-label="Konferencja">
+                <div class="cal-header"><div class="cal-quarter">Kwartał II</div><div class="cal-year">2026</div></div>
+                <div class="cal-body">
+                    <h4>AI w edukacji — konferencja ogólnopolska</h4>
+                    <p>Keynote speaker. Prezentacja wyników wdrożeń mikropoświadczeń na uczelniach wyższych.</p>
+                    <span class="event-tag event-tag-konferencja">Konferencja</span>
+                </div>
+            </div>
+            <div class="cal-card" data-color="2" data-date="2026 — Q1" data-title="Warsztaty mikropoświadczeń — Kraków" data-desc="Dwudniowe warsztaty dla kadry akademickiej z projektowania i wdrażania digital credentials." data-tag="warsztat" data-tag-label="Warsztat">
+                <div class="cal-header"><div class="cal-quarter">Kwartał I</div><div class="cal-year">2026</div></div>
+                <div class="cal-body">
+                    <h4>Warsztaty mikropoświadczeń — Kraków</h4>
+                    <p>Dwudniowe warsztaty dla kadry akademickiej z projektowania i wdrażania digital credentials.</p>
+                    <span class="event-tag event-tag-warsztat">Warsztat</span>
+                </div>
+            </div>
+            <div class="cal-card" data-color="3" data-date="2025 — Q4" data-title="Szkolenie korporacyjne — automatyzacja LLM" data-desc="Cykl szkoleń z automatyzacji procesów biznesowych z wykorzystaniem dużych modeli językowych." data-tag="warsztat" data-tag-label="Warsztat">
+                <div class="cal-header"><div class="cal-quarter">Kwartał IV</div><div class="cal-year">2025</div></div>
+                <div class="cal-body">
+                    <h4>Szkolenie korporacyjne — automatyzacja LLM</h4>
+                    <p>Cykl szkoleń z automatyzacji procesów biznesowych z wykorzystaniem dużych modeli językowych.</p>
+                    <span class="event-tag event-tag-warsztat">Warsztat</span>
+                </div>
+            </div>
+            <div class="cal-card" data-color="1" data-date="2025 — Q3" data-title="EdTech Summit — panel AI w egzaminowaniu" data-desc="Panel dyskusyjny o przyszłości weryfikacji kompetencji w dobie sztucznej inteligencji." data-tag="konferencja" data-tag-label="Konferencja">
+                <div class="cal-header"><div class="cal-quarter">Kwartał III</div><div class="cal-year">2025</div></div>
+                <div class="cal-body">
+                    <h4>EdTech Summit — panel AI w egzaminowaniu</h4>
+                    <p>Panel dyskusyjny o przyszłości weryfikacji kompetencji w dobie sztucznej inteligencji.</p>
+                    <span class="event-tag event-tag-konferencja">Konferencja</span>
+                </div>
+            </div>
+            <div class="cal-card" data-color="2" data-date="2025 — Q2" data-title="Webinar: Prompt Engineering dla nauczycieli" data-desc="Bezpłatny webinar — praktyczne zastosowania AI w pracy dydaktycznej." data-tag="webinar" data-tag-label="Webinar">
+                <div class="cal-header"><div class="cal-quarter">Kwartał II</div><div class="cal-year">2025</div></div>
+                <div class="cal-body">
+                    <h4>Webinar: Prompt Engineering dla nauczycieli</h4>
+                    <p>Bezpłatny webinar — praktyczne zastosowania AI w pracy dydaktycznej.</p>
+                    <span class="event-tag event-tag-webinar">Webinar</span>
+                </div>
+            </div>
+
+            <!-- Message revealed after all cards drop -->
+            <div class="cal-empty-msg">
+                <div class="cal-empty-icon">📅</div>
+                <div class="cal-empty-title">Kolejne wydarzenia w przygotowaniu</div>
+                <div class="cal-empty-sub">Śledź moje kanały, żeby nie przegapić nowych terminów.</div>
+            </div>
+
+            <div class="cal-pad-sizer">
+                <div class="cal-header" style="padding:22px 24px 16px"><div class="cal-quarter">&nbsp;</div><div class="cal-year">&nbsp;</div></div>
+                <div class="cal-body"><h4>&nbsp;<br>&nbsp;</h4><p>&nbsp;<br>&nbsp;</p><span class="event-tag">&nbsp;</span></div>
+            </div>
         </div>
-        <div class="tl rv-l">
-            <div class="tl-yr">2026 — Q1</div>
-            <h4>Warsztaty mikropoświadczeń — Kraków</h4>
-            <p>Dwudniowe warsztaty dla kadry akademickiej z projektowania i wdrażania digital credentials.</p>
-            <span class="event-tag event-tag-warsztat">Warsztat</span>
-        </div>
-        <div class="tl rv-l">
-            <div class="tl-yr">2025 — Q4</div>
-            <h4>Szkolenie korporacyjne — automatyzacja LLM</h4>
-            <p>Cykl szkoleń z automatyzacji procesów biznesowych z wykorzystaniem dużych modeli językowych.</p>
-            <span class="event-tag event-tag-warsztat">Warsztat</span>
-        </div>
-        <div class="tl rv-l">
-            <div class="tl-yr">2025 — Q3</div>
-            <h4>EdTech Summit — panel AI w egzaminowaniu</h4>
-            <p>Panel dyskusyjny o przyszłości weryfikacji kompetencji w dobie sztucznej inteligencji.</p>
-            <span class="event-tag event-tag-konferencja">Konferencja</span>
-        </div>
-        <div class="tl rv-l">
-            <div class="tl-yr">2025 — Q2</div>
-            <h4>Webinar: Prompt Engineering dla nauczycieli</h4>
-            <p>Bezpłatny webinar — praktyczne zastosowania AI w pracy dydaktycznej.</p>
-            <span class="event-tag event-tag-webinar">Webinar</span>
-        </div>
+
+        <!-- Event list — right side, items accumulate here -->
+        <div class="cal-list" id="calList"></div>
     </div>
 </section>
 
 
-<!-- CTA -->
-<div class="cta-banner rv">
-    <h2 class="cta-title">Gotowy na transformację?</h2>
-    <p class="cta-sub">Umów się na bezpłatną konsultację i odkryj, jak AI i mikropoświadczenia mogą zmienić Twoją uczelnię lub firmę.</p>
-    <div class="cta-actions">
-        <a href="mailto:tomasz@siemek.pl" class="btn-cta btn-cta-w">Napisz do mnie</a>
-        <a href="#o-mnie" class="btn-cta btn-cta-g">Dane kontaktowe</a>
-    </div>
-</div>
 
 <!-- FOOTER -->
 <footer>
-    <div class="footer-grid">
+    <div class="footer-grid rv">
         <div class="footer-col">
             <div class="f-logo">TS://</div>
             <div class="f-desc">Dr inż. Tomasz Siemek — ekspert AI, mikropoświadczeń i nowoczesnych systemów edukacyjnych. Pomagam uczelniom i firmom wdrażać inteligentne rozwiązania.</div>
@@ -1050,7 +1318,20 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
 
 <script>
+/* ═══ HERO VIDEO AUTOPLAY ═══ */
+{
+const hv=document.getElementById('heroVideo');
+if(hv){
+    hv.play().then(()=>hv.classList.add('loaded')).catch(()=>hv.classList.add('loaded'));
+    // Fallback if play doesn't fire
+    hv.addEventListener('playing',()=>hv.classList.add('loaded'),{once:true});
+    setTimeout(()=>hv.classList.add('loaded'),2000);
+}
+}
+
 /* ═══ LOADER ═══ */
+let _loaderResolve;
+window.loaderReady=new Promise(r=>{_loaderResolve=r});
 {
 const loaderSvg=document.getElementById('loaderSvg');
 const loaderTxt=document.getElementById('loaderText');
@@ -1081,7 +1362,7 @@ tl.fromTo(loaderTxt,
     filter:'blur(12px)',
     duration:.8,
     ease:'power3.inOut',
-    onComplete:()=>loader.classList.add('done')
+    onComplete:()=>{loader.classList.add('done');_loaderResolve()}
 },'-=0.2');
 }
 
@@ -1136,10 +1417,11 @@ const twEl=document.getElementById('typewriter');let pi=0,ci2=0,del=false;
 function tw(){const p=phrases[pi];if(!del){twEl.innerHTML=p.slice(0,ci2)+'<span class="tw-c"></span>';ci2++;if(ci2>p.length){del=true;setTimeout(tw,2600);return}setTimeout(tw,45+Math.random()*35)}else{twEl.innerHTML=p.slice(0,ci2)+'<span class="tw-c"></span>';ci2--;if(ci2<0){del=false;pi=(pi+1)%phrases.length;ci2=0;setTimeout(tw,400);return}setTimeout(tw,20)}}
 setTimeout(tw,2200);
 
-/* ═══ REVEAL ═══ */
+/* ═══ REVEAL — wait for loader ═══ */
+window.loaderReady.then(()=>{
 const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')})},{threshold:.1});
 document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s').forEach(el=>obs.observe(el));
-document.querySelectorAll('.tl').forEach((el,i)=>{el.style.transitionDelay=(i*.12)+'s'});
+document.querySelectorAll('.tl:not(.tl-tile)').forEach((el,i)=>{el.style.transitionDelay=(i*.12)+'s'});
 document.querySelectorAll('.card').forEach((el,i)=>{el.style.transitionDelay=(i*.1)+'s'});
 document.querySelectorAll('.stat').forEach((el,i)=>{el.style.transitionDelay=(i*.08)+'s'});
 document.querySelectorAll('.case-study').forEach((el,i)=>{el.style.transitionDelay=(i*.08)+'s'});
@@ -1147,6 +1429,7 @@ document.querySelectorAll('.case-study').forEach((el,i)=>{el.style.transitionDel
 /* ═══ COUNTERS ═══ */
 const cO=new IntersectionObserver(e=>{e.forEach(en=>{if(!en.isIntersecting)return;const el=en.target,t=parseInt(el.dataset.c);let c=0;const s=t/50;const ti=setInterval(()=>{c+=s;if(c>=t){el.textContent=t+'+';clearInterval(ti)}else el.textContent=Math.floor(c)},25);cO.unobserve(el)})},{threshold:.5});
 document.querySelectorAll('[data-c]').forEach(el=>cO.observe(el));
+});
 
 
 /* ═══ ABOUT REEL ═══ */
@@ -1242,11 +1525,20 @@ document.querySelectorAll('.about-key-num[data-c]').forEach(el=>{
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})})});
 
 /* ═══ PARALLAX ═══ */
-addEventListener('scroll',()=>{
-    const s=scrollY;
-    const hContent=document.querySelector('.hero-content');
-    if(hContent&&s<innerHeight){hContent.style.transform=`translateY(${s*.12}px)`;hContent.style.opacity=1-s/innerHeight*.7}
-});
+{
+const hInner=document.querySelector('.hero-inner');
+if(hInner){
+    addEventListener('scroll',()=>{
+        const s=scrollY;
+        if(s<innerHeight){
+            hInner.style.transform=`translateY(${s*.15}px)`;
+            hInner.style.opacity=Math.max(0,1-s/innerHeight*.8);
+        }else{
+            hInner.style.opacity='0';
+        }
+    },{passive:true});
+}
+}
 
 /* ═══ HORIZONTAL SCROLL (GSAP) ═══ */
 if(typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined'){
@@ -1260,8 +1552,11 @@ if(hzWrapper&&hzText){
         scrollTrigger:{
             trigger:hzWrapper,
             pin:true,
+            anticipatePin:1,
+            start:'top top',
             end:'+=4000px',
-            scrub:true
+            scrub:0.8,
+            fastScrollEnd:true
         }
     });
     const hzWords=hzText.querySelectorAll('.hz-word, .hz-sep');
@@ -1316,66 +1611,103 @@ const szkolObs=new IntersectionObserver(entries=>{
 document.querySelectorAll('.szkol-card').forEach(c=>szkolObs.observe(c));
 }
 
-/* ═══ FILARY HORIZONTAL SCROLL ═══ */
-(function(){
-const section=document.querySelector('.filary-section');
-const pin=document.querySelector('.filary-pin');
-const track=document.getElementById('filaryTrack');
-const filars=document.querySelectorAll('.filar');
-const dots=document.querySelectorAll('.filary-dot');
-if(!section||!track||!filars.length||typeof gsap==='undefined')return;
+/* ═══ TIMELINE — SEQUENTIAL REVEAL (after loader) ═══ */
+window.loaderReady.then(()=>{
+const grid=document.getElementById('tlGrid');
+if(!grid)return;
+const tiles=grid.querySelectorAll('.tl-tile');
+if(!tiles.length)return;
+let started=false;
 
-const totalCards=filars.length;
+const tlObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting&&!started){
+            started=true;
+            tlObs.unobserve(grid);
+            tiles.forEach((tile,i)=>{
+                setTimeout(()=>{
+                    tile.classList.add('tl-vis','tl-pop');
+                    setTimeout(()=>tile.classList.remove('tl-pop'),800);
+                },i*400);
+            });
+        }
+    });
+},{threshold:.2});
+tlObs.observe(grid);
+});
 
-function getMaxX(){
-    return track.scrollWidth-pin.offsetWidth;
+/* ═══ FILARY — PILLARS REVEAL (after loader) ═══ */
+window.loaderReady.then(()=>{
+const pillars=document.querySelectorAll('.pillar');
+if(!pillars.length)return;
+const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.15});
+pillars.forEach(p=>obs.observe(p));
+});
+
+/* ═══ KALENDARIUM — TEAR-OFF CALENDAR (after loader) ═══ */
+window.loaderReady.then(()=>{
+const pad=document.getElementById('calPad');
+const list=document.getElementById('calList');
+if(!pad||!list)return;
+
+const cards=Array.from(pad.querySelectorAll('.cal-card'));
+const total=cards.length;
+if(!total)return;
+
+cards.forEach((c,i)=>{c.style.zIndex=total-i});
+
+let current=0;
+let started=false;
+
+function addToList(card){
+    const item=document.createElement('div');
+    item.className='cal-list-item';
+    item.innerHTML='<div class="cal-list-date">'+card.dataset.date+'</div>'
+        +'<div class="cal-list-body"><h4>'+card.dataset.title+'</h4>'
+        +'<p>'+card.dataset.desc+'</p>'
+        +'<span class="event-tag event-tag-'+card.dataset.tag+'">'+card.dataset.tagLabel+'</span></div>';
+    list.appendChild(item);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>item.classList.add('cal-in')));
 }
 
-const tween=gsap.to(track,{
-    x:()=>-getMaxX(),
-    ease:'none',
-    scrollTrigger:{
-        trigger:section,
-        pin:pin,
-        start:'top top',
-        end:()=>'+='+(getMaxX()+window.innerHeight*.3),
-        scrub:.8,
-        snap:{
-            snapTo:1/(totalCards-1),
-            duration:{min:.2,max:.5},
-            ease:'power1.inOut'
-        },
-        invalidateOnRefresh:true,
-        onUpdate:function(self){
-            const p=self.progress;
-            const centerX=pin.offsetWidth/2;
-            let closest=0,minDist=Infinity;
-            filars.forEach((f,i)=>{
-                const rect=f.getBoundingClientRect();
-                const fc=rect.left+rect.width/2;
-                const dist=Math.abs(fc-centerX);
-                if(dist<minDist){minDist=dist;closest=i}
-            });
-            filars.forEach((f,i)=>f.classList.toggle('active',i===closest));
-            dots.forEach((d,i)=>d.classList.toggle('on',i===closest));
-        }
+function dropCard(){
+    if(current>=total){
+        pad.classList.add('cal-done');
+        return;
     }
-});
+    const card=cards[current];
+    card.classList.remove('cal-top');
+    card.classList.add('cal-drop');
 
-// Dot click navigation
-dots.forEach(d=>{
-    d.addEventListener('click',()=>{
-        const i=parseInt(d.dataset.i);
-        const progress=i/(totalCards-1);
-        const st=tween.scrollTrigger;
-        const target=st.start+(st.end-st.start)*progress;
-        gsap.to(window,{scrollTo:target,duration:.6,ease:'power2.inOut'});
+    // Add text to right list as card starts falling
+    setTimeout(()=>addToList(card),250);
+
+    setTimeout(()=>{
+        card.style.visibility='hidden';
+        card.classList.remove('cal-drop');
+        current++;
+        if(current<total){
+            cards[current].classList.add('cal-top');
+            setTimeout(dropCard,900);
+        }else{
+            pad.classList.add('cal-done');
+        }
+    },700);
+}
+
+const calObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting&&!started){
+            started=true;
+            setTimeout(dropCard,500);
+            calObs.unobserve(pad);
+        }
     });
+},{threshold:.2});
+calObs.observe(pad);
 });
-
-// Activate first card
-filars[0].classList.add('active');
-})();
 
 </script>
 </body>
