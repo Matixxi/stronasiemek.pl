@@ -357,6 +357,7 @@ a{color:inherit;text-decoration:none}
     <div class="active-tags" id="activePills"></div>
     <div class="blog-count" id="blogCount"></div>
     <div class="blog-grid" id="blogGrid"></div>
+    <div class="blog-empty" id="blogEmpty" style="display:none"><span class="empty-icon">🗂</span>Nie znaleziono wpisów pasujących do filtrów.</div>
 </div>
 
 <!-- OVERLAY -->
@@ -395,6 +396,8 @@ a{color:inherit;text-decoration:none}
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
 <script>
 /* ═══ DATA ═══ */
 const ALL_TAGS=['Edukacja','AI','Biznes','Mikropoświadczenia','Prompt Engineering','LLM','Machine Learning','Consulting','E-assessment','Automatyzacja'];
@@ -457,23 +460,23 @@ document.addEventListener('click',e=>{
     if(!e.target.closest('#ddTagsWrap'))closeDd('tags');
     if(!e.target.closest('#ddTimeWrap'))closeDd('time');
 });
-document.querySelectorAll('input[name=timeFilter]').forEach(r=>r.addEventListener('change',()=>{timeFilter=r.value;render()}));
+document.querySelectorAll('input[name=timeFilter]').forEach(r=>r.addEventListener('change',()=>{timeFilter=r.value;applyFilters()}));
 function syncCb(){tagOptionsEl.querySelectorAll('input').forEach(i=>{i.checked=pendingTags.has(i.value)})}
 function updateTagBadge(n){const b=document.getElementById('tagBadge');b.style.display=n?'inline-flex':'none';b.textContent=n}
 function clearTags(){pendingTags.clear();syncCb();updateTagBadge(0)}
-function applyTags(){selectedTags=new Set(pendingTags);closeDd('tags');updateTagBadge(selectedTags.size);renderPills();render()}
+function applyTags(){selectedTags=new Set(pendingTags);closeDd('tags');updateTagBadge(selectedTags.size);renderPills();applyFilters()}
 
 function renderPills(){
     const c=document.getElementById('activePills');c.innerHTML='';
     selectedTags.forEach(tag=>{
         const p=document.createElement('div');p.className='tag-pill';
         p.innerHTML=`${tag} <span>✕</span>`;
-        p.addEventListener('click',()=>{selectedTags.delete(tag);pendingTags.delete(tag);syncCb();updateTagBadge(pendingTags.size);renderPills();render()});
+        p.addEventListener('click',()=>{selectedTags.delete(tag);pendingTags.delete(tag);syncCb();updateTagBadge(pendingTags.size);renderPills();applyFilters()});
         c.appendChild(p);
     });
 }
-function setSort(o){sortOrder=o;document.getElementById('sortNew').classList.toggle('active',o==='newest');document.getElementById('sortOld').classList.toggle('active',o==='oldest');render()}
-document.getElementById('blogSearch').addEventListener('input',e=>{searchQuery=e.target.value;render()});
+function setSort(o){sortOrder=o;document.getElementById('sortNew').classList.toggle('active',o==='newest');document.getElementById('sortOld').classList.toggle('active',o==='oldest');applyFilters()}
+document.getElementById('blogSearch').addEventListener('input',e=>{searchQuery=e.target.value;applyFilters()});
 
 function matchesTime(d){
     if(timeFilter==='all')return true;
@@ -486,10 +489,79 @@ function matchesTime(d){
 }
 function fmtDate(s){return new Date(s).toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'})}
 
-/* ═══ RENDER ═══ */
-function render(){
+/* ═══ CARD CREATION ═══ */
+const cardMap=new Map(); // post.id -> article element
+
+function createCard(post){
+    const ep=String(post.id).padStart(2,'0');
+    const tagsHtml=post.tags.map(t=>`<span class="ct ${TAG_CLASS[t]||'ct-default'}" data-tag="${t}" aria-label="tag: ${t}">${t}</span>`).join('');
+    const article=document.createElement('article');
+    article.className='folder-card';
+    article.dataset.postId=String(post.id);
+    article.innerHTML=`
+        <div class="folder-back"></div>
+        <div class="folder-tab">
+            <span class="tab-odc">odc.</span>
+            <span class="tab-num">${ep}</span>
+        </div>
+        <div class="folder-paper"></div>
+        <div class="folder-front">
+            <div class="card-head">
+                <div class="card-tags-row">${tagsHtml}</div>
+                <div class="read-time" aria-label="szacowany czas czytania: ${post.readingTime} minut">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span aria-hidden="true">${post.readingTime} min</span>
+                </div>
+            </div>
+            <h3 class="card-title">${post.title}</h3>
+            <p class="card-excerpt">${post.excerpt}</p>
+            <div class="card-divider"></div>
+            <div class="card-foot">
+                <div class="card-author">
+                    <div class="author-avatar">TS</div>
+                    <div>
+                        <div class="author-name">${post.author.name}</div>
+                        <div class="author-role">${post.author.role}</div>
+                    </div>
+                </div>
+                <div class="card-date">
+                    <span class="date-label">Opublikowano</span>
+                    <span class="date-val">${fmtDate(post.date)}</span>
+                </div>
+            </div>
+        </div>
+        <div class="folder-hint">kliknij, aby czytać</div>
+    `;
+    article.querySelectorAll('.ct[data-tag]').forEach(el=>{
+        el.addEventListener('click',e=>{
+            e.stopPropagation();
+            const tag=el.dataset.tag;
+            if(!selectedTags.has(tag)){selectedTags.add(tag);pendingTags.add(tag);syncCb();updateTagBadge(pendingTags.size);renderPills();applyFilters()}
+        });
+    });
+    article.setAttribute('tabindex','0');
+    article.setAttribute('role','button');
+    article.setAttribute('aria-label',`Otwórz odcinek ${ep}: ${post.title}`);
+    article.addEventListener('click',()=>openArticle(post,article));
+    article.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openArticle(post,article);}});
+    return article;
+}
+
+/* ═══ INIT GRID — run once ═══ */
+function initGrid(){
+    const grid=document.getElementById('blogGrid');
+    grid.innerHTML='';
+    posts.forEach(post=>{
+        const card=createCard(post);
+        cardMap.set(post.id,card);
+        grid.appendChild(card);
+    });
+}
+
+/* ═══ APPLY FILTERS — uses GSAP Flip ═══ */
+function applyFilters(){
     const q=searchQuery.toLowerCase().trim();
-    let res=posts.filter(p=>{
+    const matched=posts.filter(p=>{
         if(selectedTags.size>0&&!p.tags.some(t=>selectedTags.has(t)))return false;
         if(!matchesTime(p.date))return false;
         if(q&&!p.title.toLowerCase().includes(q)&&!p.excerpt.toLowerCase().includes(q)&&!p.tags.some(t=>t.toLowerCase().includes(q)))return false;
@@ -497,69 +569,36 @@ function render(){
     }).sort((a,b)=>sortOrder==='newest'?new Date(b.date)-new Date(a.date):new Date(a.date)-new Date(b.date));
 
     const grid=document.getElementById('blogGrid');
-    document.getElementById('blogCount').textContent=`${res.length} / ${posts.length} wpisów`;
+    const emptyEl=document.getElementById('blogEmpty');
+    const matchedIds=new Set(matched.map(p=>p.id));
+    const allCards=Array.from(cardMap.values());
 
-    if(!res.length){
-        grid.innerHTML=`<div class="blog-empty"><span class="empty-icon">🗂</span>Nie znaleziono wpisów pasujących do filtrów.</div>`;
-        return;
-    }
+    document.getElementById('blogCount').textContent=`${matched.length} / ${posts.length} wpisów`;
 
-    grid.innerHTML='';
-    res.forEach(post=>{
-        const ep=String(post.id).padStart(2,'0');
-        const tagsHtml=post.tags.map(t=>`<span class="ct ${TAG_CLASS[t]||'ct-default'}" data-tag="${t}" aria-label="tag: ${t}">${t}</span>`).join('');
+    // Capture state before DOM changes
+    const state=Flip.getState(allCards);
 
-        const article=document.createElement('article');
-        article.className='folder-card';
-        article.innerHTML=`
-            <div class="folder-back"></div>
-            <div class="folder-tab">
-                <span class="tab-odc">odc.</span>
-                <span class="tab-num">${ep}</span>
-            </div>
-            <div class="folder-paper"></div>
-            <div class="folder-front">
-                <div class="card-head">
-                    <div class="card-tags-row">${tagsHtml}</div>
-                    <div class="read-time" aria-label="szacowany czas czytania: ${post.readingTime} minut">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        <span aria-hidden="true">${post.readingTime} min</span>
-                    </div>
-                </div>
-                <h3 class="card-title">${post.title}</h3>
-                <p class="card-excerpt">${post.excerpt}</p>
-                <div class="card-divider"></div>
-                <div class="card-foot">
-                    <div class="card-author">
-                        <div class="author-avatar">TS</div>
-                        <div>
-                            <div class="author-name">${post.author.name}</div>
-                            <div class="author-role">${post.author.role}</div>
-                        </div>
-                    </div>
-                    <div class="card-date">
-                        <span class="date-label">Opublikowano</span>
-                        <span class="date-val">${fmtDate(post.date)}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="folder-hint">kliknij, aby czytać</div>
-        `;
+    // Reorder: append matched cards in sorted order (moves them to end in correct sequence)
+    matched.forEach(post=>grid.appendChild(cardMap.get(post.id)));
 
-        article.querySelectorAll('.ct[data-tag]').forEach(el=>{
-            el.addEventListener('click',e=>{
-                e.stopPropagation();
-                const tag=el.dataset.tag;
-                if(!selectedTags.has(tag)){selectedTags.add(tag);pendingTags.add(tag);syncCb();updateTagBadge(pendingTags.size);renderPills();render()}
-            });
-        });
+    // Show matched, hide unmatched
+    allCards.forEach(card=>{
+        const id=Number(card.dataset.postId);
+        card.style.display=matchedIds.has(id)?'':'none';
+    });
 
-        article.setAttribute('tabindex','0');
-        article.setAttribute('role','button');
-        article.setAttribute('aria-label',`Otwórz odcinek ${ep}: ${post.title}`);
-        article.addEventListener('click',()=>openArticle(post,article));
-        article.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openArticle(post,article);}});
-        grid.appendChild(article);
+    // Toggle empty state
+    emptyEl.style.display=matched.length?'none':'block';
+
+    // Animate from previous state
+    Flip.from(state,{
+        duration:0.65,
+        scale:true,
+        ease:'power2.inOut',
+        stagger:0.05,
+        absolute:true,
+        onEnter:elements=>gsap.fromTo(elements,{opacity:0,scale:0.85},{opacity:1,scale:1,duration:0.5,ease:'back.out(1.4)'}),
+        onLeave:elements=>gsap.to(elements,{opacity:0,scale:0.85,duration:0.35,ease:'power1.in'}),
     });
 }
 
@@ -633,7 +672,9 @@ overlay.addEventListener('wheel',e=>{
     if(overlayLoading.style.display==='flex'||!overlayScrollEl.contains(e.target))e.preventDefault();
 },{passive:false});
 
-render();
+gsap.registerPlugin(Flip);
+initGrid();
+applyFilters();
 </script>
 </body>
 </html>
