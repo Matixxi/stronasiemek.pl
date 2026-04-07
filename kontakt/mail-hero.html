@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mail Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --bg:#fefcfc;--bg2:#f9f4f5;--bg3:#f3ebec;
+    --accent:#b5707b;--accent-l:#d4959e;--accent-d:#8e4f5a;
+    --accent2:#6b5b7b;--accent3:#5b7b7b;
+    --surface:rgba(181,112,123,.03);--surface2:rgba(181,112,123,.06);
+    --border:rgba(181,112,123,.10);--border2:rgba(181,112,123,.18);
+    --text:#2a1f22;--text2:#6b555b;--text3:#a8919a;
+    --sans:'Space Grotesk',sans-serif;
+    --display:'Syne',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --hand:'Caveat',cursive;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text)}
+.page{max-width:960px;margin:0 auto;padding:80px 32px 140px}
+a{color:inherit;text-decoration:none}
+
+.mail-hero{
+    position:relative;margin-bottom:48px;
+    padding:64px 56px;border-radius:28px;
+    background:linear-gradient(135deg,#1f222a,#2a303a);
+    overflow:hidden;container-type:inline-size;
+}
+.mail-hero-content{position:relative;z-index:1}
+.mail-envelope-bg{
+    position:absolute;right:5%;top:50%;transform:translateY(-50%);
+    width:36%;height:auto;opacity:0;z-index:0;pointer-events:none;overflow:visible;
+}
+.mail-hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 80% 50%,rgba(107,91,123,.14),transparent 60%);
+    pointer-events:none;
+}
+.mail-hero::after{
+    content:'NAPISZ';
+    position:absolute;top:-1px;left:48px;
+    font-family:var(--mono);font-size:.58rem;font-weight:600;letter-spacing:3px;
+    color:rgba(107,91,123,.7);text-transform:uppercase;
+    background:rgba(107,91,123,.08);border-bottom:1px solid rgba(107,91,123,.15);
+    border-radius:0 0 8px 8px;padding:6px 16px;
+}
+
+.mail-label{
+    font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:2.5px;
+    text-transform:uppercase;color:rgba(181,149,212,.8);margin-bottom:20px;
+    display:flex;align-items:center;gap:10px;
+}
+.mail-label .dot{
+    width:8px;height:8px;border-radius:50%;background:#9b8ab5;
+    flex-shrink:0;
+}
+
+.mail-address{
+    font-family:var(--sans);
+    font-size:6cqw;
+    font-weight:700;letter-spacing:-.5px;line-height:1;
+    color:#fff;display:block;margin-bottom:24px;
+    transition:color .3s;white-space:nowrap;
+}
+.mail-address:hover{color:var(--accent-l)}
+
+.mail-note{
+    font-family:var(--hand);font-size:1.45rem;color:rgba(181,149,212,.7);
+    transform:rotate(-1deg);display:inline-block;
+}
+
+.mail-btn{
+    display:inline-flex;align-items:center;gap:10px;
+    margin-top:36px;
+    font-family:var(--mono);font-size:.8rem;font-weight:600;letter-spacing:1px;
+    text-transform:uppercase;padding:16px 36px;border-radius:50px;
+    background:var(--accent2);color:#fff;
+    box-shadow:0 8px 32px rgba(107,91,123,.35);
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+    border:1.5px solid transparent;
+}
+.mail-btn:hover{background:transparent;border-color:rgba(181,149,212,.5);color:rgba(181,149,212,.9);box-shadow:none;transform:translateY(-2px)}
+.mail-btn svg{width:16px;height:16px;transition:transform .3s}
+.mail-btn:hover svg{transform:translateX(3px)}
+
+@media(max-width:720px){
+    .mail-hero{padding:40px 28px}
+    .mail-hero::after{left:28px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="mail-hero">
+
+    <svg class="mail-envelope-bg" id="mailDrawSvg" viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="mg" x1="0" y1="0" x2="80" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#c4b0d8"/>
+                <stop offset="60%" stop-color="#9b8ab5"/>
+                <stop offset="100%" stop-color="#6b5b7b"/>
+            </linearGradient>
+            <!-- clip to inner edge of rounded rect so lines never escape the silhouette -->
+            <clipPath id="envClip">
+                <rect x="1.5" y="1.5" width="77" height="53" rx="3"/>
+            </clipPath>
+        </defs>
+        <!-- Envelope outline -->
+        <rect class="draw" x="1" y="1" width="78" height="54" rx="4" stroke="url(#mg)" stroke-width="1.4"/>
+        <!-- Inner fold lines — clipped to envelope shape -->
+        <g clip-path="url(#envClip)">
+            <!-- Bottom fold lines drawn first — they stop exactly where they hit the flap lines,
+                 creating the illusion the bottom triangle is tucked behind the top flap -->
+            <path class="draw" d="M0 56 L37 28" stroke="url(#mg)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="draw" d="M80 56 L43 28" stroke="url(#mg)" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- Top flap drawn last — V from top corners to apex at 54% height -->
+            <path class="draw" d="M0 0 L40 30 L80 0" stroke="url(#mg)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+    </svg>
+
+    <div class="mail-hero-content">
+        <div class="mail-label"><div class="dot"></div>E-mail</div>
+        <a href="mailto:tomasz@siemek.pl" class="mail-address">tomasz@siemek.pl</a>
+        <a href="mailto:tomasz@siemek.pl" class="mail-btn">
+            Napisz wiadomość
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/DrawSVGPlugin.min.js"></script>
+<script>
+gsap.registerPlugin(DrawSVGPlugin);
+
+gsap.timeline({ repeat: -1, defaults: { ease: 'power1.inOut' } })
+    .set('#mailDrawSvg', { opacity: 0.22 })
+    .from('#mailDrawSvg .draw', { drawSVG: '0% 0%', duration: 2.6, stagger: 0.2 })
+    .to('#mailDrawSvg .draw', { drawSVG: '100% 100%', duration: 2.2, stagger: 0.2 }, '+=0.8');
+</script>
+
+</body>
+</html>
