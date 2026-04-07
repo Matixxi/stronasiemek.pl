@@ -226,37 +226,57 @@ a{color:inherit;text-decoration:none}
 /* ═══ ARTICLE OVERLAY ═══ */
 .overlay{position:fixed;inset:0;z-index:50000;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .overlay.open{pointer-events:all}
-.overlay-backdrop{position:absolute;inset:0;background:rgba(42,31,34,.6);opacity:0;transition:opacity .25s ease;will-change:opacity}
+.overlay-backdrop{
+    position:absolute;inset:0;
+    background:rgba(18,12,14,.72);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    opacity:0;transition:opacity .3s ease;will-change:opacity;
+}
 .overlay.open .overlay-backdrop{opacity:1}
 .overlay-paper{
     position:relative;z-index:1;
-    width:min(720px,92vw);
-    background:var(--bg);border-radius:12px;
+    width:min(880px,96vw);
+    background:var(--bg);
+    border-radius:20px;
     overflow:hidden;
-    box-shadow:0 32px 80px rgba(0,0,0,.25);
+    box-shadow:0 48px 120px rgba(0,0,0,.38),0 0 0 1px rgba(181,112,123,.14);
     opacity:0;
-    transform:translateY(32px);
-    transition:opacity .38s ease,transform .42s cubic-bezier(.16,1,.3,1);
+    transform:translateY(44px) scale(.96);
+    transition:opacity .42s ease,transform .52s cubic-bezier(.16,1,.3,1);
     will-change:transform,opacity;
 }
-.overlay.open .overlay-paper{opacity:1;transform:translateY(0)}
-.overlay-scroll{max-height:88vh;overflow-y:auto;overscroll-behavior:contain}
-.overlay-close{
-    position:sticky;top:0;float:right;
-    width:36px;height:36px;border-radius:50%;
-    background:var(--surface2);border:none;
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;transition:background .2s;
-    margin:14px 14px 0 0;z-index:2;
+.overlay.open .overlay-paper{opacity:1;transform:translateY(0) scale(1)}
+.overlay-scroll{max-height:92vh;overflow-y:auto;overscroll-behavior:contain}
+
+/* Top bar — floats over scroll area */
+.overlay-topbar{
+    position:absolute;top:0;left:0;right:0;z-index:10;
+    display:flex;align-items:center;gap:10px;
+    padding:10px 14px 10px 18px;
+    background:rgba(254,252,252,.88);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-radius:20px 20px 0 0;
+    border-bottom:1px solid rgba(255,255,255,.1);
 }
-.overlay-close:hover{background:var(--glow)}
-.overlay-close svg{width:14px;height:14px;stroke:var(--text2);stroke-width:2.5;fill:none}
+.overlay-topbar-tags{display:flex;align-items:center;gap:5px;flex:1;overflow:hidden}
+.overlay-close{
+    width:32px;height:32px;border-radius:50%;flex-shrink:0;
+    background:var(--surface2);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:all .2s;
+}
+.overlay-close:hover{background:rgba(181,112,123,.1);border-color:var(--accent)}
+.overlay-close svg{width:13px;height:13px;stroke:var(--text2);stroke-width:2.5;fill:none}
 
 /* Loading */
-.overlay-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:60px 40px 80px;min-height:380px}
-.pen-wrap{width:44px;height:76px}
-.pen-svg{width:100%;height:100%;animation:penSway 2.2s ease-in-out infinite;transform-origin:50% 18%}
-@keyframes penSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg) translateX(5px)}}
+.overlay-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:106px 40px 100px;min-height:400px}
+.pen-wrap{width:44px;height:76px;overflow:visible}
+.pen-svg{width:100%;height:100%;transform-origin:50% 92%;animation:penWrite 2.4s ease-in-out infinite}
+@keyframes penWrite{
+    0%  {transform:rotate(28deg) translateX(-6px)}
+    50% {transform:rotate(30deg) translateX(6px)}
+    100%{transform:rotate(28deg) translateX(-6px)}
+}
 .writing-lines{display:flex;flex-direction:column;gap:9px;width:140px}
 .wline{height:1.5px;border-radius:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;opacity:0}
 .wline:nth-child(1){animation:writeLine 2.2s ease infinite}
@@ -270,17 +290,55 @@ a{color:inherit;text-decoration:none}
 .ldot:nth-child(3){animation-delay:.4s}
 @keyframes ldotBounce{0%,60%,100%{opacity:0;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
 
-/* Article content */
-.overlay-content{padding:28px 36px 52px;display:none}
-.oc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.oc-title{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;letter-spacing:-1px;line-height:1.15;color:var(--text);margin-bottom:14px}
-.oc-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:24px}
-.oc-author{display:flex;align-items:center;gap:8px}
-.oc-author-name{font-size:.82rem;font-weight:600;color:var(--text)}
-.oc-author-role{font-family:var(--mono);font-size:.62rem;color:var(--text3)}
-.oc-sep{width:1px;height:20px;background:var(--border)}
-.oc-stat{font-family:var(--mono);font-size:.65rem;color:var(--text3)}
-.oc-body p{font-size:.95rem;color:var(--text2);line-height:1.85;font-weight:300;margin-bottom:18px}
+/* Article hero */
+.oc-hero{
+    padding:100px 60px 44px;
+    background:linear-gradient(150deg,#2a1f22 0%,#3c2530 55%,#2e2240 100%);
+    position:relative;overflow:hidden;
+}
+.oc-hero::before{
+    content:'';position:absolute;
+    top:-40%;right:-8%;width:65%;height:160%;
+    background:radial-gradient(ellipse,rgba(181,112,123,.18) 0%,transparent 65%);
+    pointer-events:none;
+}
+.oc-hero::after{
+    content:'';position:absolute;
+    bottom:-20%;left:5%;width:45%;height:80%;
+    background:radial-gradient(ellipse,rgba(107,91,123,.13) 0%,transparent 65%);
+    pointer-events:none;
+}
+.oc-hero-ep{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;
+    letter-spacing:3px;text-transform:uppercase;
+    color:rgba(212,149,158,.7);margin-bottom:14px;
+}
+.oc-hero .oc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.oc-hero .ct{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.oc-title{
+    font-family:var(--sans);
+    font-size:clamp(1.45rem,2.8vw,2.1rem);
+    font-weight:600;letter-spacing:-.3px;line-height:1.3;
+    color:#fff;margin-bottom:34px;position:relative;
+}
+.oc-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:relative}
+.oc-author{display:flex;align-items:center;gap:10px}
+.oc-avatar{
+    width:38px;height:38px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent-l),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:.68rem;font-weight:700;color:#fff;
+    border:2px solid rgba(255,255,255,.18);
+}
+.oc-author-name{font-size:.84rem;font-weight:600;color:rgba(255,255,255,.88);line-height:1}
+.oc-author-role{font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.65);margin-top:3px}
+.oc-sep{width:1px;height:20px;background:rgba(255,255,255,.18)}
+.oc-stat{font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.65)}
+
+/* Article body */
+.oc-body-wrap{padding:44px 60px 72px}
+.oc-body p{font-size:.97rem;color:var(--text2);line-height:1.92;font-weight:300;margin-bottom:22px}
+.oc-body p:first-child{font-size:1.05rem;color:var(--text);font-weight:400;line-height:1.85}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
@@ -289,12 +347,16 @@ a{color:inherit;text-decoration:none}
     .fbar{top:8px}
     .sbox{flex:1;min-width:0}
     .sbox input{width:100%}
+    .oc-hero{padding:84px 28px 32px}
+    .oc-body-wrap{padding:32px 28px 56px}
 }
 @media(max-width:560px){
     .fbar{flex-direction:column;align-items:stretch}
     .fbar-left,.fbar-right{width:100%}
     .sort-row{margin-left:0}
-    .overlay-content{padding:20px 18px 40px}
+    .oc-hero{padding:76px 20px 24px}
+    .oc-body-wrap{padding:24px 20px 48px}
+    .overlay-paper{border-radius:14px}
 }
 @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -365,33 +427,43 @@ a{color:inherit;text-decoration:none}
     <div class="overlay-backdrop" id="overlayBackdrop" aria-hidden="true"></div>
     <div class="overlay-paper" id="overlayPaper">
         <div class="overlay-scroll">
-        <button class="overlay-close" id="overlayClose" aria-label="Zamknij artykuł">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-        <div class="overlay-loading" id="overlayLoading" role="status" aria-live="polite">
-            <div class="pen-wrap">
-                <svg class="pen-svg" viewBox="0 0 40 88" fill="none" aria-hidden="true">
-                    <rect x="11" y="2" width="18" height="28" rx="9" fill="#b5707b" opacity=".5"/>
-                    <rect x="13" y="4" width="14" height="24" rx="7" fill="#d4959e" opacity=".25"/>
-                    <rect x="19" y="2" width="3" height="20" rx="1.5" fill="#8e4f5a" opacity=".35"/>
-                    <rect x="10" y="28" width="20" height="5" rx="2" fill="#8e4f5a" opacity=".3"/>
-                    <rect x="12" y="31" width="16" height="26" rx="3" fill="#b5707b" opacity=".7"/>
-                    <rect x="13" y="55" width="14" height="10" rx="3" fill="#8e4f5a" opacity=".55"/>
-                    <path d="M13 65 L20 84 L27 65 Z" fill="#6b5b7b" opacity=".75"/>
-                    <line x1="20" y1="70" x2="20" y2="84" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
-                    <circle cx="20" cy="84.5" r="2" fill="#6b5b7b" opacity=".45"/>
-                </svg>
+            <div class="overlay-topbar">
+                <div class="overlay-topbar-tags" id="overlayTopbarTags"></div>
+                <button class="overlay-close" id="overlayClose" aria-label="Zamknij artykuł">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
-            <div class="writing-lines">
-                <div class="wline"></div>
-                <div class="wline"></div>
-                <div class="wline"></div>
+            <div class="overlay-loading" id="overlayLoading" role="status" aria-live="polite">
+                <div class="pen-wrap">
+                    <svg class="pen-svg" viewBox="0 0 40 88" fill="none" aria-hidden="true">
+                        <!-- flat top button -->
+                        <rect x="17" y="2" width="6" height="3" rx="1.5" fill="#8e4f5a" opacity=".7"/>
+                        <!-- barrel -->
+                        <rect x="15.5" y="5" width="9" height="44" rx="1" fill="#b5707b" opacity=".62"/>
+                        <!-- barrel left-edge highlight -->
+                        <rect x="16" y="6" width="2" height="42" rx="1" fill="rgba(255,255,255,.1)"/>
+                        <!-- section band -->
+                        <rect x="15.5" y="48" width="9" height="2.5" rx="1" fill="#8e4f5a" opacity=".62"/>
+                        <!-- grip -->
+                        <rect x="16.5" y="50.5" width="7" height="10" rx=".8" fill="#8e4f5a" opacity=".56"/>
+                        <!-- nib taper (curved) -->
+                        <path d="M16.5 60.5 Q15.5 70 20 85 Q24.5 70 23.5 60.5 Z" fill="#6b5b7b" opacity=".82"/>
+                        <!-- nib slit -->
+                        <line x1="20" y1="65" x2="20" y2="84.5" stroke="rgba(255,255,255,.2)" stroke-width=".85"/>
+                        <!-- ink tip -->
+                        <circle cx="20" cy="85" r="1.3" fill="#d4959e" opacity=".55"/>
+                    </svg>
+                </div>
+                <div class="writing-lines">
+                    <div class="wline"></div>
+                    <div class="wline"></div>
+                    <div class="wline"></div>
+                </div>
+                <div class="loading-text">
+                    Ładowanie artykułu<span class="ldot">.</span><span class="ldot">.</span><span class="ldot">.</span>
+                </div>
             </div>
-            <div class="loading-text">
-                Ładowanie artykułu<span class="ldot">.</span><span class="ldot">.</span><span class="ldot">.</span>
-            </div>
-        </div>
-        <div class="overlay-content" id="overlayContent" aria-live="polite"></div>
+            <div class="overlay-content" id="overlayContent" aria-live="polite"></div>
         </div><!-- /overlay-scroll -->
     </div>
 </div>
@@ -616,8 +688,9 @@ function getFocusable(){
 function openArticle(post,triggerEl){
     lastFocusedCard=triggerEl||document.activeElement;
     overlayLoading.style.display='flex';
-    overlayContent.style.display='block';
     overlayContent.innerHTML='';
+    document.getElementById('overlayTopbarTags').innerHTML='';
+    document.querySelector('.overlay-scroll').scrollTop=0;
     overlay.classList.add('open');
     clearTimeout(loadTimer);
     requestAnimationFrame(()=>document.getElementById('overlayClose').focus());
@@ -629,25 +702,35 @@ function closeOverlay(){
     if(lastFocusedCard){lastFocusedCard.focus();lastFocusedCard=null;}
 }
 function showArticle(post){
+    const ep=String(post.id).padStart(2,'0');
     const tagsHtml=post.tags.map(t=>`<span class="ct ${TAG_CLASS[t]||'ct-default'}" aria-label="tag: ${t}">${t}</span>`).join('');
+    document.getElementById('overlayTopbarTags').innerHTML=tagsHtml;
     overlayContent.innerHTML=`
-        <div class="oc-tags">${tagsHtml}</div>
-        <h2 class="oc-title">${post.title}</h2>
-        <div class="oc-meta">
-            <div class="oc-author">
-                <div class="author-avatar">TS</div>
-                <div><div class="oc-author-name">${post.author.name}</div><div class="oc-author-role">${post.author.role}</div></div>
+        <div class="oc-hero">
+            <div class="oc-hero-ep">Odcinek ${ep}</div>
+            <div class="oc-tags">${tagsHtml}</div>
+            <h2 class="oc-title">${post.title}</h2>
+            <div class="oc-meta">
+                <div class="oc-author">
+                    <div class="oc-avatar">TS</div>
+                    <div>
+                        <div class="oc-author-name">${post.author.name}</div>
+                        <div class="oc-author-role">${post.author.role}</div>
+                    </div>
+                </div>
+                <div class="oc-sep"></div>
+                <span class="oc-stat">${fmtDate(post.date)}</span>
+                <div class="oc-sep"></div>
+                <span class="oc-stat" aria-label="szacowany czas czytania: ${post.readingTime} minut">${post.readingTime} min czytania</span>
             </div>
-            <div class="oc-sep"></div>
-            <span class="oc-stat">${fmtDate(post.date)}</span>
-            <div class="oc-sep"></div>
-            <span class="oc-stat" aria-label="szacowany czas czytania: ${post.readingTime} minut">${post.readingTime} min czytania</span>
         </div>
-        <div class="oc-body">
-            <p>${post.excerpt}</p>
-            <p>Treść artykułu zostanie tutaj załadowana — docelowo zastąp ten placeholder rzeczywistą zawartością wpisu pobieraną z CMS lub pliku Markdown.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="oc-body-wrap">
+            <div class="oc-body">
+                <p>${post.excerpt}</p>
+                <p>Treść artykułu zostanie tutaj załadowana — docelowo zastąp ten placeholder rzeczywistą zawartością wpisu pobieraną z CMS lub pliku Markdown.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
         </div>
     `;
     overlayLoading.style.display='none';
