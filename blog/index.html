@@ -132,6 +132,21 @@ a{color:inherit;text-decoration:none}
     will-change:transform;
     box-shadow:0 -2px 8px rgba(181,112,123,.06);
 }
+.folder-paper::before{
+    content:'';
+    position:absolute;
+    top:11px;left:0;right:0;
+    height:1px;
+    background:rgba(0,0,0,.08);
+}
+.folder-paper::after{
+    content:'';
+    position:absolute;
+    top:0;bottom:0;right:22px;
+    width:1px;
+    background:var(--accent);
+    opacity:.3;
+}
 
 .folder-card:hover .folder-paper{
     transform:translateY(-22px) translateZ(0);
@@ -203,6 +218,7 @@ a{color:inherit;text-decoration:none}
 .date-val{font-family:var(--mono);font-size:.67rem;color:var(--text2)}
 
 /* Hover hint */
+
 .folder-hint{
     position:absolute;
     bottom:-24px;left:50%;transform:translateX(-50%);
@@ -577,6 +593,7 @@ function createCard(post){
             <span class="tab-num">${ep}</span>
         </div>
         <div class="folder-paper"></div>
+        <div class="folder-hint">kliknij, aby czytać</div>
         <div class="folder-front">
             <div class="card-head">
                 <div class="card-tags-row">${tagsHtml}</div>
@@ -602,7 +619,6 @@ function createCard(post){
                 </div>
             </div>
         </div>
-        <div class="folder-hint">kliknij, aby czytać</div>
     `;
     article.querySelectorAll('.ct[data-tag]').forEach(el=>{
         el.addEventListener('click',e=>{
