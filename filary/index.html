@@ -12,6 +12,7 @@
     --bg:#fefcfc;--bg2:#f9f4f5;--bg3:#f3ebec;
     --accent:#b5707b;--accent-l:#d4959e;--accent-d:#8e4f5a;
     --accent2:#6b5b7b;--accent3:#5b7b7b;
+    --glow:rgba(181,112,123,.08);
     --surface:rgba(181,112,123,.03);--surface2:rgba(181,112,123,.06);
     --border:rgba(181,112,123,.10);--border2:rgba(181,112,123,.18);
     --text:#2a1f22;--text2:#6b555b;--text3:#a8919a;
@@ -26,6 +27,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:h
 a{color:inherit;text-decoration:none}
 ::selection{background:rgba(181,112,123,.15);color:var(--accent-d)}
 
+/* ═══ NAV ═══ */
 .nav{
     position:fixed;top:0;left:0;right:0;z-index:100;
     padding:20px 40px;display:flex;align-items:center;justify-content:space-between;
@@ -37,212 +39,899 @@ a{color:inherit;text-decoration:none}
 .nav-link{font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text3);transition:color .3s}
 .nav-link:hover{color:var(--accent)}
 
-.hero{padding:160px 40px 80px;max-width:900px;margin:0 auto}
+/* ═══ HERO ═══ */
+.hero{
+    position:relative;padding:180px 40px 100px;max-width:1100px;margin:0 auto;
+    text-align:center;overflow:hidden;
+}
 .hero-tag{
     font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;
     text-transform:uppercase;color:var(--accent);margin-bottom:16px;
-    display:flex;align-items:center;gap:10px;
+    display:inline-flex;align-items:center;gap:10px;
 }
 .hero-tag::before{content:'';width:24px;height:2px;background:var(--accent);border-radius:1px}
 .hero-title{
-    font-family:var(--display);font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;
-    letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px;
+    font-family:var(--display);font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800;
+    letter-spacing:-2px;line-height:1.08;margin-bottom:24px;
 }
 .hero-title .dim{color:var(--text3);font-weight:400}
-.hero-intro{font-size:1.1rem;color:var(--text2);line-height:1.8;font-weight:300;max-width:640px}
+.hero-intro{
+    font-size:1.15rem;color:var(--text2);line-height:1.85;font-weight:300;
+    max-width:640px;margin:0 auto;
+}
+
+/* Floating shapes in hero */
+.hero-shapes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-shape{
+    position:absolute;border-radius:50%;opacity:0;
+}
+.hs-1{width:300px;height:300px;background:radial-gradient(circle,rgba(181,112,123,.06) 0%,transparent 70%);top:-60px;right:-80px}
+.hs-2{width:200px;height:200px;background:radial-gradient(circle,rgba(107,91,123,.06) 0%,transparent 70%);bottom:0;left:-40px}
+.hs-3{width:250px;height:250px;background:radial-gradient(circle,rgba(91,123,123,.06) 0%,transparent 70%);top:30%;left:60%}
+
+/* ═══ PILLAR NAV (sticky tabs) ═══ */
+.pillar-nav{
+    position:sticky;top:65px;z-index:50;
+    display:flex;justify-content:center;gap:8px;
+    padding:16px 20px;
+    background:rgba(254,252,252,.9);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+}
+.pnav-btn{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:1.5px;
+    text-transform:uppercase;padding:10px 24px;border-radius:50px;
+    border:1px solid var(--border);background:transparent;color:var(--text3);
+    cursor:pointer;transition:all .35s cubic-bezier(.16,1,.3,1);
+}
+.pnav-btn:hover{border-color:var(--border2);color:var(--text2)}
+.pnav-btn.active-1{background:rgba(181,112,123,.08);border-color:rgba(181,112,123,.2);color:var(--accent)}
+.pnav-btn.active-2{background:rgba(107,91,123,.08);border-color:rgba(107,91,123,.2);color:var(--accent2)}
+.pnav-btn.active-3{background:rgba(91,123,123,.08);border-color:rgba(91,123,123,.2);color:var(--accent3)}
 
 /* ═══ FILAR SECTION ═══ */
-.filar-sec{max-width:900px;margin:0 auto;padding:80px 40px;border-top:1px solid var(--border)}
-.filar-sec:first-of-type{border-top:none}
-.filar-header{display:flex;align-items:flex-start;gap:24px;margin-bottom:36px}
-.filar-icon{
-    width:72px;height:72px;border-radius:20px;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;font-size:2rem;
+.filar-sec{
+    max-width:1100px;margin:0 auto;padding:120px 40px;
+    position:relative;
 }
-.fi-1{background:rgba(181,112,123,.06);border:1px solid rgba(181,112,123,.12)}
-.fi-2{background:rgba(107,91,123,.06);border:1px solid rgba(107,91,123,.12)}
-.fi-3{background:rgba(91,123,123,.06);border:1px solid rgba(91,123,123,.12)}
-.filar-num{font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:3px;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
-.filar-title{font-family:var(--display);font-size:1.8rem;font-weight:800;letter-spacing:-1px;line-height:1.2}
+.filar-sec + .filar-sec{border-top:1px solid var(--border)}
+
+/* Section number label */
+.filar-label{
+    font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:4px;
+    text-transform:uppercase;color:var(--text3);margin-bottom:20px;
+    display:flex;align-items:center;gap:12px;
+}
+.filar-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Layout: content + illustration side by side */
+.filar-row{
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.filar-row.reverse{direction:rtl}
+.filar-row.reverse > *{direction:ltr}
+
+.filar-content{position:relative}
+.filar-num-icon{
+    font-family:var(--display);font-weight:800;font-size:clamp(4rem,8vw,5.5rem);
+    letter-spacing:-4px;line-height:1;margin-bottom:16px;
+    -webkit-text-stroke:1.5px;
+    -webkit-text-fill-color:transparent;
+    opacity:.35;
+}
+.filar-num-icon.fn-1{-webkit-text-stroke-color:var(--accent)}
+.filar-num-icon.fn-2{-webkit-text-stroke-color:var(--accent2)}
+.filar-num-icon.fn-3{-webkit-text-stroke-color:var(--accent3)}
+
+.filar-title{
+    font-family:var(--display);font-size:clamp(2rem,4vw,2.8rem);font-weight:800;
+    letter-spacing:-1.5px;line-height:1.1;margin-bottom:24px;color:var(--text);
+}
+.filar-title span{
+    display:block;font-family:var(--hand);font-weight:400;
+    font-size:clamp(1.3rem,2.5vw,1.7rem);letter-spacing:0;
+    margin-top:4px;
+}
+.filar-title span.t-1{color:var(--accent)}
+.filar-title span.t-2{color:var(--accent2)}
+.filar-title span.t-3{color:var(--accent3)}
 .filar-body{font-size:1rem;color:var(--text2);line-height:1.85;font-weight:300}
 .filar-body p{margin-bottom:16px}
 .filar-body strong{color:var(--text);font-weight:600}
 
+/* Illustration panel */
+.filar-illust{
+    position:relative;display:flex;align-items:center;justify-content:center;
+    min-height:400px;
+}
+.filar-illust svg{
+    width:100%;max-width:420px;height:auto;
+}
+
+/* ═══ FEATURE CARDS ═══ */
 .filar-features{
-    display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px;
 }
 .feat{
-    padding:24px;border-radius:16px;background:var(--bg2);border:1px solid var(--border);
-    transition:all .3s;
+    padding:28px;border-radius:18px;background:var(--bg2);border:1px solid var(--border);
+    transition:all .4s cubic-bezier(.16,1,.3,1);
+    position:relative;overflow:hidden;
 }
-.feat:hover{border-color:rgba(181,112,123,.2);transform:translateY(-2px)}
-.feat h4{font-family:var(--display);font-size:1rem;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
-.feat p{font-size:.82rem;color:var(--text3);line-height:1.65;font-weight:300}
+.feat::before{
+    content:'';position:absolute;top:0;left:0;width:3px;height:0;
+    border-radius:0 2px 2px 0;transition:height .5s cubic-bezier(.16,1,.3,1);
+}
+.feat.vis::before{height:100%}
+.feat[data-c="1"]::before{background:var(--accent)}
+.feat[data-c="2"]::before{background:var(--accent2)}
+.feat[data-c="3"]::before{background:var(--accent3)}
+.feat:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(181,112,123,.06)}
+.feat[data-c="1"]:hover{border-color:rgba(181,112,123,.2)}
+.feat[data-c="2"]:hover{border-color:rgba(107,91,123,.2)}
+.feat[data-c="3"]:hover{border-color:rgba(91,123,123,.2)}
+.feat h4{
+    font-family:var(--display);font-size:1.05rem;font-weight:700;margin-bottom:8px;
+    letter-spacing:-.3px;display:flex;align-items:center;gap:8px;
+}
+.feat-num{
+    font-family:var(--mono);font-size:.55rem;font-weight:600;
+    width:20px;height:20px;border-radius:6px;display:inline-flex;
+    align-items:center;justify-content:center;flex-shrink:0;
+}
+.feat[data-c="1"] .feat-num{background:rgba(181,112,123,.1);color:var(--accent)}
+.feat[data-c="2"] .feat-num{background:rgba(107,91,123,.1);color:var(--accent2)}
+.feat[data-c="3"] .feat-num{background:rgba(91,123,123,.1);color:var(--accent3)}
+.feat p{font-size:.84rem;color:var(--text3);line-height:1.7;font-weight:300}
 
-.cta{
-    text-align:center;padding:80px 40px;
-    background:linear-gradient(135deg,var(--dark) 0%,#2a1f22 100%);
+/* ═══ CONNECTION SECTION ═══ */
+.connection-sec{
+    padding:100px 40px;text-align:center;
+    background:var(--bg2);position:relative;overflow:hidden;
 }
-.cta h2{font-family:var(--display);font-size:2rem;font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:12px}
-.cta p{font-size:.95rem;color:rgba(255,255,255,.5);margin-bottom:32px;font-weight:300}
+.conn-tag{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;
+    text-transform:uppercase;color:var(--accent);margin-bottom:12px;
+}
+.conn-title{
+    font-family:var(--display);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;
+    letter-spacing:-1px;margin-bottom:60px;
+}
+.conn-title .dim{color:var(--text3);font-weight:400}
+
+.conn-diagram{
+    max-width:700px;margin:0 auto;position:relative;
+}
+.conn-diagram svg{width:100%;height:auto}
+
+/* ═══ STATS BAR ═══ */
+.stats-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    max-width:900px;margin:0 auto 0;
+    border-radius:24px;overflow:hidden;
+    border:1px solid var(--border);background:var(--bg);
+}
+.stat-cell{
+    padding:36px 24px;text-align:center;
+    border-right:1px solid var(--border);
+    transition:background .3s;
+}
+.stat-cell:last-child{border-right:none}
+.stat-cell:hover{background:var(--bg2)}
+.stat-val{
+    font-family:var(--display);font-size:2.4rem;font-weight:800;
+    letter-spacing:-1px;line-height:1;
+}
+.stat-cell:nth-child(1) .stat-val{color:var(--accent)}
+.stat-cell:nth-child(2) .stat-val{color:var(--accent2)}
+.stat-cell:nth-child(3) .stat-val{color:var(--accent3)}
+.stat-lbl{
+    font-family:var(--mono);font-size:.6rem;letter-spacing:2px;
+    text-transform:uppercase;color:var(--text3);margin-top:6px;
+}
+
+/* ═══ CTA ═══ */
+.cta{
+    text-align:center;padding:100px 40px;
+    background:linear-gradient(135deg,var(--dark) 0%,#2a1f22 100%);
+    position:relative;overflow:hidden;
+}
+.cta-shapes{position:absolute;inset:0;pointer-events:none}
+.cta h2{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:12px;position:relative}
+.cta p{font-size:.95rem;color:rgba(255,255,255,.5);margin-bottom:36px;font-weight:300;position:relative}
 .cta-btn{
     display:inline-flex;align-items:center;gap:8px;
     font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:1px;
-    text-transform:uppercase;padding:16px 36px;border-radius:50px;
+    text-transform:uppercase;padding:18px 40px;border-radius:50px;
     background:#fff;color:var(--dark);text-decoration:none;
-    transition:all .35s cubic-bezier(.16,1,.3,1);
+    transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;
 }
 .cta-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
 
+/* ═══ FOOTER ═══ */
 .footer{
     padding:40px;text-align:center;
     font-family:var(--mono);font-size:.68rem;color:var(--text3);letter-spacing:1px;
     border-top:1px solid var(--border);
 }
 
-.rv{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+/* ═══ ANIMATIONS ═══ */
+.rv{opacity:0;transform:translateY(28px);transition:all .8s cubic-bezier(.16,1,.3,1)}
 .rv.vis{opacity:1;transform:translateY(0)}
 
+.rv-left{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.rv-left.vis{opacity:1;transform:translateX(0)}
+
+.rv-right{opacity:0;transform:translateX(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.rv-right.vis{opacity:1;transform:translateX(0)}
+
+.rv-scale{opacity:0;transform:scale(.9);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.rv-scale.vis{opacity:1;transform:scale(1)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+    .filar-row{grid-template-columns:1fr;gap:48px}
+    .filar-row.reverse{direction:ltr}
+    .filar-illust{min-height:280px}
+    .filar-illust svg{max-width:320px}
+}
 @media(max-width:768px){
-    .hero{padding:120px 20px 60px}
-    .filar-sec{padding:60px 20px}
-    .filar-header{flex-direction:column;gap:16px}
+    .hero{padding:140px 20px 80px}
+    .filar-sec{padding:80px 20px}
     .filar-features{grid-template-columns:1fr}
     .nav{padding:16px 20px}
+    .pillar-nav{gap:4px;padding:12px 12px}
+    .pnav-btn{padding:8px 14px;font-size:.6rem;letter-spacing:1px}
+    .stats-strip{grid-template-columns:1fr;border-radius:16px}
+    .stat-cell{border-right:none;border-bottom:1px solid var(--border)}
+    .stat-cell:last-child{border-bottom:none}
+    .connection-sec{padding:60px 20px}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
     <a href="../" class="nav-logo">TS://</a>
     <div class="nav-links">
         <a href="../" class="nav-link">Strona główna</a>
         <a href="../#o-mnie" class="nav-link">O mnie</a>
-        <a href="../#szkolenia" class="nav-link">Szkolenia</a>
+        <a href="../szkolenia/" class="nav-link">Szkolenia</a>
     </div>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
+    <div class="hero-shapes">
+        <div class="hero-shape hs-1"></div>
+        <div class="hero-shape hs-2"></div>
+        <div class="hero-shape hs-3"></div>
+    </div>
     <div class="hero-tag rv">Filary działalności</div>
-    <h1 class="hero-title rv" style="transition-delay:.08s">Główne filary<br><span class="dim">mojej działalności.</span></h1>
-    <p class="hero-intro rv" style="transition-delay:.16s">Moja praca koncentruje się wokół trzech wzajemnie powiązanych obszarów — mikropoświadczeń, nowoczesnych systemów egzaminacyjnych i sztucznej inteligencji w edukacji i biznesie.</p>
+    <h1 class="hero-title rv" style="transition-delay:.08s">Trzy filary,<br><span class="dim">jeden cel.</span></h1>
+    <p class="hero-intro rv" style="transition-delay:.16s">Mikropoświadczenia, systemy egzaminacyjne i AI — trzy obszary, które osobno zmieniają edukację, a razem tworzą coś znacznie większego. Oto jak to wygląda w praktyce.</p>
 </div>
 
-<!-- MIKROPOŚWIADCZENIA -->
-<div class="filar-sec rv" id="mikro">
-    <div class="filar-header">
-        <div class="filar-icon fi-1">🏅</div>
-        <div>
-            <div class="filar-num">Filar 01</div>
-            <div class="filar-title">Mikropoświadczenia</div>
+<!-- PILLAR NAV -->
+<div class="pillar-nav" id="pillarNav">
+    <button class="pnav-btn" data-target="mikro" data-idx="1">01 &middot; Mikropoświadczenia</button>
+    <button class="pnav-btn" data-target="egzaminy" data-idx="2">02 &middot; Egzaminy</button>
+    <button class="pnav-btn" data-target="ai" data-idx="3">03 &middot; AI</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- FILAR 01: MIKROPOŚWIADCZENIA                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="filar-sec" id="mikro" data-idx="1">
+    <div class="filar-label rv">Filar 01 — Mikropoświadczenia</div>
+    <div class="filar-row">
+        <div class="filar-content rv-left">
+            <div class="filar-num-icon fn-1">01</div>
+            <h2 class="filar-title">Mikropoświadczenia <span class="t-1">— certyfikaty, które mają sens.</span></h2>
+            <div class="filar-body">
+                <p>Tradycyjny dyplom mówi: „ukończył studia". Mikropoświadczenie mówi: <strong>„potrafi to i to — i mamy na to dowód"</strong>. Krótkie, konkretne, rozpoznawalne na rynku pracy.</p>
+                <p>Projektuję i wdrażam takie systemy od zera — od wymyślenia, jak to powinno wyglądać, przez dobranie platformy, aż po zgodność z europejskimi standardami typu Bologna Process czy ECTS. Całość, nie wyrywki.</p>
+                <p>Cel? Żeby uczelnia miała ofertę, na którą studenci chcą się zapisywać, a pracodawcy wiedzą, co za nią stoi.</p>
+            </div>
+        </div>
+        <div class="filar-illust rv-right" style="transition-delay:.15s">
+            <svg viewBox="0 0 400 400" fill="none" id="illustMikro">
+                <!-- Background decorative circles -->
+                <circle cx="200" cy="200" r="160" stroke="rgba(181,112,123,.06)" stroke-width="1" stroke-dasharray="8 6" class="deco-ring"/>
+                <circle cx="200" cy="200" r="120" stroke="rgba(181,112,123,.08)" stroke-width="1" stroke-dasharray="4 8" class="deco-ring"/>
+
+                <!-- Central badge -->
+                <circle cx="200" cy="180" r="65" fill="rgba(181,112,123,.04)" class="badge-bg"/>
+                <circle cx="200" cy="180" r="65" stroke="var(--accent)" stroke-width="2.5" fill="none" stroke-dasharray="408" stroke-dashoffset="408" class="badge-ring"/>
+                <circle cx="200" cy="180" r="48" fill="rgba(181,112,123,.08)" class="badge-inner"/>
+
+                <!-- Checkmark -->
+                <path d="M178 180l14 14 30-30" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="60" stroke-dashoffset="60" class="badge-check"/>
+
+                <!-- Ribbon -->
+                <path d="M155 230l-15 50 22-14 10 18 14-54" fill="var(--accent)" opacity="0" class="ribbon-l"/>
+                <path d="M245 230l15 50-22-14-10 18-14-54" fill="var(--accent-l)" opacity="0" class="ribbon-r"/>
+
+                <!-- Floating credential cards -->
+                <g class="cred-card cred-1" opacity="0" transform="translate(40,80)">
+                    <rect x="0" y="0" width="80" height="50" rx="8" fill="white" stroke="rgba(181,112,123,.15)" stroke-width="1"/>
+                    <rect x="10" y="10" width="35" height="4" rx="2" fill="rgba(181,112,123,.3)"/>
+                    <rect x="10" y="20" width="25" height="3" rx="1.5" fill="rgba(181,112,123,.15)"/>
+                    <rect x="10" y="28" width="30" height="3" rx="1.5" fill="rgba(181,112,123,.15)"/>
+                    <circle cx="62" cy="18" r="8" fill="rgba(181,112,123,.08)" stroke="var(--accent)" stroke-width="1"/>
+                    <path d="M58 18l3 3 5-5" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                </g>
+                <g class="cred-card cred-2" opacity="0" transform="translate(280,100)">
+                    <rect x="0" y="0" width="80" height="50" rx="8" fill="white" stroke="rgba(181,112,123,.15)" stroke-width="1"/>
+                    <rect x="10" y="10" width="30" height="4" rx="2" fill="rgba(181,112,123,.3)"/>
+                    <rect x="10" y="20" width="40" height="3" rx="1.5" fill="rgba(181,112,123,.15)"/>
+                    <rect x="10" y="28" width="20" height="3" rx="1.5" fill="rgba(181,112,123,.15)"/>
+                    <circle cx="62" cy="18" r="8" fill="rgba(181,112,123,.08)" stroke="var(--accent)" stroke-width="1"/>
+                    <path d="M58 18l3 3 5-5" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                </g>
+                <g class="cred-card cred-3" opacity="0" transform="translate(60,260)">
+                    <rect x="0" y="0" width="80" height="50" rx="8" fill="white" stroke="rgba(181,112,123,.15)" stroke-width="1"/>
+                    <rect x="10" y="10" width="38" height="4" rx="2" fill="rgba(181,112,123,.3)"/>
+                    <rect x="10" y="20" width="28" height="3" rx="1.5" fill="rgba(181,112,123,.15)"/>
+                    <rect x="10" y="28" width="34" height="3" rx="1.5" fill="rgba(181,112,123,.15)"/>
+                    <circle cx="62" cy="18" r="8" fill="rgba(181,112,123,.08)" stroke="var(--accent)" stroke-width="1"/>
+                    <path d="M58 18l3 3 5-5" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                </g>
+
+                <!-- Sparkles -->
+                <circle class="spark" cx="100" cy="120" r="3" fill="var(--accent)" opacity="0"/>
+                <circle class="spark" cx="300" cy="150" r="2.5" fill="var(--accent-l)" opacity="0"/>
+                <circle class="spark" cx="140" cy="300" r="2" fill="var(--accent)" opacity="0"/>
+                <circle class="spark" cx="280" cy="280" r="3" fill="var(--accent-l)" opacity="0"/>
+                <circle class="spark" cx="320" cy="80" r="2" fill="var(--accent)" opacity="0"/>
+            </svg>
         </div>
     </div>
-    <div class="filar-body">
-        <p>Mikropoświadczenia to krótkie, certyfikowane potwierdzenia konkretnych kompetencji. W przeciwieństwie do tradycyjnych dyplomów — są precyzyjne, elastyczne i odpowiadają na realne potrzeby rynku pracy.</p>
-        <p><strong>Projektuję i wdrażam kompletne systemy mikropoświadczeń</strong> dla uczelni wyższych — od analizy potrzeb, przez architekturę platformy, po certyfikację zgodną z europejskimi standardami (Bologna Process, ECTS, European Digital Credentials).</p>
-        <p>Pomagam uczelniom budować nowoczesną ofertę edukacyjną, która jest atrakcyjna dla studentów i rozpoznawalna przez pracodawców.</p>
-    </div>
+
     <div class="filar-features">
-        <div class="feat rv" style="transition-delay:.05s">
-            <h4>Projektowanie frameworków</h4>
-            <p>Tworzenie struktur mikropoświadczeń dopasowanych do programów kształcenia i potrzeb rynku pracy.</p>
+        <div class="feat rv" data-c="1" style="transition-delay:.05s">
+            <h4><span class="feat-num">01</span> Projektowanie frameworków</h4>
+            <p>Jakie kompetencje certyfikować? Jak zmapować ścieżki rozwoju? Buduję struktury, które pasują do Twojego programu kształcenia i mają sens na rynku pracy.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.1s">
-            <h4>Wdrożenia platform</h4>
-            <p>Dobór i konfiguracja platform do wydawania i zarządzania digital credentials.</p>
+        <div class="feat rv" data-c="1" style="transition-delay:.12s">
+            <h4><span class="feat-num">02</span> Wdrożenia platform</h4>
+            <p>Dobieram platformę, konfiguruję, integruję z tym, co uczelnia już ma. Bez rewolucji — z ewolucją, która działa od pierwszego dnia.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.15s">
-            <h4>Zgodność z regulacjami</h4>
-            <p>Certyfikaty zgodne z Bologna Process, ECTS i europejskimi standardami cyfrowych poświadczeń.</p>
+        <div class="feat rv" data-c="1" style="transition-delay:.19s">
+            <h4><span class="feat-num">03</span> Zgodność z regulacjami</h4>
+            <p>Bologna Process, ECTS, European Digital Credentials — pilnuję, żeby certyfikaty były rozpoznawalne w całej Europie. Zero domysłów, pełna interoperacyjność.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.2s">
-            <h4>Szkolenia dla kadry</h4>
-            <p>Warsztaty dla wykładowców i administracji z projektowania i zarządzania mikropoświadczeniami.</p>
+        <div class="feat rv" data-c="1" style="transition-delay:.26s">
+            <h4><span class="feat-num">04</span> Szkolenia dla kadry</h4>
+            <p>Wykładowcy i administracja muszą wiedzieć, jak z tego korzystać. Prowadzę warsztaty, które robią z nich ekspertów — nie tylko użytkowników.</p>
         </div>
     </div>
 </div>
 
-<!-- SYSTEMY EGZAMINACYJNE -->
-<div class="filar-sec rv" id="egzaminy">
-    <div class="filar-header">
-        <div class="filar-icon fi-2">📋</div>
-        <div>
-            <div class="filar-num">Filar 02</div>
-            <div class="filar-title">Nowoczesne systemy egzaminacyjne</div>
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- FILAR 02: SYSTEMY EGZAMINACYJNE                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="filar-sec" id="egzaminy" data-idx="2">
+    <div class="filar-label rv">Filar 02 — Systemy egzaminacyjne</div>
+    <div class="filar-row reverse">
+        <div class="filar-content rv-right">
+            <div class="filar-num-icon fn-2">02</div>
+            <h2 class="filar-title">Systemy egzaminacyjne <span class="t-2">— koniec z papierowymi testami.</span></h2>
+            <div class="filar-body">
+                <p>Klasyczny egzamin z krzyżykami? To było dobre 20 lat temu. Dzisiaj buduję <strong>systemy, które naprawdę wiedzą, co student umie</strong> — adaptują się w locie, oceniają automatycznie i dają wykładowcy pełny obraz.</p>
+                <p>AI, które czyta eseje. Testy, które dostosowują trudność do poziomu zdającego. Dashboardy z analityką w czasie rzeczywistym. To nie science fiction — to działa już teraz na uczelniach, z którymi współpracuję.</p>
+                <p>Wszystko zaprojektowane tak, żeby było bezpieczne, dostępne i zgodne z wymogami akredytacji.</p>
+            </div>
+        </div>
+        <div class="filar-illust rv-left" style="transition-delay:.15s">
+            <svg viewBox="0 0 400 400" fill="none" id="illustExam">
+                <!-- Background grid -->
+                <g class="grid-lines" opacity="0">
+                    <line x1="80" y1="60" x2="80" y2="340" stroke="rgba(107,91,123,.06)" stroke-width="1"/>
+                    <line x1="160" y1="60" x2="160" y2="340" stroke="rgba(107,91,123,.06)" stroke-width="1"/>
+                    <line x1="240" y1="60" x2="240" y2="340" stroke="rgba(107,91,123,.06)" stroke-width="1"/>
+                    <line x1="320" y1="60" x2="320" y2="340" stroke="rgba(107,91,123,.06)" stroke-width="1"/>
+                    <line x1="50" y1="100" x2="350" y2="100" stroke="rgba(107,91,123,.06)" stroke-width="1"/>
+                    <line x1="50" y1="180" x2="350" y2="180" stroke="rgba(107,91,123,.06)" stroke-width="1"/>
+                    <line x1="50" y1="260" x2="350" y2="260" stroke="rgba(107,91,123,.06)" stroke-width="1"/>
+                </g>
+
+                <!-- Monitor frame -->
+                <rect class="mon-frame" x="65" y="50" width="270" height="195" rx="12" stroke="var(--accent2)" stroke-width="2.5" fill="rgba(107,91,123,.03)" stroke-dasharray="930" stroke-dashoffset="930"/>
+                <line class="mon-stand" x1="200" y1="245" x2="200" y2="275" stroke="var(--accent2)" stroke-width="2.5" stroke-dasharray="30" stroke-dashoffset="30"/>
+                <line class="mon-base" x1="150" y1="275" x2="250" y2="275" stroke="var(--accent2)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="100"/>
+
+                <!-- Quiz content inside monitor -->
+                <g class="quiz-content" opacity="0">
+                    <!-- Question text lines -->
+                    <rect x="90" y="75" width="120" height="6" rx="3" fill="var(--accent2)" opacity=".6"/>
+                    <rect x="90" y="88" width="80" height="4" rx="2" fill="rgba(107,91,123,.25)"/>
+
+                    <!-- Answer options -->
+                    <g class="quiz-opt opt-a">
+                        <rect x="90" y="108" width="220" height="28" rx="6" fill="rgba(107,91,123,.04)" stroke="rgba(107,91,123,.12)" stroke-width="1"/>
+                        <circle cx="106" cy="122" r="6" fill="none" stroke="rgba(107,91,123,.3)" stroke-width="1.5"/>
+                        <rect x="120" y="119" width="80" height="5" rx="2.5" fill="rgba(107,91,123,.2)"/>
+                    </g>
+                    <g class="quiz-opt opt-b">
+                        <rect x="90" y="143" width="220" height="28" rx="6" fill="rgba(107,91,123,.04)" stroke="rgba(107,91,123,.12)" stroke-width="1"/>
+                        <circle cx="106" cy="157" r="6" fill="none" stroke="rgba(107,91,123,.3)" stroke-width="1.5"/>
+                        <rect x="120" y="154" width="100" height="5" rx="2.5" fill="rgba(107,91,123,.2)"/>
+                    </g>
+                    <g class="quiz-opt opt-c">
+                        <rect x="90" y="178" width="220" height="28" rx="6" fill="rgba(107,91,123,.04)" stroke="rgba(107,91,123,.12)" stroke-width="1"/>
+                        <circle cx="106" cy="192" r="6" fill="none" stroke="rgba(107,91,123,.3)" stroke-width="1.5"/>
+                        <rect x="120" y="189" width="70" height="5" rx="2.5" fill="rgba(107,91,123,.2)"/>
+                    </g>
+
+                    <!-- Progress bar -->
+                    <rect x="90" y="218" width="220" height="5" rx="2.5" fill="rgba(107,91,123,.08)"/>
+                    <rect class="quiz-prog" x="90" y="218" width="0" height="5" rx="2.5" fill="var(--accent2)"/>
+                </g>
+
+                <!-- Correct answer highlight (appears after) -->
+                <rect class="correct-highlight" x="90" y="143" width="220" height="28" rx="6" fill="rgba(107,91,123,.1)" stroke="var(--accent2)" stroke-width="2" opacity="0"/>
+                <path class="correct-check" d="M101 157l4 4 8-8" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" opacity="0"/>
+
+                <!-- Floating analytics cards -->
+                <g class="analytics-card ac-1" opacity="0" transform="translate(0,0)">
+                    <rect x="280" y="295" width="100" height="65" rx="10" fill="white" stroke="rgba(107,91,123,.12)" stroke-width="1" filter="url(#shadow2)"/>
+                    <text x="295" y="315" font-family="var(--mono)" font-size="7" fill="var(--text3)" letter-spacing="1">WYNIK</text>
+                    <text x="295" y="340" font-family="var(--display)" font-size="22" font-weight="800" fill="var(--accent2)" class="score-text">98%</text>
+                </g>
+                <g class="analytics-card ac-2" opacity="0" transform="translate(0,0)">
+                    <rect x="20" y="295" width="100" height="65" rx="10" fill="white" stroke="rgba(107,91,123,.12)" stroke-width="1" filter="url(#shadow2)"/>
+                    <text x="35" y="315" font-family="var(--mono)" font-size="7" fill="var(--text3)" letter-spacing="1">CZAS</text>
+                    <text x="35" y="340" font-family="var(--display)" font-size="18" font-weight="800" fill="var(--accent2)">12:34</text>
+                </g>
+
+                <defs>
+                    <filter id="shadow2" x="-10%" y="-10%" width="130%" height="140%">
+                        <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(107,91,123,.08)"/>
+                    </filter>
+                </defs>
+            </svg>
         </div>
     </div>
-    <div class="filar-body">
-        <p>Tradycyjne egzaminy nie nadążają za potrzebami współczesnej edukacji. Projektuję <strong>systemy weryfikacji wiedzy nowej generacji</strong> — oparte o sztuczną inteligencję, adaptacyjne i skalowalne.</p>
-        <p>Moje rozwiązania pozwalają uczelniom i firmom szkoleniowym precyzyjnie mierzyć kompetencje, automatyzować ocenianie i uzyskiwać wgląd w rzeczywisty poziom wiedzy uczestników — w czasie rzeczywistym.</p>
-        <p>Każdy system jest projektowany z myślą o bezpieczeństwie, dostępności i zgodności z wymogami akredytacyjnymi.</p>
-    </div>
+
     <div class="filar-features">
-        <div class="feat rv" style="transition-delay:.05s">
-            <h4>Testy adaptacyjne</h4>
-            <p>Egzaminy, które dynamicznie dostosowują poziom trudności do odpowiedzi zdającego.</p>
+        <div class="feat rv" data-c="2" style="transition-delay:.05s">
+            <h4><span class="feat-num">01</span> Testy adaptacyjne</h4>
+            <p>Egzamin, który sam reguluje trudność pytań w zależności od tego, jak ktoś odpowiada. Lepszy pomiar w krótszym czasie — bez nudnego przeklikiwania banalnych pytań.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.1s">
-            <h4>Automatyczna ocena</h4>
-            <p>AI oceniające odpowiedzi otwarte, eseje i zadania projektowe z dokładnością eksperta.</p>
+        <div class="feat rv" data-c="2" style="transition-delay:.12s">
+            <h4><span class="feat-num">02</span> Automatyczna ocena</h4>
+            <p>AI, które czyta eseje i ocenia zadania otwarte — spójnie, szybko i bez „a bo mi się wydawało". Wykładowca dostaje gotowe wyniki, nie stos kartek.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.15s">
-            <h4>Analityka wyników</h4>
-            <p>Dashboardy z real-time analityką — luki kompetencyjne, trendy, porównania kohort.</p>
+        <div class="feat rv" data-c="2" style="transition-delay:.19s">
+            <h4><span class="feat-num">03</span> Analityka wyników</h4>
+            <p>Gdzie są luki kompetencyjne? Które grupy wypadają słabiej? Dashboard pokazuje to w czasie rzeczywistym — koniec z domysłami.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.2s">
-            <h4>Bezpieczeństwo egzaminów</h4>
-            <p>Proctoring, randomizacja pytań, detekcja oszustw — egzaminy odporne na manipulacje.</p>
+        <div class="feat rv" data-c="2" style="transition-delay:.26s">
+            <h4><span class="feat-num">04</span> Bezpieczeństwo egzaminów</h4>
+            <p>Randomizacja, proctoring, detekcja podejrzanych zachowań. System, który pilnuje uczciwości — żebyś Ty nie musiał.</p>
         </div>
     </div>
 </div>
 
-<!-- SZTUCZNA INTELIGENCJA -->
-<div class="filar-sec rv" id="ai">
-    <div class="filar-header">
-        <div class="filar-icon fi-3">🤖</div>
-        <div>
-            <div class="filar-num">Filar 03</div>
-            <div class="filar-title">Sztuczna inteligencja</div>
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- FILAR 03: SZTUCZNA INTELIGENCJA                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="filar-sec" id="ai" data-idx="3">
+    <div class="filar-label rv">Filar 03 — Sztuczna inteligencja</div>
+    <div class="filar-row">
+        <div class="filar-content rv-left">
+            <div class="filar-num-icon fn-3">03</div>
+            <h2 class="filar-title">Sztuczna inteligencja <span class="t-3">— nie buzzword, a narzędzie.</span></h2>
+            <div class="filar-body">
+                <p>Wszyscy mówią o AI. Ja pomagam <strong>naprawdę z tego korzystać</strong> — bez hype'u, za to z konkretnymi wynikami. Uczelniom i firmom, które chcą wdrożyć AI mądrze, a nie „bo wszyscy wdrażają".</p>
+                <p>Personalizacja nauczania, chatboty, agenci AI, automatyzacja nudnych procesów — robię to wszystko. Od strategii i audytu, przez prototyp, po działający system w produkcji.</p>
+                <p>Badam jako naukowiec, wdrażam jako konsultant, uczę jako trener. Trzy perspektywy, jedno podejście — żeby AI rzeczywiście działało.</p>
+            </div>
+        </div>
+        <div class="filar-illust rv-right" style="transition-delay:.15s">
+            <svg viewBox="0 0 400 400" fill="none" id="illustAI">
+                <!-- Background pulse rings -->
+                <circle cx="200" cy="200" r="150" stroke="rgba(91,123,123,.04)" stroke-width="1" class="ai-pulse-ring"/>
+                <circle cx="200" cy="200" r="110" stroke="rgba(91,123,123,.06)" stroke-width="1" class="ai-pulse-ring"/>
+
+                <!-- Neural network — layer 1 (input) -->
+                <circle class="nn-node nn-i1" cx="80" cy="110" r="12" fill="rgba(91,123,123,.08)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+                <circle class="nn-node nn-i2" cx="80" cy="200" r="12" fill="rgba(91,123,123,.08)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+                <circle class="nn-node nn-i3" cx="80" cy="290" r="12" fill="rgba(91,123,123,.08)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+
+                <!-- Layer 2 (hidden 1) -->
+                <circle class="nn-node nn-h1" cx="175" cy="130" r="14" fill="rgba(91,123,123,.1)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+                <circle class="nn-node nn-h2" cx="175" cy="210" r="14" fill="rgba(91,123,123,.1)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+                <circle class="nn-node nn-h3" cx="175" cy="290" r="14" fill="rgba(91,123,123,.1)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+
+                <!-- Layer 3 (hidden 2) -->
+                <circle class="nn-node nn-h4" cx="270" cy="160" r="14" fill="rgba(91,123,123,.1)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+                <circle class="nn-node nn-h5" cx="270" cy="250" r="14" fill="rgba(91,123,123,.1)" stroke="var(--accent3)" stroke-width="2" opacity="0"/>
+
+                <!-- Layer 4 (output) -->
+                <circle class="nn-node nn-out" cx="345" cy="200" r="18" fill="rgba(91,123,123,.12)" stroke="var(--accent3)" stroke-width="2.5" opacity="0"/>
+
+                <!-- Connections L1->L2 -->
+                <line class="nn-conn" x1="92" y1="110" x2="161" y2="130" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="110" x2="161" y2="210" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="110" x2="161" y2="290" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="200" x2="161" y2="130" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="200" x2="161" y2="210" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="200" x2="161" y2="290" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="290" x2="161" y2="130" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="290" x2="161" y2="210" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="92" y1="290" x2="161" y2="290" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+
+                <!-- Connections L2->L3 -->
+                <line class="nn-conn" x1="189" y1="130" x2="256" y2="160" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="189" y1="130" x2="256" y2="250" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="189" y1="210" x2="256" y2="160" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="189" y1="210" x2="256" y2="250" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="189" y1="290" x2="256" y2="160" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+                <line class="nn-conn" x1="189" y1="290" x2="256" y2="250" stroke="var(--accent3)" stroke-width="1" opacity="0"/>
+
+                <!-- Connections L3->output -->
+                <line class="nn-conn" x1="284" y1="160" x2="327" y2="200" stroke="var(--accent3)" stroke-width="1.5" opacity="0"/>
+                <line class="nn-conn" x1="284" y1="250" x2="327" y2="200" stroke="var(--accent3)" stroke-width="1.5" opacity="0"/>
+
+                <!-- Output glow -->
+                <circle class="nn-glow" cx="345" cy="200" r="28" fill="none" stroke="var(--accent3)" stroke-width="1.5" opacity="0" stroke-dasharray="176" stroke-dashoffset="176"/>
+
+                <!-- AI label -->
+                <text class="nn-label" x="345" y="205" text-anchor="middle" font-family="var(--mono)" font-size="14" font-weight="700" fill="var(--accent3)" opacity="0">AI</text>
+
+                <!-- Data pulse dots -->
+                <circle class="nn-pulse" r="4" fill="var(--accent3)" opacity="0"/>
+                <circle class="nn-pulse" r="4" fill="var(--accent3)" opacity="0"/>
+                <circle class="nn-pulse" r="4" fill="var(--accent3)" opacity="0"/>
+                <circle class="nn-pulse" r="3" fill="var(--accent3)" opacity="0"/>
+                <circle class="nn-pulse" r="3" fill="var(--accent3)" opacity="0"/>
+            </svg>
         </div>
     </div>
-    <div class="filar-body">
-        <p>Sztuczna inteligencja to nie przyszłość — to teraźniejszość. <strong>Pomagam uczelniom i firmom wdrażać AI</strong> w sposób przemyślany, etyczny i dający mierzalne rezultaty.</p>
-        <p>Od personalizacji nauczania, przez automatyzację procesów administracyjnych, po budowanie agentów AI i systemów opartych o duże modele językowe (LLM) — dostarczam rozwiązania na każdym etapie transformacji.</p>
-        <p>Łączę wiedzę naukową z doświadczeniem praktycznym — jako naukowiec badam, jako konsultant wdrażam, jako trener uczę.</p>
-    </div>
+
     <div class="filar-features">
-        <div class="feat rv" style="transition-delay:.05s">
-            <h4>AI w dydaktyce</h4>
-            <p>Personalizacja nauczania, automatyczne tworzenie materiałów, inteligentni asystenci studentów.</p>
+        <div class="feat rv" data-c="3" style="transition-delay:.05s">
+            <h4><span class="feat-num">01</span> AI w dydaktyce</h4>
+            <p>Materiały, które tworzą się same. Asystent studenta, który nie śpi. Nauczanie dopasowane do każdego — nie do średniej. To nie wizja, to wdrożenia.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.1s">
-            <h4>Consulting & strategia</h4>
-            <p>Audyt procesów, identyfikacja szans automatyzacji, budowa roadmapy wdrożeń AI.</p>
+        <div class="feat rv" data-c="3" style="transition-delay:.12s">
+            <h4><span class="feat-num">02</span> Consulting & strategia</h4>
+            <p>Robię audyt: co można zautomatyzować, gdzie AI da największy efekt, jak to wdrożyć bez chaosu. Wychodzisz z roadmapą, nie z listą życzeń.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.15s">
-            <h4>LLM & agenci AI</h4>
-            <p>Budowa chatbotów, agentów AI i workflow opartych o ChatGPT, Claude i inne modele.</p>
+        <div class="feat rv" data-c="3" style="transition-delay:.19s">
+            <h4><span class="feat-num">03</span> LLM & agenci AI</h4>
+            <p>Chatboty, agenci AI, inteligentne workflow — buduję na ChatGPT, Claude i innych modelach. Od prototypu na warsztacie do systemu w produkcji.</p>
         </div>
-        <div class="feat rv" style="transition-delay:.2s">
-            <h4>Prompt Engineering</h4>
-            <p>Szkolenia i wdrożenia zaawansowanych technik promptingu — chain-of-thought, RAG, fine-tuning.</p>
+        <div class="feat rv" data-c="3" style="transition-delay:.26s">
+            <h4><span class="feat-num">04</span> Prompt Engineering</h4>
+            <p>Chain-of-thought, RAG, fine-tuning — uczę zaawansowanych technik, dzięki którym wyciągniesz z AI maksimum. Nie „napisz mi esej", tylko inżynieria.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CONNECTION SECTION                                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="connection-sec">
+    <div class="conn-tag rv">Synergia</div>
+    <div class="conn-title rv" style="transition-delay:.06s">Trzy filary, <span class="dim">jeden ekosystem.</span></div>
+
+    <div class="conn-diagram rv-scale" style="transition-delay:.15s">
+        <svg viewBox="0 0 600 350" fill="none" id="connDiagram">
+            <!-- Center triangle connections -->
+            <path class="conn-line" d="M300 80 L480 280" stroke="rgba(181,112,123,.15)" stroke-width="2" stroke-dasharray="300" stroke-dashoffset="300"/>
+            <path class="conn-line" d="M480 280 L120 280" stroke="rgba(107,91,123,.15)" stroke-width="2" stroke-dasharray="360" stroke-dashoffset="360"/>
+            <path class="conn-line" d="M120 280 L300 80" stroke="rgba(91,123,123,.15)" stroke-width="2" stroke-dasharray="300" stroke-dashoffset="300"/>
+
+            <!-- Pillar nodes -->
+            <g class="conn-node cn-1" opacity="0">
+                <circle cx="300" cy="80" r="40" fill="rgba(181,112,123,.06)" stroke="var(--accent)" stroke-width="2"/>
+                <text x="300" y="74" text-anchor="middle" font-size="26">🏅</text>
+                <text x="300" y="96" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="var(--accent)" letter-spacing="1" font-weight="600">MIKRO</text>
+            </g>
+            <g class="conn-node cn-2" opacity="0">
+                <circle cx="480" cy="280" r="40" fill="rgba(107,91,123,.06)" stroke="var(--accent2)" stroke-width="2"/>
+                <text x="480" y="274" text-anchor="middle" font-size="26">📋</text>
+                <text x="480" y="296" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="var(--accent2)" letter-spacing="1" font-weight="600">EGZAMINY</text>
+            </g>
+            <g class="conn-node cn-3" opacity="0">
+                <circle cx="120" cy="280" r="40" fill="rgba(91,123,123,.06)" stroke="var(--accent3)" stroke-width="2"/>
+                <text x="120" y="274" text-anchor="middle" font-size="26">🤖</text>
+                <text x="120" y="296" text-anchor="middle" font-family="var(--mono)" font-size="8" fill="var(--accent3)" letter-spacing="1" font-weight="600">AI</text>
+            </g>
+
+            <!-- Center intersection -->
+            <circle class="conn-center" cx="300" cy="210" r="20" fill="rgba(181,112,123,.04)" stroke="var(--border2)" stroke-width="1.5" opacity="0"/>
+            <text class="conn-center-txt" x="300" y="215" text-anchor="middle" font-family="var(--hand)" font-size="16" fill="var(--accent)" opacity="0">synergia</text>
+
+            <!-- Edge labels -->
+            <text class="edge-lbl el-1" x="400" y="170" text-anchor="middle" font-family="var(--hand)" font-size="14" fill="var(--text3)" opacity="0" transform="rotate(30,400,170)">certyfikacja AI</text>
+            <text class="edge-lbl el-2" x="300" y="298" text-anchor="middle" font-family="var(--hand)" font-size="14" fill="var(--text3)" opacity="0">inteligentna ocena</text>
+            <text class="edge-lbl el-3" x="195" y="170" text-anchor="middle" font-family="var(--hand)" font-size="14" fill="var(--text3)" opacity="0" transform="rotate(-30,195,170)">automatyzacja</text>
+
+            <!-- Animated pulse traveling along edges -->
+            <circle class="edge-pulse ep-1" r="4" fill="var(--accent)" opacity="0"/>
+            <circle class="edge-pulse ep-2" r="4" fill="var(--accent2)" opacity="0"/>
+            <circle class="edge-pulse ep-3" r="4" fill="var(--accent3)" opacity="0"/>
+        </svg>
+    </div>
+
+    <div style="max-width:600px;margin:48px auto 0">
+        <div class="stats-strip rv" style="transition-delay:.25s">
+            <div class="stat-cell">
+                <div class="stat-val" data-count="15">0</div>
+                <div class="stat-lbl">Lat doświadczenia</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-val" data-count="500">0</div>
+                <div class="stat-lbl">Przeszkolonych osób</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-val" data-count="30">0</div>
+                <div class="stat-lbl">Wdrożonych projektów</div>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- CTA -->
 <div class="cta">
-    <h2 class="rv">Chcesz wdrożyć jedno z tych rozwiązań?</h2>
-    <p class="rv" style="transition-delay:.06s">Napisz — porozmawiajmy o Twoich potrzebach.</p>
-    <a href="mailto:tomasz@siemek.pl" class="cta-btn rv" style="transition-delay:.12s">Skontaktuj się</a>
+    <div class="cta-shapes">
+        <div class="hero-shape" style="width:400px;height:400px;background:radial-gradient(circle,rgba(181,112,123,.06) 0%,transparent 70%);top:-100px;right:-100px;opacity:.5"></div>
+        <div class="hero-shape" style="width:300px;height:300px;background:radial-gradient(circle,rgba(91,123,123,.06) 0%,transparent 70%);bottom:-50px;left:-50px;opacity:.5"></div>
+    </div>
+    <h2 class="rv">Brzmi jak coś, czego potrzebujesz?</h2>
+    <p class="rv" style="transition-delay:.06s">Napisz — pogadajmy, co ma sens w Twoim przypadku.</p>
+    <a href="../kontakt/" class="cta-btn rv" style="transition-delay:.12s">Skontaktuj się</a>
 </div>
 
 <div class="footer">&copy; 2026 Tomasz Siemek &middot; siemek.pl</div>
 
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')})},{threshold:.1});
-document.querySelectorAll('.rv,.feat').forEach(el=>obs.observe(el));
+gsap.registerPlugin(ScrollTrigger);
+
+/* ═══ REVEAL ON SCROLL ═══ */
+const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('vis');
+            obs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale,.feat').forEach(el => obs.observe(el));
+
+/* ═══ HERO FLOATING SHAPES ═══ */
+gsap.to('.hs-1', { opacity: 1, duration: 1.5, delay: .3 });
+gsap.to('.hs-2', { opacity: 1, duration: 1.5, delay: .5 });
+gsap.to('.hs-3', { opacity: 1, duration: 1.5, delay: .7 });
+gsap.to('.hs-1', { y: -20, x: 10, duration: 6, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+gsap.to('.hs-2', { y: 15, x: -8, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+gsap.to('.hs-3', { y: -12, x: -15, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+/* ═══ PILLAR NAV — active state on scroll ═══ */
+const sections = document.querySelectorAll('.filar-sec');
+const navBtns = document.querySelectorAll('.pnav-btn');
+
+navBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+
+const secObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('in-view');
+            const idx = e.target.dataset.idx;
+            navBtns.forEach(b => {
+                b.className = 'pnav-btn';
+                if (b.dataset.idx === idx) b.classList.add('active-' + idx);
+            });
+        }
+    });
+}, { threshold: 0.3 });
+sections.forEach(s => secObs.observe(s));
+
+/* ═══ ILLUSTRATION 1: MIKROPOŚWIADCZENIA ═══ */
+ScrollTrigger.create({
+    trigger: '#mikro',
+    start: 'top 70%',
+    once: true,
+    onEnter: () => {
+        const tl = gsap.timeline();
+        // Decorative rings rotate
+        tl.to('#illustMikro .deco-ring', { rotation: 360, duration: 40, repeat: -1, ease: 'none', transformOrigin: '200px 200px' }, 0);
+        // Badge ring draws
+        tl.to('#illustMikro .badge-ring', { strokeDashoffset: 0, duration: 1.2, ease: 'power2.out' }, 0);
+        // Inner fill pulses
+        tl.fromTo('#illustMikro .badge-inner', { scale: 0 }, { scale: 1, duration: .6, ease: 'back.out(2)', transformOrigin: '200px 180px' }, .6);
+        // Checkmark draws
+        tl.to('#illustMikro .badge-check', { strokeDashoffset: 0, duration: .6, ease: 'power2.out' }, .9);
+        // Ribbons appear
+        tl.to('#illustMikro .ribbon-l', { opacity: .7, y: 0, duration: .5, ease: 'back.out(2)' }, 1.1);
+        tl.to('#illustMikro .ribbon-r', { opacity: .7, y: 0, duration: .5, ease: 'back.out(2)' }, 1.2);
+        // Credential cards float in
+        tl.to('#illustMikro .cred-1', { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, 1);
+        tl.to('#illustMikro .cred-2', { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, 1.2);
+        tl.to('#illustMikro .cred-3', { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, 1.4);
+        // Sparkles
+        tl.to('#illustMikro .spark', { opacity: 1, stagger: .1, duration: .3 }, 1.3);
+        tl.to('#illustMikro .spark', { opacity: 0, stagger: .1, duration: .3, repeat: -1, yoyo: true, repeatDelay: .8 }, 1.8);
+        // Float credential cards continuously
+        gsap.to('#illustMikro .cred-1', { y: -6, duration: 3, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2 });
+        gsap.to('#illustMikro .cred-2', { y: 8, duration: 3.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2.2 });
+        gsap.to('#illustMikro .cred-3', { y: -5, duration: 4, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2.4 });
+    }
+});
+
+/* ═══ ILLUSTRATION 2: EXAM SYSTEM ═══ */
+ScrollTrigger.create({
+    trigger: '#egzaminy',
+    start: 'top 70%',
+    once: true,
+    onEnter: () => {
+        const tl = gsap.timeline();
+        // Grid lines fade in
+        tl.to('#illustExam .grid-lines', { opacity: 1, duration: .8 }, 0);
+        // Monitor draws
+        tl.to('#illustExam .mon-frame', { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, .2);
+        tl.to('#illustExam .mon-stand', { strokeDashoffset: 0, duration: .3, ease: 'power2.out' }, 1.2);
+        tl.to('#illustExam .mon-base', { strokeDashoffset: 0, duration: .4, ease: 'power2.out' }, 1.4);
+        // Quiz content fades in
+        tl.to('#illustExam .quiz-content', { opacity: 1, duration: .5 }, 1.5);
+        // Answer options highlight sequentially
+        tl.to('#illustExam .opt-a rect:first-child', { fill: 'rgba(107,91,123,.08)', duration: .3 }, 2);
+        tl.to('#illustExam .opt-a rect:first-child', { fill: 'rgba(107,91,123,.04)', duration: .3 }, 2.4);
+        tl.to('#illustExam .opt-b rect:first-child', { fill: 'rgba(107,91,123,.15)', duration: .3 }, 2.6);
+        // Correct answer
+        tl.to('#illustExam .correct-highlight', { opacity: 1, duration: .4 }, 2.9);
+        tl.to('#illustExam .correct-check', { opacity: 1, duration: .3 }, 3.1);
+        // Progress bar fills
+        tl.to('#illustExam .quiz-prog', { width: 165, duration: 1.5, ease: 'power2.inOut' }, 2);
+        // Analytics cards float in
+        tl.to('#illustExam .ac-1', { opacity: 1, y: -10, duration: .6, ease: 'back.out(2)' }, 3);
+        tl.to('#illustExam .ac-2', { opacity: 1, y: -10, duration: .6, ease: 'back.out(2)' }, 3.2);
+        // Float analytics cards
+        gsap.to('#illustExam .ac-1', { y: -16, duration: 3, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 4 });
+        gsap.to('#illustExam .ac-2', { y: -4, duration: 3.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 4.2 });
+    }
+});
+
+/* ═══ ILLUSTRATION 3: AI / NEURAL NETWORK ═══ */
+ScrollTrigger.create({
+    trigger: '#ai',
+    start: 'top 70%',
+    once: true,
+    onEnter: () => {
+        const tl = gsap.timeline();
+        // Pulse rings
+        gsap.to('#illustAI .ai-pulse-ring', {
+            attr: { r: '+=20' }, opacity: 0, duration: 3, repeat: -1,
+            stagger: .8, ease: 'power1.out'
+        });
+        // Connections appear
+        tl.to('#illustAI .nn-conn', { opacity: .2, stagger: .04, duration: .3 }, 0);
+        // Nodes appear layer by layer
+        tl.to('#illustAI .nn-i1, #illustAI .nn-i2, #illustAI .nn-i3', { opacity: 1, stagger: .1, duration: .4, ease: 'back.out(2)' }, .3);
+        tl.to('#illustAI .nn-h1, #illustAI .nn-h2, #illustAI .nn-h3', { opacity: 1, stagger: .1, duration: .4, ease: 'back.out(2)' }, .7);
+        tl.to('#illustAI .nn-h4, #illustAI .nn-h5', { opacity: 1, stagger: .1, duration: .4, ease: 'back.out(2)' }, 1.1);
+        tl.to('#illustAI .nn-out', { opacity: 1, duration: .5, ease: 'back.out(2)' }, 1.4);
+        // Output glow ring
+        tl.to('#illustAI .nn-glow', { opacity: .5, strokeDashoffset: 0, duration: 1, ease: 'power2.out' }, 1.6);
+        // AI label
+        tl.to('#illustAI .nn-label', { opacity: 1, duration: .4 }, 2);
+
+        // Data pulses traveling through network
+        const pulses = document.querySelectorAll('#illustAI .nn-pulse');
+        const paths = [
+            [{ cx: 80, cy: 110 }, { cx: 175, cy: 130 }, { cx: 270, cy: 160 }, { cx: 345, cy: 200 }],
+            [{ cx: 80, cy: 200 }, { cx: 175, cy: 210 }, { cx: 270, cy: 250 }, { cx: 345, cy: 200 }],
+            [{ cx: 80, cy: 290 }, { cx: 175, cy: 290 }, { cx: 270, cy: 160 }, { cx: 345, cy: 200 }],
+            [{ cx: 80, cy: 110 }, { cx: 175, cy: 210 }, { cx: 270, cy: 250 }, { cx: 345, cy: 200 }],
+            [{ cx: 80, cy: 200 }, { cx: 175, cy: 130 }, { cx: 270, cy: 160 }, { cx: 345, cy: 200 }],
+        ];
+        pulses.forEach((p, i) => {
+            const path = paths[i % paths.length];
+            const dly = 2.5 + i * .6;
+            function animatePulse() {
+                const ptl = gsap.timeline({ onComplete: () => gsap.delayedCall(1 + Math.random() * 2, animatePulse) });
+                ptl.set(p, { attr: { cx: path[0].cx, cy: path[0].cy }, opacity: 0 });
+                ptl.to(p, { opacity: .8, duration: .1 });
+                path.forEach((pt, j) => {
+                    if (j === 0) return;
+                    ptl.to(p, { attr: { cx: pt.cx, cy: pt.cy }, duration: .35, ease: 'power1.inOut' });
+                });
+                ptl.to(p, { opacity: 0, duration: .2 });
+            }
+            gsap.delayedCall(dly, animatePulse);
+        });
+
+        // Node hover glow effect
+        gsap.to('#illustAI .nn-out', {
+            attr: { r: 20 }, duration: 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2.5
+        });
+    }
+});
+
+/* ═══ CONNECTION DIAGRAM ═══ */
+ScrollTrigger.create({
+    trigger: '.connection-sec',
+    start: 'top 60%',
+    once: true,
+    onEnter: () => {
+        const tl = gsap.timeline();
+        // Lines draw
+        tl.to('#connDiagram .conn-line', { strokeDashoffset: 0, duration: 1, stagger: .2, ease: 'power2.inOut' }, 0);
+        // Nodes appear
+        tl.to('#connDiagram .cn-1', { opacity: 1, duration: .5, ease: 'back.out(2)' }, .8);
+        tl.to('#connDiagram .cn-2', { opacity: 1, duration: .5, ease: 'back.out(2)' }, 1);
+        tl.to('#connDiagram .cn-3', { opacity: 1, duration: .5, ease: 'back.out(2)' }, 1.2);
+        // Center node
+        tl.to('#connDiagram .conn-center', { opacity: 1, duration: .5, ease: 'back.out(2)' }, 1.5);
+        tl.to('#connDiagram .conn-center-txt', { opacity: 1, duration: .5 }, 1.7);
+        // Edge labels
+        tl.to('#connDiagram .edge-lbl', { opacity: .6, stagger: .15, duration: .5 }, 1.5);
+
+        // Pulse dots traveling along edges
+        function edgePulse(dot, x1, y1, x2, y2, delay) {
+            function go() {
+                gsap.timeline({ onComplete: () => gsap.delayedCall(2 + Math.random() * 2, go) })
+                    .set(dot, { attr: { cx: x1, cy: y1 }, opacity: 0 })
+                    .to(dot, { opacity: .7, duration: .15 })
+                    .to(dot, { attr: { cx: x2, cy: y2 }, duration: 1.2, ease: 'power1.inOut' })
+                    .to(dot, { opacity: 0, duration: .15 });
+            }
+            gsap.delayedCall(delay, go);
+        }
+        edgePulse(document.querySelector('.ep-1'), 300, 80, 480, 280, 2.5);
+        edgePulse(document.querySelector('.ep-2'), 480, 280, 120, 280, 3.2);
+        edgePulse(document.querySelector('.ep-3'), 120, 280, 300, 80, 3.8);
+    }
+});
+
+/* ═══ COUNTER ANIMATION ═══ */
+ScrollTrigger.create({
+    trigger: '.stats-strip',
+    start: 'top 80%',
+    once: true,
+    onEnter: () => {
+        document.querySelectorAll('.stat-val[data-count]').forEach(el => {
+            const target = parseInt(el.dataset.count);
+            const suffix = target >= 100 ? '+' : '+';
+            gsap.to({ val: 0 }, {
+                val: target,
+                duration: 2,
+                ease: 'power2.out',
+                onUpdate: function() {
+                    el.textContent = Math.round(this.targets()[0].val) + suffix;
+                }
+            });
+        });
+    }
+});
+
+/* ═══ PARALLAX SUBTLE ═══ */
+sections.forEach(sec => {
+    const illust = sec.querySelector('.filar-illust');
+    if (illust) {
+        gsap.to(illust, {
+            y: -30,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: sec,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1,
+            }
+        });
+    }
+});
 </script>
 </body>
 </html>
