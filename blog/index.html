@@ -378,6 +378,17 @@ a{color:inherit;text-decoration:none}
     html{scroll-behavior:auto}
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* ═══ CURSOR GLOW ═══ */
+.cur-glow{
+    position:fixed;pointer-events:none;z-index:99998;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,149,158,.12) 0%,rgba(212,149,158,.04) 40%,transparent 70%);
+    transform:translate(-50%,-50%);
+    transition:opacity .4s;opacity:0;
+}
+.cur-glow.vis{opacity:1}
+@media(max-width:960px){.cur-glow{display:none!important}}
 </style>
 </head>
 <body>
@@ -488,25 +499,16 @@ a{color:inherit;text-decoration:none}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
 <script>
 /* ═══ DATA ═══ */
-const ALL_TAGS=['Edukacja','AI','Biznes','Mikropoświadczenia','Prompt Engineering','LLM','Machine Learning','Consulting','E-assessment','Automatyzacja'];
+const ALL_TAGS=['Biznes','Historia','Edukacja','AI','Mikropoświadczenia','Prompt Engineering','Zarządzanie'];
 const TAG_CLASS={
     'Edukacja':'ct-edukacja','AI':'ct-ai','Biznes':'ct-biznes',
     'Mikropoświadczenia':'ct-mik','Prompt Engineering':'ct-prompt',
     'LLM':'ct-llm','Machine Learning':'ct-ml','Consulting':'ct-biznes',
     'E-assessment':'ct-ai','Automatyzacja':'ct-llm',
 };
-const TAG_DOT={'Edukacja':'#b5707b','AI':'#6b5b7b','Biznes':'#5b7b7b','Mikropoświadczenia':'#b07800','Prompt Engineering':'#2563eb','LLM':'#047857','Machine Learning':'#b91c1c','Consulting':'#5b7b7b','E-assessment':'#6b5b7b','Automatyzacja':'#047857'};
+const TAG_DOT={'Biznes':'#5b7b7b','Historia':'#b5707b','Edukacja':'#b5707b','AI':'#6b5b7b','Mikropoświadczenia':'#b07800','Prompt Engineering':'#2563eb','Zarządzanie':'#047857'};
 const posts=[
-    {id:1,title:'Czym są mikropoświadczenia i dlaczego uczelnie nie mogą ich ignorować?',excerpt:'Koncepcja mikropoświadczeń zdobywa coraz więcej zwolenników w szkolnictwie wyższym. Wyjaśniam, czym dokładnie są, jak działają i dlaczego to właśnie teraz jest najlepszy moment na wdrożenie.',tags:['Edukacja','Mikropoświadczenia'],date:'2026-01-06',readingTime:7,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:2,title:'AI w nowoczesnym egzaminowaniu — szanse i zagrożenia',excerpt:'Sztuczna inteligencja zmienia sposób, w jaki weryfikujemy wiedzę. Adaptacyjne testy, automatyczna ocena, proctoring — co z tego jest gotowe do użycia już dziś?',tags:['AI','Edukacja','E-assessment'],date:'2026-01-13',readingTime:8,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:3,title:'Prompt Engineering dla wykładowców — przewodnik praktyczny',excerpt:'ChatGPT, Claude, Gemini — narzędzia są dostępne dla każdego. Ale jak pisać dobre prompty, żeby rzeczywiście poprawiały pracę dydaktyczną? Kompletny przewodnik.',tags:['AI','Prompt Engineering','Edukacja'],date:'2026-01-20',readingTime:6,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:4,title:'Transformacja cyfrowa polskich uczelni — case study',excerpt:'Raport z wdrożeń mikropoświadczeń i narzędzi AI na trzech polskich uczelniach wyższych. Co zadziałało, co nie wyszło i czego to nauczyło mnie jako konsultanta.',tags:['Edukacja','Mikropoświadczenia','Consulting'],date:'2026-01-27',readingTime:9,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:5,title:'AI w biznesie — od strategii do pierwszego wdrożenia',excerpt:'Jak firma powinna przejść od „chcemy AI" do realnych wyników? Opisuję sprawdzony proces: audyt, roadmapa, pilotaż i skalowanie.',tags:['Biznes','AI','Consulting'],date:'2026-02-03',readingTime:8,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:6,title:'LLM w codziennej pracy — 10 zastosowań, które naprawdę działają',excerpt:'Które zastosowania dużych modeli językowych przynoszą największy zwrot w środowisku akademickim i biznesowym? Lista oparta na realnych wdrożeniach.',tags:['LLM','AI','Automatyzacja'],date:'2026-02-10',readingTime:7,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:7,title:'Etyka AI w edukacji — gdzie jest granica?',excerpt:'Kiedy wsparcie AI staje się nieuczciwą pomocą? Refleksje po rozmowach z setkami wykładowców i studentów.',tags:['AI','Edukacja'],date:'2026-02-17',readingTime:5,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:8,title:'Szkolenia AI — co naprawdę działa po 500 przeszkolonych osobach?',excerpt:'Które formaty szkoleń z AI przynoszą trwałe efekty? Moje wnioski po prowadzeniu warsztatów dla pracowników uczelni i menadżerów.',tags:['Biznes','AI','Prompt Engineering'],date:'2026-02-24',readingTime:6,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:9,title:'Machine Learning w systemach egzaminacyjnych — pod maską',excerpt:'Jak modele ML wpływają na adaptacyjność testów wiedzy? Techniczna strona nowoczesnego e-assessmentu — bez nadmiernej matematyki.',tags:['Machine Learning','E-assessment','AI'],date:'2025-11-18',readingTime:10,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
-    {id:10,title:'Automatyzacja procesów akademickich — od czego zacząć?',excerpt:'Które procesy uczelniane nadają się do automatyzacji w pierwszej kolejności? Praktyczna lista z narzędziami i szacowanymi oszczędnościami czasu.',tags:['Automatyzacja','LLM','Edukacja'],date:'2025-12-09',readingTime:7,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
+    {id:1,title:'Skąd się wziąłem? Moja historia: od korepetycji do budowania firm',excerpt:'Od 15 zł za korepetycje do własnej firmy. Jak zacząłem uczyć, co znaczy prowadzić firmę i dlaczego najważniejsi są ludzie. Pierwszy wpis na blogu — osobisty.',tags:['Biznes','Historia'],date:'2026-04-07',readingTime:8,author:{name:'Tomasz Siemek',role:'Dr inż.'}},
 ];
 
 /* ═══ STATE ═══ */
@@ -774,6 +776,19 @@ overlay.addEventListener('wheel',e=>{
 gsap.registerPlugin(Flip);
 initGrid();
 applyFilters();
+</script>
+
+<div class="cur-glow" id="curGlow"></div>
+<script>
+const curGlow=document.getElementById('curGlow');
+let gx=0,gy=0,glowX=0,glowY=0;
+document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;curGlow.classList.add('vis')});
+document.addEventListener('mouseleave',()=>curGlow.classList.remove('vis'));
+(function glowLoop(){
+    glowX+=(gx-glowX)*.15;glowY+=(gy-glowY)*.15;
+    curGlow.style.left=glowX+'px';curGlow.style.top=glowY+'px';
+    requestAnimationFrame(glowLoop);
+})();
 </script>
 </body>
 </html>

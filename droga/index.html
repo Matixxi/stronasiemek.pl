@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Moja droga — Dr Tomasz Siemek</title>
-<meta name="description" content="Pełna historia kariery Dr inż. Tomasza Siemka — od pierwszych wystąpień po Tech4Edu.">
+<meta name="description" content="Moja droga — ponad 20 lat pracy, szczęścia i ludzi. Od pierwszej szansy w firmie szkoleniowej po własną wizję.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
@@ -145,12 +145,19 @@ a{color:inherit;text-decoration:none}
     letter-spacing:2px;text-transform:uppercase;text-align:center;line-height:1.8;
 }
 
-/* ═══ NARRATOR — center screen text ═══ */
+/* ═══ NARRATOR — positioned opposite to traveler ═══ */
 .narrator{
-    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    position:fixed;top:50%;
     z-index:50;pointer-events:none;
-    text-align:center;max-width:600px;width:90vw;
+    max-width:480px;width:40vw;
     opacity:0;
+    transform:translateY(-50%);
+}
+.narrator.pos-left{
+    left:6vw;right:auto;text-align:left;
+}
+.narrator.pos-right{
+    left:auto;right:6vw;text-align:right;
 }
 .narrator-year{
     font-family:var(--mono);font-size:clamp(4rem,10vw,7rem);font-weight:800;
@@ -175,6 +182,9 @@ a{color:inherit;text-decoration:none}
 .narrator-line{
     width:40px;height:1.5px;margin:0 auto 20px;
     background:linear-gradient(90deg,transparent,var(--accent-l),transparent);
+}
+.pos-left .narrator-line{margin:0 0 20px}
+.pos-right .narrator-line{margin:0 0 20px auto;
 }
 
 /* ═══ SIDEBAR NAV — right side ═══ */
@@ -243,9 +253,22 @@ a{color:inherit;text-decoration:none}
     .side-track{height:320px}
     .stage-media{width:200px;height:130px}
     .traveler,.traveler-avatar{width:56px;height:56px}
-    .narrator{max-width:85vw}
+    .narrator{max-width:85vw;width:85vw}
+    .narrator.pos-left,.narrator.pos-right{left:50%;right:auto;text-align:center;transform:translate(-50%,-50%)}
+    .narrator.pos-left .narrator-line,.narrator.pos-right .narrator-line{margin:0 auto 20px}
     .side-dot-label{display:none}
 }
+
+/* ═══ CURSOR GLOW ═══ */
+.cur-glow{
+    position:fixed;pointer-events:none;z-index:99998;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,149,158,.12) 0%,rgba(212,149,158,.04) 40%,transparent 70%);
+    transform:translate(-50%,-50%);
+    transition:opacity .4s;opacity:0;
+}
+.cur-glow.vis{opacity:1}
+@media(max-width:960px){.cur-glow{display:none!important}}
 </style>
 </head>
 <body>
@@ -264,9 +287,9 @@ a{color:inherit;text-decoration:none}
 <!-- HERO -->
 <section class="droga-hero">
     <div class="droga-hero-tag">Moja droga</div>
-    <h1 class="droga-hero-title">Od pierwszych kroków<br><span class="dim">do własnej wizji.</span></h1>
-    <p class="droga-hero-sub">Historia ponad 25 lat — pasja, nauka, technologia i ludzie. Każdy etap przybliżał mnie do tego, kim jestem dziś.</p>
-    <div class="droga-hero-start">Początek mojej przygody...</div>
+    <h1 class="droga-hero-title">Od pierwszej szansy<br><span class="dim">do nowego marzenia.</span></h1>
+    <p class="droga-hero-sub">Ponad 20 lat — praca, szczęście i ludzie, których spotkałem po drodze. Bo najważniejsi zawsze byli ludzie.</p>
+    <div class="droga-hero-start">Wszystko zaczęło się od jednej prośby...</div>
     <div class="droga-scroll-hint"><span>Scroll</span><div class="droga-scroll-line"></div></div>
 </section>
 
@@ -282,20 +305,20 @@ a{color:inherit;text-decoration:none}
     </div>
     <!-- 15 stages — positioned by JS -->
     <div class="stage" id="s0"><div class="stage-dot"></div></div>
-    <div class="stage" id="s1"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;left:50px"><div class="stage-media-label">Zdjęcie / filmik<br>pierwsze szkolenia</div></div></div>
-    <div class="stage" id="s2"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>Action Centrum</div></div></div>
+    <div class="stage" id="s1"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;left:50px"><div class="stage-media-label">Zdjęcie / filmik<br>pierwsze szkolenia CSS</div></div></div>
+    <div class="stage" id="s2"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>najlepszy trener Microsoft</div></div></div>
     <div class="stage" id="s3"><div class="stage-dot"></div></div>
-    <div class="stage" id="s4"><div class="stage-dot"></div><div class="stage-media" style="top:-80px;left:50px"><div class="stage-media-label">Filmik<br>publikacja naukowa</div></div></div>
+    <div class="stage" id="s4"><div class="stage-dot"></div><div class="stage-media" style="top:-80px;left:50px"><div class="stage-media-label">Zdjęcie<br>Andrzej Sobol / ABC Data</div></div></div>
     <div class="stage" id="s5"><div class="stage-dot"></div></div>
-    <div class="stage" id="s6"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>transformacja cyfrowa</div></div></div>
+    <div class="stage" id="s6"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>Action Centrum Edukacyjne</div></div></div>
     <div class="stage" id="s7"><div class="stage-dot"></div></div>
-    <div class="stage" id="s8"><div class="stage-dot"></div><div class="stage-media" style="top:-80px;left:50px"><div class="stage-media-label">Filmik<br>systemy egzaminacyjne</div></div></div>
+    <div class="stage" id="s8"><div class="stage-dot"></div><div class="stage-media" style="top:-80px;left:50px"><div class="stage-media-label">Zdjęcie<br>transformacja produktowa</div></div></div>
     <div class="stage" id="s9"><div class="stage-dot"></div></div>
-    <div class="stage" id="s10"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>obrona doktoratu</div></div></div>
+    <div class="stage" id="s10"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>CloudLabs</div></div></div>
     <div class="stage" id="s11"><div class="stage-dot"></div></div>
-    <div class="stage" id="s12"><div class="stage-dot"></div><div class="stage-media" style="top:-80px;left:50px"><div class="stage-media-label">Filmik<br>wdrożenia AI</div></div></div>
+    <div class="stage" id="s12"><div class="stage-dot"></div><div class="stage-media" style="top:-80px;left:50px"><div class="stage-media-label">Zdjęcie<br>szkolenia AWS / Ukraina</div></div></div>
     <div class="stage" id="s13"><div class="stage-dot"></div></div>
-    <div class="stage" id="s14"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>Tech4Edu</div></div></div>
+    <div class="stage" id="s14"><div class="stage-dot"></div><div class="stage-media" style="top:-70px;right:50px;left:auto"><div class="stage-media-label">Zdjęcie<br>nowy początek</div></div></div>
 </section>
 
 <!-- NARRATOR (fixed, center screen) -->
@@ -309,7 +332,7 @@ a{color:inherit;text-decoration:none}
 
 <!-- SIDEBAR NAV -->
 <div class="side-nav" id="sideNav">
-    <div class="side-year-top">1998</div>
+    <div class="side-year-top">~1998</div>
     <div class="side-track">
         <div class="side-progress" id="sideProgress"></div>
     </div>
@@ -319,7 +342,7 @@ a{color:inherit;text-decoration:none}
 <!-- ENDING -->
 <section class="droga-end">
     <div class="droga-end-title">Ciąg dalszy<br><span class="dim">nastąpi...</span></div>
-    <div class="droga-end-sub">Każdy dzień to nowy rozdział. Jeśli chcesz dowiedzieć się więcej o tym, czym się zajmuję — zapraszam.</div>
+    <div class="droga-end-sub">Nowy projekt. Nowe „dziecko". Trochę niepewności, trochę ekscytacji — i dużo przekonania, że to ma sens.</div>
     <a href="../" class="droga-end-cta">Wróć na stronę główną <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
 </section>
 
@@ -334,21 +357,21 @@ heroEls.forEach((sel,i)=>{
 
 /* ═══ STAGE DATA ═══ */
 const stages=[
-    {year:'1998',title:'Iskra ciekawości',desc:'Pierwsze spotkanie z komputerem i technologią. Fascynacja tym, jak maszyny mogą zmieniać świat. Wszystko zaczęło się od jednego pytania — „a co jeśli?"',tag:'Początek'},
-    {year:'2000',title:'Pierwsze wystąpienia publiczne',desc:'Prowadzenie pierwszych szkoleń i prelekcji. Moment, w którym odkryłem, że dzielenie się wiedzą to nie obowiązek — to coś, co daje mi energię i sens.',tag:'Edukacja'},
-    {year:'2003',title:'Action — Centrum Edukacyjne',desc:'Założenie pierwszej firmy. Budowa centrum edukacyjnego od zera — kursy, certyfikacje, setki osób. Nauka przedsiębiorczości w najtrudniejszy możliwy sposób — przez praktykę.',tag:'Firma'},
-    {year:'2005',title:'Certyfikowane programy',desc:'Uzyskanie akredytacji i rozszerzenie oferty o certyfikowane szkolenia. Współpraca z instytucjami na terenie całej Polski. Pierwszy raz poczułem, że to skaluje się poważnie.',tag:'Rozwój'},
-    {year:'2008',title:'Pierwsza publikacja naukowa',desc:'Wejście w świat nauki. Publikacja pierwszego artykułu i odkrycie, że badania akademickie i codzienna praktyka mogą się wzajemnie napędzać.',tag:'Nauka'},
-    {year:'2010',title:'Praca z uczelniami',desc:'Początek współpracy z uczelniami wyższymi. Prowadzenie zajęć, mentoring studentów, budowanie mostów między akademią a biznesem. Dwa światy, jeden cel.',tag:'Akademia'},
-    {year:'2012',title:'Transformacja cyfrowa',desc:'Głębokie zanurzenie w technologie chmurowe i automatyzację. Pierwsze wdrożenia e-learningu. Zrozumienie, że przyszłość edukacji jest cyfrowa — i że mogę ją kształtować.',tag:'Technologia'},
-    {year:'2015',title:'Ponad 150 publikacji',desc:'Kamień milowy — ponad 150 artykułów naukowych, raportów i ekspertyz. Mój głos zaczął być słyszalny w środowisku. Wiedza przestała być tylko moja — stała się wspólna.',tag:'Nauka'},
-    {year:'2016',title:'Systemy egzaminacyjne',desc:'Projektowanie pierwszych nowoczesnych systemów weryfikacji wiedzy. Adaptacyjne testy, automatyczna ocena, analityka w czasie rzeczywistym. Przyszłość egzaminowania zaczęła nabierać kształtów.',tag:'Innowacja'},
-    {year:'2018',title:'Cloud Team — nowy rozdział',desc:'Rebrand i transformacja firmy. Przejście w stronę rozwiązań chmurowych, sztucznej inteligencji i automatyzacji procesów. Nowa nazwa, nowa energia, ten sam cel.',tag:'Firma'},
-    {year:'2020',title:'Dr inż. Tomasz Siemek',desc:'Obrona pracy doktorskiej. Kulminacja lat łączenia praktyki z nauką. Moment, w którym wszystkie puzzle wreszcie się złożyły. Nowy poziom odblokowany.',tag:'Milestone'},
-    {year:'2021',title:'500 przeszkolonych osób',desc:'Pół tysiąca ludzi, których ścieżki zawodowe dotknąłem bezpośrednio. Wykładowcy, studenci, menadżerowie. Każda z tych osób nauczyła mnie czegoś.',tag:'Ludzie'},
-    {year:'2023',title:'Wejście w świat AI',desc:'Głębokie zanurzenie w sztuczną inteligencję. Pierwsze wdrożenia LLM w edukacji i biznesie. Prompt engineering jako zupełnie nowa dyscyplina. Rewolucja, w której chciałem uczestniczyć.',tag:'AI'},
-    {year:'2024',title:'Mikropoświadczenia',desc:'Projektowanie systemów mikropoświadczeń zgodnych z europejskimi standardami Bologna Process. Certyfikacja przyszłości — granularna, weryfikowalna, cyfrowa.',tag:'EdTech'},
-    {year:'2025',title:'Tech4Edu — wizja przyszłości',desc:'Platforma łącząca AI, mikropoświadczenia i nowoczesną edukację. Wszystko, nad czym pracowałem przez 25 lat, zbiegło się w jednym miejscu. I to dopiero początek.',tag:'Przyszłość'},
+    {year:'~1998',title:'Pierwsza szansa',desc:'Mama pracowała w firmie szkoleniowej CSS. Poprosiłem, żeby poznała mnie z szefową — panią Bartos. To jedna z tych osób, którym naprawdę dużo zawdzięczam. Dostałem szansę. Zacząłem prowadzić szkolenia — Excel, Word, PowerPoint, Windows 95.',tag:'Początek'},
+    {year:'~1999',title:'Nauka, której nie widać',desc:'Żeby dobrze uczyć, nie wystarczy znać narzędzie. Trzeba je rozumieć, umieć tłumaczyć, przewidywać pytania. Spędzałem noce do 2–3 nad ranem, próbując zrozumieć rzeczy, które następnego dnia miałem tłumaczyć innym. I miałem jedną myśl: „oby nikt nie zadał trudnego pytania".',tag:'Nauka'},
+    {year:'~2003',title:'Skok',desc:'Od podstawowych szkoleń przeszedłem do systemów operacyjnych, baz danych, Exchange, całego ekosystemu Microsoft. Dwa razy z rzędu zdobyłem tytuł najlepszego trenera Microsoft w Polsce. Ale dziś wiem — to nie była tylko moja zasługa. To była mieszanka pracy, szczęścia i ludzi.',tag:'Przełom'},
+    {year:'2003',title:'Pierwsza firma',desc:'Firma Edusoft została sprzedana. Nie zgodziłem się na nowe warunki. Podjąłem decyzję: zakładam własną firmę. Zaprosiłem Michała Karskiego i Mariusza Giemzę. Nie wiedziałem jeszcze, co znaczy prowadzić firmę, odpowiadać za ludzi, płacić wynagrodzenia. Skok na głęboką wodę.',tag:'Firma'},
+    {year:'~2005',title:'Ludzie, którzy zmieniają wszystko',desc:'Na mojej drodze pojawił się Andrzej Sobol — prezes ABC Data. To kolejna osoba, której bardzo dużo zawdzięczam. Dzięki niemu zaczęliśmy myśleć szerzej. Firma zaczęła rosnąć. Współpracowaliśmy z dużymi dystrybutorami, rozwijaliśmy skalę, budowaliśmy strukturę.',tag:'Mentorzy'},
+    {year:'~2008',title:'Wzrost',desc:'Kilka oddziałów w Polsce. Silna organizacja. Trafiliśmy na czas funduszy unijnych — byliśmy we właściwym miejscu i czasie. Ale to nie był tylko timing. To była też konsekwencja.',tag:'Rozwój'},
+    {year:'2010',title:'Pierwsze trudne decyzje',desc:'Ze struktury odszedł Mariusz Giemza. Zostaliśmy z Michałem we dwóch. To zmienia wszystko. Andrzej Sobol podpowiedział: „Poszukajcie finansowania". Tak trafiliśmy do Action S.A., która objęła 26% udziałów. Action Centrum Edukacyjne — moment, kiedy mogliśmy złapać oddech.',tag:'Decyzje'},
+    {year:'~2012',title:'Kolejni mentorzy',desc:'Włodzimierz Dąbrowski — to on zainspirował mnie do stworzenia szkolenia „Rozmowa to przywilej", prowadził ze mną długie rozmowy o biznesie i nauce, namówił mnie na doktorat. I bardzo mi w tym pomógł.',tag:'Mentorzy'},
+    {year:'~2014',title:'Transformacja',desc:'Z firmy szkoleniowej stawaliśmy się firmą produktową. Systemy egzaminacyjne, platformy edukacyjne, laboratoria wirtualne, systemy LMS, rozwiązania do mikropoświadczeń. Powstały dwa filary: szkoleniowy i produktowy. I zupełnie nowa skala zarządzania.',tag:'Produkt'},
+    {year:'~2016',title:'Nowe kompetencje',desc:'Musiałem się nauczyć zarządzania złożonością, łączenia zespołów, pracy z konfliktami. Pomogły mi doświadczenie projektowe, certyfikacje, mediacje, NVC oraz program na University of Oxford.',tag:'Rozwój'},
+    {year:'~2018',title:'CloudLabs',desc:'Stworzyliśmy własne rozwiązanie — laboratoria wirtualne. Automatyzowaliśmy środowiska, skalowaliśmy szkolenia, wchodziliśmy w technologię. To był moment przełomowy.',tag:'Innowacja'},
+    {year:'2018–24',title:'Dobry czas',desc:'Duże inwestycje. Rozwój uczelni. Rozwój produktów. A potem pandemia. I coś, co dla wielu było kryzysem — dla nas było testem.',tag:'Wzrost'},
+    {year:'2020',title:'Test, który zdaliśmy',desc:'W tydzień nasi klienci przeszli na tryb zdalny. My już tam byliśmy. Prowadziliśmy szkolenia dla ponad 5000 osób z Ukrainy z technologii Amazon Web Services. Moment, który pokazał, że jesteśmy gotowi.',tag:'Pandemia'},
+    {year:'~2024',title:'Najważniejsze zrozumienie',desc:'Z perspektywy czasu widzę jedną rzecz wyraźnie: to nie była tylko firma. To była organizacja zbudowana na ludziach, relacjach i ciągłym uczeniu się.',tag:'Refleksja'},
+    {year:'2025',title:'Kolejny krok',desc:'Podjęliśmy z Michałem decyzję: czas na zmianę. Sprzedałem firmę Michałowi. I zacząłem od nowa. Nowy projekt, nowe „dziecko". Trochę niepewności, trochę ekscytacji — i dużo przekonania, że to ma sens.',tag:'Nowy początek'},
 ];
 
 /* ═══ POSITION STAGES (zigzag) ═══ */
@@ -455,12 +478,17 @@ function showStory(i){
     activeStage=i;
     const s=stages[i];
 
-    gsap.to(narrator,{opacity:0,scale:.95,duration:.2,onComplete:()=>{
+    gsap.killTweensOf(narrator);
+    gsap.to(narrator,{opacity:0,scale:.95,duration:.18,onComplete:()=>{
+        /* Reposition only while invisible */
+        const stageOnLeft=i%2===0;
+        narrator.classList.toggle('pos-right',stageOnLeft);
+        narrator.classList.toggle('pos-left',!stageOnLeft);
         narYear.textContent=s.year;
         narTitle.textContent=s.title;
         narDesc.textContent=s.desc;
         narTag.textContent=s.tag;
-        gsap.to(narrator,{opacity:1,scale:1,duration:.6,ease:'power2.out'});
+        gsap.to(narrator,{opacity:1,scale:1,duration:.5,ease:'power2.out'});
     }});
 
     /* Mark dots */
@@ -498,6 +526,19 @@ gsap.set(narrator,{opacity:0});
 createTimeline();
 let resizeTimer;
 window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(createTimeline,200)});
+</script>
+
+<div class="cur-glow" id="curGlow"></div>
+<script>
+const curGlow=document.getElementById('curGlow');
+let gx=0,gy=0,glowX=0,glowY=0;
+document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;curGlow.classList.add('vis')});
+document.addEventListener('mouseleave',()=>curGlow.classList.remove('vis'));
+(function glowLoop(){
+    glowX+=(gx-glowX)*.15;glowY+=(gy-glowY)*.15;
+    curGlow.style.left=glowX+'px';curGlow.style.top=glowY+'px';
+    requestAnimationFrame(glowLoop);
+})();
 </script>
 </body>
 </html>

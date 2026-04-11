@@ -285,6 +285,17 @@ a{color:inherit;text-decoration:none}
     .stat-cell:last-child{border-bottom:none}
     .connection-sec{padding:60px 20px}
 }
+
+/* ═══ CURSOR GLOW ═══ */
+.cur-glow{
+    position:fixed;pointer-events:none;z-index:99998;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,149,158,.12) 0%,rgba(212,149,158,.04) 40%,transparent 70%);
+    transform:translate(-50%,-50%);
+    transition:opacity .4s;opacity:0;
+}
+.cur-glow.vis{opacity:1}
+@media(max-width:960px){.cur-glow{display:none!important}}
 </style>
 </head>
 <body>
@@ -932,6 +943,19 @@ sections.forEach(sec => {
         });
     }
 });
+</script>
+
+<div class="cur-glow" id="curGlow"></div>
+<script>
+const curGlow=document.getElementById('curGlow');
+let gx=0,gy=0,glowX=0,glowY=0;
+document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;curGlow.classList.add('vis')});
+document.addEventListener('mouseleave',()=>curGlow.classList.remove('vis'));
+(function glowLoop(){
+    glowX+=(gx-glowX)*.15;glowY+=(gy-glowY)*.15;
+    curGlow.style.left=glowX+'px';curGlow.style.top=glowY+'px';
+    requestAnimationFrame(glowLoop);
+})();
 </script>
 </body>
 </html>

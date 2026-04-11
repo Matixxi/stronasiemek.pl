@@ -181,6 +181,17 @@ a{color:inherit;text-decoration:none}
 /* ═══ ANIMATIONS ═══ */
 .rv{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
 .rv.vis{opacity:1;transform:translateY(0)}
+
+/* ═══ CURSOR GLOW ═══ */
+.cur-glow{
+    position:fixed;pointer-events:none;z-index:99998;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,149,158,.12) 0%,rgba(212,149,158,.04) 40%,transparent 70%);
+    transform:translate(-50%,-50%);
+    transition:opacity .4s;opacity:0;
+}
+.cur-glow.vis{opacity:1}
+@media(max-width:960px){.cur-glow{display:none!important}}
 </style>
 </head>
 <body>
@@ -198,28 +209,28 @@ a{color:inherit;text-decoration:none}
 <!-- HERO -->
 <div class="hero">
     <div class="hero-tag rv">Szkolenia & Kompetencje</div>
-    <h1 class="hero-title rv" style="transition-delay:.08s">Pełna oferta szkoleń<br><span class="dim">i obszary ekspertyzy.</span></h1>
-    <p class="hero-intro rv" style="transition-delay:.16s">Prowadzę warsztaty, szkolenia i wykłady z zakresu AI, mikropoświadczeń, data science i nowoczesnych technologii edukacyjnych. Każde szkolenie dopasowuję do poziomu i potrzeb grupy.</p>
+    <h1 class="hero-title rv" style="transition-delay:.08s">Uczę tego,<br><span class="dim">co sam robię na co dzień.</span></h1>
+    <p class="hero-intro rv" style="transition-delay:.16s">Od 1998 roku prowadzę szkolenia — zaczynałem od Excela i Windows 95, dziś uczę AI, mikropoświadczeń i zarządzania projektami. Każde szkolenie opiera się na praktyce, nie teorii. Format: 40% wiedza, 60% warsztat.</p>
 </div>
 
 <!-- STATS -->
 <div class="sec" style="padding-top:0">
     <div class="stats-bar rv" style="transition-delay:.24s">
         <div class="stat-item">
-            <div class="stat-num">500+</div>
-            <div class="stat-label">Przeszkolonych</div>
+            <div class="stat-num">5000+</div>
+            <div class="stat-label">Przeszkolonych osób</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num">25+</div>
+            <div class="stat-num">20+</div>
             <div class="stat-label">Lat doświadczenia</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num">12</div>
-            <div class="stat-label">Tematów szkoleniowych</div>
+            <div class="stat-num">2×</div>
+            <div class="stat-label">Najlepszy trener MS</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num">3</div>
-            <div class="stat-label">Poziomy zaawansowania</div>
+            <div class="stat-num">8h</div>
+            <div class="stat-label">Flagowe szkolenie</div>
         </div>
     </div>
 </div>
@@ -227,15 +238,15 @@ a{color:inherit;text-decoration:none}
 <!-- SZKOLENIA -->
 <div class="sec">
     <div class="sec-tag rv">Oferta szkoleniowa</div>
-    <div class="sec-title rv" style="transition-delay:.06s">Wszystkie szkolenia<br><span class="dim">które prowadzę.</span></div>
+    <div class="sec-title rv" style="transition-delay:.06s">Szkolenia oparte<br><span class="dim">na praktyce, nie teorii.</span></div>
 
     <div class="train-grid">
         <div class="train-card" style="transition-delay:.05s">
             <div class="train-icon" style="background:rgba(181,112,123,.06);border-color:rgba(181,112,123,.12)">🧠</div>
             <div class="train-body">
                 <h3>AI & Prompt Engineering</h3>
-                <p>Praktyczne warsztaty z wykorzystania AI w codziennej pracy — ChatGPT, Claude, Gemini, automatyzacja z LLM. Od podstaw po zaawansowane techniki chain-of-thought i budowanie agentów.</p>
-                <div class="train-tags"><span class="train-tag">ChatGPT</span><span class="train-tag">Claude</span><span class="train-tag">Gemini</span><span class="train-tag">LLM</span><span class="train-tag">Agenci AI</span></div>
+                <p>Praktyczne warsztaty z AI — od prompt engineeringu, przez human-in-the-loop, po projektowanie procesów wspieranych przez sztuczną inteligencję. Sprawdzone na tysiącach przeszkolonych osób.</p>
+                <div class="train-tags"><span class="train-tag">Prompt Engineering</span><span class="train-tag">Human-in-the-loop</span><span class="train-tag">LLM</span><span class="train-tag">Procesy AI</span></div>
             </div>
             <span class="train-level lvl-basic">Podstawowy — Zaawansowany</span>
         </div>
@@ -243,9 +254,9 @@ a{color:inherit;text-decoration:none}
         <div class="train-card" style="transition-delay:.1s">
             <div class="train-icon" style="background:rgba(107,91,123,.06);border-color:rgba(107,91,123,.12)">🎯</div>
             <div class="train-body">
-                <h3>Mikropoświadczenia w praktyce</h3>
-                <p>Jak zaprojektować, wdrożyć i zarządzać systemem mikropoświadczeń na uczelni. Kompletny program od koncepcji przez platformę po certyfikację zgodną z europejskimi standardami.</p>
-                <div class="train-tags"><span class="train-tag">Digital Credentials</span><span class="train-tag">Bologna</span><span class="train-tag">Framework</span><span class="train-tag">ECTS</span></div>
+                <h3>Mikropoświadczenia w praktyce — od strategii do wdrożenia</h3>
+                <p>8h intensywnych warsztatów: rekomendacje UE, Open Badges, EDC, EQF, ZSK, projektowanie i walidacja mikropoświadczeń. 40% teoria, 60% warsztat — uczestnicy projektują własne mikropoświadczenie.</p>
+                <div class="train-tags"><span class="train-tag">Open Badges</span><span class="train-tag">EDC</span><span class="train-tag">EQF</span><span class="train-tag">ZSK</span><span class="train-tag">Europass</span></div>
             </div>
             <span class="train-level lvl-mid">Średniozaawansowany</span>
         </div>
@@ -253,19 +264,19 @@ a{color:inherit;text-decoration:none}
         <div class="train-card" style="transition-delay:.15s">
             <div class="train-icon" style="background:rgba(91,123,123,.06);border-color:rgba(91,123,123,.12)">📊</div>
             <div class="train-body">
-                <h3>Data Science & Machine Learning</h3>
-                <p>Od analizy danych po modele predykcyjne — szkolenia z Python, TensorFlow, analityki i wizualizacji danych. Praktyczne projekty na rzeczywistych zbiorach danych.</p>
-                <div class="train-tags"><span class="train-tag">Python</span><span class="train-tag">TensorFlow</span><span class="train-tag">Pandas</span><span class="train-tag">Analityka</span></div>
+                <h3>Zarządzanie projektami</h3>
+                <p>PMI, ITIL, Agile, DevOps — sprawdzone podejścia połączone z doświadczeniem z prowadzenia firm, budowania zespołów i zarządzania złożonością. Teoria + realne case study.</p>
+                <div class="train-tags"><span class="train-tag">PMI</span><span class="train-tag">ITIL</span><span class="train-tag">Agile</span><span class="train-tag">DevOps</span></div>
             </div>
-            <span class="train-level lvl-adv">Zaawansowany</span>
+            <span class="train-level lvl-mid">Średniozaawansowany</span>
         </div>
 
         <div class="train-card" style="transition-delay:.2s">
             <div class="train-icon" style="background:rgba(181,112,123,.06);border-color:rgba(181,112,123,.12)">📋</div>
             <div class="train-body">
-                <h3>Systemy egzaminacyjne oparte o AI</h3>
-                <p>Projektowanie nowoczesnych systemów weryfikacji wiedzy — adaptacyjne testy, automatyczna ocena, analityka wyników. Wdrożenia na uczelniach i w firmach.</p>
-                <div class="train-tags"><span class="train-tag">E-assessment</span><span class="train-tag">Adaptacyjne testy</span><span class="train-tag">Analityka</span></div>
+                <h3>Rozmowa to przywilej</h3>
+                <p>Autorskie szkolenie inspirowane współpracą z Włodzimierzem Dąbrowskim. Komunikacja, mediacje, NVC — jak budować zespoły, których celem jest nie tylko „dowożenie wyników", ale rozwój ludzi.</p>
+                <div class="train-tags"><span class="train-tag">Komunikacja</span><span class="train-tag">NVC</span><span class="train-tag">Mediacje</span><span class="train-tag">Leadership</span></div>
             </div>
             <span class="train-level lvl-mid">Średniozaawansowany</span>
         </div>
@@ -273,9 +284,9 @@ a{color:inherit;text-decoration:none}
         <div class="train-card" style="transition-delay:.25s">
             <div class="train-icon" style="background:rgba(91,123,123,.06);border-color:rgba(91,123,123,.12)">⚙️</div>
             <div class="train-body">
-                <h3>Automatyzacja procesów z LLM</h3>
-                <p>Budowa inteligentnych workflow opartych o duże modele językowe — chatboty, agenci AI, automatyzacja dokumentów, integracje z narzędziami biznesowymi.</p>
-                <div class="train-tags"><span class="train-tag">LLM Agents</span><span class="train-tag">RPA</span><span class="train-tag">Chatboty</span><span class="train-tag">API</span></div>
+                <h3>Technologie chmurowe & CloudLabs</h3>
+                <p>Wirtualne laboratoria, automatyzacja środowisk, skalowanie szkoleń. Doświadczenie z prowadzenia szkoleń AWS dla 5000+ osób i budowy CloudLabs — własnego rozwiązania.</p>
+                <div class="train-tags"><span class="train-tag">AWS</span><span class="train-tag">CloudLabs</span><span class="train-tag">Wirtualne laby</span><span class="train-tag">Cloud</span></div>
             </div>
             <span class="train-level lvl-adv">Zaawansowany</span>
         </div>
@@ -283,9 +294,9 @@ a{color:inherit;text-decoration:none}
         <div class="train-card" style="transition-delay:.3s">
             <div class="train-icon" style="background:rgba(107,91,123,.06);border-color:rgba(107,91,123,.12)">🎓</div>
             <div class="train-body">
-                <h3>AI w dydaktyce akademickiej</h3>
-                <p>Warsztaty dla wykładowców i kadry akademickiej — jak wykorzystywać AI w nauczaniu, tworzeniu materiałów i ocenie studentów. Etyka i odpowiedzialne wdrażanie.</p>
-                <div class="train-tags"><span class="train-tag">Dydaktyka</span><span class="train-tag">Etyka AI</span><span class="train-tag">E-learning</span></div>
+                <h3>Systemy egzaminacyjne i e-assessment</h3>
+                <p>Projektowanie nowoczesnych systemów weryfikacji wiedzy — adaptacyjne testy, automatyczna ocena, analityka wyników. Doświadczenie z budowy platform edukacyjnych i LMS.</p>
+                <div class="train-tags"><span class="train-tag">E-assessment</span><span class="train-tag">LMS</span><span class="train-tag">Adaptacyjne testy</span></div>
             </div>
             <span class="train-level lvl-basic">Podstawowy</span>
         </div>
@@ -293,9 +304,9 @@ a{color:inherit;text-decoration:none}
         <div class="train-card" style="transition-delay:.35s">
             <div class="train-icon" style="background:rgba(181,112,123,.06);border-color:rgba(181,112,123,.12)">💡</div>
             <div class="train-body">
-                <h3>Consulting AI — strategia i wdrożenia</h3>
-                <p>Warsztat strategiczny dla kadry zarządzającej — audyt procesów, identyfikacja szans automatyzacji, budowa roadmapy transformacji cyfrowej.</p>
-                <div class="train-tags"><span class="train-tag">Strategia</span><span class="train-tag">Audyt</span><span class="train-tag">Roadmapa</span><span class="train-tag">Transformacja</span></div>
+                <h3>Transformacja cyfrowa — strategia i wdrożenia</h3>
+                <p>Warsztat dla kadry zarządzającej — z perspektywy przedsiębiorcy, który sam przeprowadził transformację z firmy szkoleniowej w produktową. Audyt, roadmapa, realne wdrożenie.</p>
+                <div class="train-tags"><span class="train-tag">Strategia</span><span class="train-tag">Transformacja</span><span class="train-tag">Zarządzanie zmianą</span></div>
             </div>
             <span class="train-level lvl-mid">Średniozaawansowany</span>
         </div>
@@ -303,9 +314,9 @@ a{color:inherit;text-decoration:none}
         <div class="train-card" style="transition-delay:.4s">
             <div class="train-icon" style="background:rgba(91,123,123,.06);border-color:rgba(91,123,123,.12)">🚀</div>
             <div class="train-body">
-                <h3>Szkolenia korporacyjne — AI dla zespołów</h3>
-                <p>Dopasowane programy szkoleniowe dla firm — od podstaw AI po wdrożenia w codziennej pracy zespołów. Warsztaty hands-on z konkretnymi narzędziami.</p>
-                <div class="train-tags"><span class="train-tag">Team Training</span><span class="train-tag">Warsztaty</span><span class="train-tag">Wdrożenia</span></div>
+                <h3>Szkolenia korporacyjne — programy dedykowane</h3>
+                <p>Dopasowane programy rozwojowe dla firm — AI, zarządzanie, kompetencje miękkie. Setki zrealizowanych szkoleń, dziesiątki programów rozwojowych budowanych na miarę.</p>
+                <div class="train-tags"><span class="train-tag">Reskilling</span><span class="train-tag">Upskilling</span><span class="train-tag">Programy rozwojowe</span></div>
             </div>
             <span class="train-level lvl-basic">Podstawowy — Zaawansowany</span>
         </div>
@@ -313,9 +324,9 @@ a{color:inherit;text-decoration:none}
         <div class="train-card" style="transition-delay:.45s">
             <div class="train-icon" style="background:rgba(107,91,123,.06);border-color:rgba(107,91,123,.12)">🌐</div>
             <div class="train-body">
-                <h3>Technologie chmurowe</h3>
-                <p>Migracja do chmury, architektura cloud-native, bezpieczeństwo danych i optymalizacja kosztów. Praktyczne szkolenia z AWS, Azure i GCP.</p>
-                <div class="train-tags"><span class="train-tag">AWS</span><span class="train-tag">Azure</span><span class="train-tag">GCP</span><span class="train-tag">Cloud</span></div>
+                <h3>Budowanie i prowadzenie zespołów</h3>
+                <p>Doświadczenie z budowania organizacji, łączenia zespołów i pracy z konfliktami. Certyfikacje, mediacje, NVC, program na University of Oxford — przełożone na praktyczny warsztat.</p>
+                <div class="train-tags"><span class="train-tag">Leadership</span><span class="train-tag">Team Building</span><span class="train-tag">Oxford</span><span class="train-tag">NVC</span></div>
             </div>
             <span class="train-level lvl-mid">Średniozaawansowany</span>
         </div>
@@ -332,42 +343,42 @@ a{color:inherit;text-decoration:none}
             <div class="komp" style="transition-delay:.05s">
                 <div class="komp-icon">🤖</div>
                 <div class="komp-name">Sztuczna Inteligencja</div>
-                <div class="komp-sub">LLM, GPT, ML, NLP</div>
+                <div class="komp-sub">Prompt Engineering, Human-in-the-loop</div>
             </div>
             <div class="komp" style="transition-delay:.1s">
-                <div class="komp-icon">🎓</div>
-                <div class="komp-name">Edukacja cyfrowa</div>
-                <div class="komp-sub">E-learning, LMS, MOOC</div>
-            </div>
-            <div class="komp" style="transition-delay:.15s">
                 <div class="komp-icon">🏅</div>
                 <div class="komp-name">Mikropoświadczenia</div>
-                <div class="komp-sub">Digital Credentials, Bologna</div>
+                <div class="komp-sub">Open Badges, EDC, EQF, ZSK</div>
+            </div>
+            <div class="komp" style="transition-delay:.15s">
+                <div class="komp-icon">📋</div>
+                <div class="komp-name">Zarządzanie projektami</div>
+                <div class="komp-sub">PMI, ITIL, Agile, DevOps</div>
             </div>
             <div class="komp" style="transition-delay:.2s">
-                <div class="komp-icon">📊</div>
-                <div class="komp-name">Data Science</div>
-                <div class="komp-sub">Python, TensorFlow, Analytics</div>
+                <div class="komp-icon">☁️</div>
+                <div class="komp-name">Cloud & CloudLabs</div>
+                <div class="komp-sub">AWS, wirtualne laboratoria</div>
             </div>
             <div class="komp" style="transition-delay:.25s">
-                <div class="komp-icon">☁️</div>
-                <div class="komp-name">Cloud Computing</div>
-                <div class="komp-sub">AWS, Azure, GCP</div>
+                <div class="komp-icon">🎓</div>
+                <div class="komp-name">Edukacja cyfrowa</div>
+                <div class="komp-sub">E-learning, LMS, e-assessment</div>
             </div>
             <div class="komp" style="transition-delay:.3s">
-                <div class="komp-icon">⚙️</div>
-                <div class="komp-name">Automatyzacja</div>
-                <div class="komp-sub">RPA, Agenci AI, API</div>
+                <div class="komp-icon">💬</div>
+                <div class="komp-name">Komunikacja & NVC</div>
+                <div class="komp-sub">Mediacje, leadership, Oxford</div>
             </div>
             <div class="komp" style="transition-delay:.35s">
-                <div class="komp-icon">📋</div>
-                <div class="komp-name">E-assessment</div>
-                <div class="komp-sub">Adaptacyjne testy, Weryfikacja</div>
+                <div class="komp-icon">🏢</div>
+                <div class="komp-name">Przedsiębiorczość</div>
+                <div class="komp-sub">Budowanie firm i zespołów</div>
             </div>
             <div class="komp" style="transition-delay:.4s">
-                <div class="komp-icon">💼</div>
-                <div class="komp-name">Consulting</div>
-                <div class="komp-sub">Strategia, Transformacja, Audyt</div>
+                <div class="komp-icon">🔄</div>
+                <div class="komp-name">Transformacja cyfrowa</div>
+                <div class="komp-sub">Strategia, wdrożenia, skalowanie</div>
             </div>
         </div>
     </div>
@@ -375,9 +386,9 @@ a{color:inherit;text-decoration:none}
 
 <!-- CTA -->
 <div class="cta">
-    <h2 class="rv">Zainteresowany szkoleniem?</h2>
-    <p class="rv" style="transition-delay:.06s">Napisz do mnie — dopasuję program do Twoich potrzeb.</p>
-    <a href="mailto:tomasz@siemek.pl" class="cta-btn rv" style="transition-delay:.12s">Umów szkolenie</a>
+    <h2 class="rv">Chcesz pogadać o szkoleniu?</h2>
+    <p class="rv" style="transition-delay:.06s">Zadzwoń — dopasuję program do Twoich potrzeb.</p>
+    <a href="../kontakt/" class="cta-btn rv" style="transition-delay:.12s">Dane kontaktowe</a>
 </div>
 
 <!-- FOOTER -->
@@ -386,6 +397,19 @@ a{color:inherit;text-decoration:none}
 <script>
 const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis')})},{threshold:.1});
 document.querySelectorAll('.rv,.train-card,.komp').forEach(el=>obs.observe(el));
+</script>
+
+<div class="cur-glow" id="curGlow"></div>
+<script>
+const curGlow=document.getElementById('curGlow');
+let gx=0,gy=0,glowX=0,glowY=0;
+document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;curGlow.classList.add('vis')});
+document.addEventListener('mouseleave',()=>curGlow.classList.remove('vis'));
+(function glowLoop(){
+    glowX+=(gx-glowX)*.15;glowY+=(gy-glowY)*.15;
+    curGlow.style.left=glowX+'px';curGlow.style.top=glowY+'px';
+    requestAnimationFrame(glowLoop);
+})();
 </script>
 </body>
 </html>

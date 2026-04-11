@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dr Tomasz Siemek — AI, Mikropoświadczenia, Edukacja | siemek.pl</title>
-<meta name="description" content="Dr inż. Tomasz Siemek — ekspert AI, mikropoświadczenia, nowoczesne systemy egzaminacyjne. Rozwiązania dla uczelni i biznesu.">
+<meta name="description" content="Dr inż. Tomasz Siemek — przedsiębiorca, trener, praktyk. 20+ lat na styku technologii, zarządzania i edukacji. Założyciel CloudTeam, 2x najlepszy trener Microsoft w Polsce.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@300;400;500&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ═══ RESET & TOKENS ═══ */
@@ -293,6 +293,20 @@ nav{
 @keyframes reelScroll{to{transform:translateX(-50%)}}
 
 /* Kluczowe info — karty */
+.about-body{max-width:760px;margin:0 auto 64px;columns:2;column-gap:40px}
+.about-body p{font-size:.92rem;line-height:1.85;color:var(--text2);font-weight:300;margin-bottom:18px;break-inside:avoid}
+.about-body p strong{color:var(--text);font-weight:600}
+.about-body .about-highlight{
+    font-family:var(--display);font-size:1.15rem;font-weight:700;color:var(--text);
+    line-height:1.5;margin:24px 0;column-span:all;text-align:center;
+    padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.about-body .about-closing{
+    column-span:all;text-align:center;
+    font-family:var(--display);font-size:1.05rem;font-weight:600;color:var(--text);
+    line-height:1.6;margin-top:8px;
+}
+.about-body .about-closing span{color:var(--accent)}
 .about-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .about-key{
     padding:32px 24px;border-radius:20px;background:var(--bg);border:1px solid var(--border);
@@ -308,6 +322,7 @@ nav{
     .about-keys{grid-template-columns:1fr 1fr}
     .about-reel{height:160px}
     .about-reel-item{width:240px}
+    .about-body{columns:1}
 }
 
 /* ═══ TIMELINE / MOJA DROGA ═══ */
@@ -1099,6 +1114,72 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 .f-links a:hover{color:var(--accent)}
 .footer-bar{padding-top:28px;border-top:1px solid var(--border);text-align:center;font-size:.72rem;color:var(--text3)}
 
+/* ═══ CONTACT CTA ═══ */
+.cta-contact{
+    padding:120px 7vw;position:relative;z-index:2;
+    text-align:center;overflow:hidden;
+}
+.cta-contact-inner{
+    max-width:680px;margin:0 auto;
+    padding:72px 48px;border-radius:32px;
+    background:var(--bg);border:1px solid var(--border);
+    position:relative;overflow:hidden;
+    transition:border-color .4s;
+}
+.cta-contact-inner:hover{border-color:var(--accent-l)}
+.cta-contact-inner::before{
+    content:'';position:absolute;inset:-1px;border-radius:32px;
+    background:radial-gradient(ellipse at 50% 0%,rgba(212,149,158,.08) 0%,transparent 70%);
+    pointer-events:none;
+}
+.cta-contact-tag{
+    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:3px;
+    text-transform:uppercase;color:var(--accent);margin-bottom:20px;
+    display:inline-flex;align-items:center;gap:10px;
+}
+.cta-contact-tag::before,.cta-contact-tag::after{
+    content:'';width:24px;height:2px;background:var(--accent);border-radius:1px;
+}
+.cta-contact-title{
+    font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:800;
+    letter-spacing:-1.5px;line-height:1.12;margin-bottom:16px;
+}
+.cta-contact-title .dim{color:var(--text3);font-weight:400}
+.cta-contact-sub{
+    font-size:1.05rem;color:var(--text2);line-height:1.7;margin-bottom:40px;
+    max-width:480px;margin-left:auto;margin-right:auto;
+}
+.cta-contact-btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 40px;border-radius:60px;
+    background:var(--accent);color:#fff;
+    font-family:var(--mono);font-size:.82rem;font-weight:600;letter-spacing:1px;
+    text-transform:uppercase;
+    border:2px solid var(--accent);
+    transition:all .4s cubic-bezier(.16,1,.3,1);
+    position:relative;overflow:hidden;
+}
+.cta-contact-btn::before{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%);
+    opacity:0;transition:opacity .4s;
+}
+.cta-contact-btn:hover::before{opacity:1}
+.cta-contact-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 40px rgba(181,112,123,.3);
+    background:var(--accent-d);border-color:var(--accent-d);
+}
+.cta-contact-btn svg{width:16px;height:16px;transition:transform .3s}
+.cta-contact-btn:hover svg{transform:translateX(4px)}
+.cta-contact-dots{
+    position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:32px;
+}
+.cta-contact-dots span{
+    position:absolute;width:6px;height:6px;border-radius:50%;
+    background:var(--accent-l);opacity:0;
+}
+
 /* ═══ SCROLL TOP ═══ */
 .stt{
     position:fixed;bottom:28px;right:28px;z-index:10000;width:48px;height:48px;border-radius:50%;
@@ -1136,6 +1217,8 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
     .blog-grid{grid-template-columns:1fr}
     .chip-1{right:-5%}.chip-2{left:-5%}.chip-3{right:-2%}
     .case-list{max-width:100%}
+    .cta-contact{padding:80px 5vw}
+    .cta-contact-inner{padding:56px 28px}
 }
 @media(max-width:560px){
     .stats-row{grid-template-columns:1fr}
@@ -1187,7 +1270,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
             <span class="line"><span>Siemek</span></span>
         </h1>
         <div class="hero-line"></div>
-        <p class="hero-quote"><strong>Dr inż.</strong> — łączę naukę z technologią, żeby edukacja nadążała za światem.</p>
+        <p class="hero-quote"><strong>Dr inż.</strong> — buduję rzeczy, które działają. I zespoły, które chcą je rozwijać.</p>
         <div class="hero-tw" id="typewriter"></div>
     </div>
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
@@ -1198,32 +1281,31 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
     <div class="mq-track">
         <div class="mq-item"><span class="dot"></span>Mikropoświadczenia</div>
         <div class="mq-item"><span class="dot"></span>Sztuczna Inteligencja</div>
-        <div class="mq-item"><span class="dot"></span>Systemy Egzaminacyjne</div>
+        <div class="mq-item"><span class="dot"></span>Zarządzanie Projektami</div>
         <div class="mq-item"><span class="dot"></span>Prompt Engineering</div>
-        <div class="mq-item"><span class="dot"></span>Consulting</div>
-        <div class="mq-item"><span class="dot"></span>Digital Credentials</div>
-        <div class="mq-item"><span class="dot"></span>E-learning</div>
-        <div class="mq-item"><span class="dot"></span>Machine Learning</div>
+        <div class="mq-item"><span class="dot"></span>CloudLabs</div>
+        <div class="mq-item"><span class="dot"></span>PMI · ITIL · Agile</div>
+        <div class="mq-item"><span class="dot"></span>DevOps</div>
+        <div class="mq-item"><span class="dot"></span>Systemy Egzaminacyjne</div>
         <div class="mq-item"><span class="dot"></span>Mikropoświadczenia</div>
         <div class="mq-item"><span class="dot"></span>Sztuczna Inteligencja</div>
-        <div class="mq-item"><span class="dot"></span>Systemy Egzaminacyjne</div>
+        <div class="mq-item"><span class="dot"></span>Zarządzanie Projektami</div>
         <div class="mq-item"><span class="dot"></span>Prompt Engineering</div>
-        <div class="mq-item"><span class="dot"></span>Consulting</div>
-        <div class="mq-item"><span class="dot"></span>Digital Credentials</div>
-        <div class="mq-item"><span class="dot"></span>E-learning</div>
-        <div class="mq-item"><span class="dot"></span>Machine Learning</div>
+        <div class="mq-item"><span class="dot"></span>CloudLabs</div>
+        <div class="mq-item"><span class="dot"></span>PMI · ITIL · Agile</div>
+        <div class="mq-item"><span class="dot"></span>DevOps</div>
+        <div class="mq-item"><span class="dot"></span>Systemy Egzaminacyjne</div>
     </div>
 </div>
 
 <!-- HORIZONTAL SCROLL -->
 <div class="hz-scroll">
     <div class="hz-text">
-        <span class="hz-word filled">Sztuczna</span>
-        <span class="hz-word accent">Inteligencja</span>
+        <span class="hz-word filled">Technologia</span>
         <span class="hz-sep">/</span>
-        <span class="hz-word filled">Mikro&shy;poświadczenia</span>
+        <span class="hz-word accent">Zarządzanie</span>
         <span class="hz-sep">/</span>
-        <span class="hz-word accent">Edukacja</span>
+        <span class="hz-word filled">Edukacja</span>
     </div>
 </div>
 
@@ -1231,11 +1313,11 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 <section id="o-mnie" class="sec sec-b">
     <div class="sec-head rv">
         <div class="sec-tag">O mnie</div>
-        <div class="sec-title">Naukowiec, trener AI<br><span class="dim">i konsultant edukacyjny.</span></div>
+        <div class="sec-title">Buduję skuteczne rozwiązania,<br><span class="dim">ale zawsze zaczynam od ludzi.</span></div>
     </div>
 
     <div class="about-intro rv">
-        <p><strong>Od ponad 25 lat łączę naukę z praktyką.</strong> Pomagam uczelniom i firmom wdrażać AI, mikropoświadczenia i nowoczesne systemy egzaminacyjne. Wierzę, że technologia ze zrozumieniem to supermoc.</p>
+        <p><strong>Zamiast kolejnych teorii — buduję rzeczy, które działają.</strong> I zespoły, które chcą je rozwijać.</p>
     </div>
 
     <!-- Animowany reel/pasek -->
@@ -1244,31 +1326,43 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         <div class="about-reel-track" id="reelTrack"></div>
     </div>
 
+    <!-- Opis -->
+    <div class="about-body rv">
+        <p>Od ponad 20 lat działam na styku technologii, zarządzania i edukacji. W 2003 roku założyłem firmę CloudTeam, którą rozwijałem jako Prezes Zarządu do czerwca 2025 roku. W tym czasie nie tylko zrealizowałem setki szkoleń i stworzyłem dziesiątki programów rozwojowych — ale też budowałem organizację, zespoły i produkty, które miały realny wpływ na klientów.</p>
+        <p>Jestem przedsiębiorcą, który współtworzył i rozwijał kilka firm — niektóre z nich z sukcesem wprowadzając na kolejny etap, w tym sprzedaż. Znam więc biznes nie tylko z perspektywy doradczej, ale przede wszystkim z praktyki podejmowania decyzji, ponoszenia ryzyka i budowania wartości.</p>
+        <p>W ostatnich latach byłem współautorem produktów skierowanych do uczelni wyższych, ale moje doświadczenie obejmuje znacznie szersze spektrum branż — od edukacji, przez IT, po różnorodne środowiska biznesowe.</p>
+        <p>Specjalizuję się w łączeniu świata zarządzania projektami, usług IT i sztucznej inteligencji w sposób, który ma sens w realnym działaniu. Pracuję z podejściami takimi jak PMI, ITIL, Agile, DevOps oraz nowoczesnymi metodykami rozwijającymi się wokół AI — od prompt engineeringu, przez human-in-the-loop, po projektowanie procesów wspieranych przez sztuczną inteligencję.</p>
+        <p class="about-highlight">Ale to, co naprawdę mnie definiuje, to sposób pracy z ludźmi.</p>
+        <p>Budowałem i prowadziłem zespoły, których celem nie było tylko „dowożenie wyników", ale rozwój kompetencji, samodzielności i odpowiedzialności. Wierzę, że trwały sukces organizacji zaczyna się od ludzi — ich zaangażowania, zrozumienia celu i przestrzeni do wzrostu.</p>
+        <p>Dlatego łączę koncentrację na rezultatach z realnym podejściem do człowieka. Pracuję z organizacjami, które chcą nie tylko nadążać za zmianą, ale świadomie ją wykorzystywać — bez chaosu, bez zbędnego hype'u, za to z konkretnym efektem.</p>
+        <p class="about-closing">Bo technologia i metodyki to tylko narzędzia.<br><span>To ludzie decydują, czy mają one sens.</span></p>
+    </div>
+
     <!-- Kluczowe informacje -->
     <div class="about-keys rv">
         <div class="about-key rv-s">
             <div class="about-key-icon">🎓</div>
-            <div class="about-key-num" data-c="25">0</div>
+            <div class="about-key-num" data-c="20">0</div>
             <div class="about-key-label">Lat doświadczenia</div>
-            <div class="about-key-desc">Nauka, dydaktyka i wdrożenia technologiczne</div>
+            <div class="about-key-desc">Technologia, zarządzanie i edukacja — od 1998 roku</div>
         </div>
         <div class="about-key rv-s">
             <div class="about-key-icon">🤖</div>
-            <div class="about-key-num" data-c="500">0</div>
-            <div class="about-key-label">Przeszkolonych</div>
-            <div class="about-key-desc">Wykładowców, studentów i pracowników firm</div>
+            <div class="about-key-num" data-c="5000">0</div>
+            <div class="about-key-label">Przeszkolonych osób</div>
+            <div class="about-key-desc">Uczelnie, firmy, m.in. 5000 osób z Ukrainy (AWS)</div>
         </div>
         <div class="about-key rv-s">
-            <div class="about-key-icon">📄</div>
-            <div class="about-key-num" data-c="150">0</div>
-            <div class="about-key-label">Publikacji</div>
-            <div class="about-key-desc">Artykuły naukowe, raporty i ekspertyzy</div>
+            <div class="about-key-icon">🏆</div>
+            <div class="about-key-num" data-c="2">0</div>
+            <div class="about-key-label">× najlepszy trener MS</div>
+            <div class="about-key-desc">Dwukrotny najlepszy trener Microsoft w Polsce</div>
         </div>
         <div class="about-key rv-s">
             <div class="about-key-icon">⚡</div>
-            <div class="about-key-num" data-c="40">0</div>
-            <div class="about-key-label">Projektów</div>
-            <div class="about-key-desc">Wdrożenia AI, systemy certyfikacji, e-learning</div>
+            <div class="about-key-num" data-c="3">0</div>
+            <div class="about-key-label">Firmy zbudowane</div>
+            <div class="about-key-desc">Współtworzenie i rozwój — w tym CloudTeam jako CEO</div>
         </div>
     </div>
 </section>
@@ -1280,18 +1374,17 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         <a href="blog/" class="blog-folder rv">
             <div class="blog-folder-tab">
                 <span class="blog-tab-odc">Najnowszy</span>
-                <span class="blog-tab-num">#08</span>
+                <span class="blog-tab-num">#01</span>
             </div>
             <div class="blog-folder-paper"></div>
             <div class="blog-folder-back"></div>
             <div class="blog-folder-front">
                 <div class="blog-card-tags">
                     <span class="bct bct-biznes">Biznes</span>
-                    <span class="bct bct-ai">AI</span>
-                    <span class="bct bct-prompt">Prompt Engineering</span>
+                    <span class="bct bct-biznes">Historia</span>
                 </div>
-                <div class="blog-card-title">Szkolenia AI — co naprawdę działa po 500 przeszkolonych osobach?</div>
-                <div class="blog-card-excerpt">Które formaty szkoleń z AI przynoszą trwałe efekty? Moje wnioski po prowadzeniu warsztatów dla pracowników uczelni i menadżerów.</div>
+                <div class="blog-card-title">Skąd się wziąłem? Moja historia: od korepetycji do budowania firm</div>
+                <div class="blog-card-excerpt">Od 15 zł za korepetycje do własnej firmy. Jak zacząłem uczyć, co znaczy prowadzić firmę i dlaczego najważniejsi są ludzie.</div>
                 <div class="blog-card-divider"></div>
                 <div class="blog-card-foot">
                     <div class="blog-card-author">
@@ -1302,8 +1395,8 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                         </div>
                     </div>
                     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-                        <div class="blog-card-read"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 6 min</div>
-                        <div class="blog-card-date">24 lut 2026</div>
+                        <div class="blog-card-read"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 8 min</div>
+                        <div class="blog-card-date">kwiecień 2026</div>
                     </div>
                 </div>
             </div>
@@ -1311,8 +1404,8 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 
         <div class="blog-side rv">
             <div class="blog-side-tag">Blog</div>
-            <div class="blog-side-title">Ostatnio na blogu<br><span class="dim">napisałem o tym.</span></div>
-            <div class="blog-side-desc">Regularnie piszę o tym, co robię — AI, edukacja, wdrożenia. Obok mój najnowszy wpis. Resztę znajdziesz na blogu.</div>
+            <div class="blog-side-title">Zaczynam pisać<br><span class="dim">o tym, co wiem.</span></div>
+            <div class="blog-side-desc">Pierwszy wpis jest osobisty — skąd się wziąłem i dlaczego robię to, co robię. Kolejne będą o AI, mikropoświadczeniach, zarządzaniu i budowaniu zespołów.</div>
             <a href="blog/" class="blog-side-cta">Wszystkie wpisy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
 
@@ -1355,7 +1448,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 </div>
                 <div class="pillar-back">
                     <h3>Mikropoświadczenia</h3>
-                    <p>Projektuję i wdrażam systemy mikropoświadczeń dla uczelni wyższych — od koncepcji po certyfikację zgodną z europejskimi standardami Bologna Process.</p>
+                    <p>Od 1998 roku wręczam dyplomy, a od lat projektuję cyfrowe mikropoświadczenia. Współautor rozwiązań w CloudTeam, szkolenia dla uczelni i biznesu — od strategii po wdrożenie.</p>
                     <a href="filary/#mikro" class="pillar-link" onclick="event.stopPropagation()">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
             </div>
@@ -1394,7 +1487,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 </div>
                 <div class="pillar-back">
                     <h3>Nowoczesne systemy egzaminacyjne</h3>
-                    <p>Tworzę systemy weryfikacji wiedzy oparte o AI — adaptacyjne testy, automatyczna ocena, analityka wyników w czasie rzeczywistym.</p>
+                    <p>Projektowałem systemy egzaminacyjne, platformy edukacyjne i CloudLabs — laboratoria wirtualne, które automatyzowały środowiska szkoleniowe na dużą skalę.</p>
                     <a href="filary/#egzaminy" class="pillar-link" onclick="event.stopPropagation()">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
             </div>
@@ -1440,7 +1533,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 </div>
                 <div class="pillar-back">
                     <h3>Sztuczna inteligencja</h3>
-                    <p>Pomagam uczelniom i firmom wdrażać AI w procesy edukacyjne i biznesowe — od strategii po gotowe rozwiązania oparte o LLM.</p>
+                    <p>Łączę AI z zarządzaniem projektami i edukacją. Od prompt engineeringu, przez human-in-the-loop, po projektowanie procesów wspieranych przez sztuczną inteligencję.</p>
                     <a href="filary/#ai" class="pillar-link" onclick="event.stopPropagation()">Więcej <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
             </div>
@@ -1457,7 +1550,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 <section class="sec sec-w" id="moja-droga">
     <div class="sec-head rv">
         <div class="sec-tag">Moja droga</div>
-        <div class="sec-title">Od pierwszych wystąpień<br><span class="dim">do własnej wizji edukacji.</span></div>
+        <div class="sec-title">Od pierwszej szansy<br><span class="dim">do własnej wizji.</span></div>
     </div>
     <div class="tl-axis rv">
         <div class="tl-axis-labels">
@@ -1469,45 +1562,45 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
         <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
-                <div class="tl-tile-year">2000</div>
-                <div class="tl-tile-title">Pierwsze wystąpienia</div>
-                <div class="tl-tile-desc">Prowadzenie szkoleń, prelekcji i warsztatów. Odkrycie pasji do dzielenia się wiedzą.</div>
-                <span class="tl-tile-badge">Szkolenia</span>
+                <div class="tl-tile-year">~1998</div>
+                <div class="tl-tile-title">Pierwsza szansa</div>
+                <div class="tl-tile-desc">Szkolenia z Excela, Worda, Windows 95. Pani Bartos dała mi szansę — reszta zależała ode mnie.</div>
+                <span class="tl-tile-badge">Początek</span>
             </div>
         </div>
         <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
                 <div class="tl-tile-year">2003</div>
-                <div class="tl-tile-title">Action — Centrum Edukacyjne</div>
-                <div class="tl-tile-desc">Założenie pierwszej firmy. Szkolenia, kursy, certyfikacje — pierwszy krok w przedsiębiorczości.</div>
-                <span class="tl-tile-badge">Założyciel</span>
+                <div class="tl-tile-title">Własna firma</div>
+                <div class="tl-tile-desc">Edusoft sprzedany. Skok na głęboką wodę — własna firma z Michałem Karskim i Mariuszem Giemzą.</div>
+                <span class="tl-tile-badge">Firma</span>
             </div>
         </div>
         <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
-                <div class="tl-tile-year">2018</div>
-                <div class="tl-tile-title">Cloud Team</div>
-                <div class="tl-tile-desc">Rebrand firmy. Przejście w stronę technologii chmurowych, automatyzacji i wdrożeń AI.</div>
-                <span class="tl-tile-badge">Transformacja</span>
+                <div class="tl-tile-year">~2010</div>
+                <div class="tl-tile-title">Wzrost i skala</div>
+                <div class="tl-tile-desc">Kilka oddziałów w Polsce, fundusze unijne, Action S.A. na pokładzie. Właściwe miejsce, właściwy czas.</div>
+                <span class="tl-tile-badge">Rozwój</span>
             </div>
         </div>
         <div class="tl-tile">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
-                <div class="tl-tile-year">2020</div>
-                <div class="tl-tile-title">Doktorat</div>
-                <div class="tl-tile-desc">Obrona pracy doktorskiej. Połączenie doświadczenia praktycznego z fundamentem naukowym.</div>
-                <span class="tl-tile-badge">Nauka</span>
+                <div class="tl-tile-year">~2018</div>
+                <div class="tl-tile-title">Transformacja</div>
+                <div class="tl-tile-desc">Z firmy szkoleniowej — firma produktowa. Systemy egzaminacyjne, CloudLabs, mikropoświadczenia.</div>
+                <span class="tl-tile-badge">Produkt</span>
             </div>
         </div>
         <div class="tl-tile tl-now">
             <div class="tl-tile-dot"></div>
             <div class="tl-tile-inner">
                 <div class="tl-tile-year">2025</div>
-                <div class="tl-tile-title">Tech4Edu</div>
-                <div class="tl-tile-desc">Platforma łącząca AI, mikropoświadczenia i nowoczesną edukację przyszłości.</div>
+                <div class="tl-tile-title">Nowy początek</div>
+                <div class="tl-tile-desc">Sprzedaż firmy, nowy projekt, nowe marzenie. Ciąg dalszy nastąpi.</div>
                 <span class="tl-tile-badge">Teraz</span>
             </div>
         </div>
@@ -1532,8 +1625,8 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 <div class="szkol-num">01 / szkolenie</div>
                 <div class="szkol-icon">🧠</div>
                 <h3>AI & Prompt Engineering</h3>
-                <p>Praktyczne warsztaty z wykorzystania AI w codziennej pracy — ChatGPT, Claude, Gemini, automatyzacja z LLM.</p>
-                <div class="szkol-tags"><span class="szkol-tag">ChatGPT</span><span class="szkol-tag">Claude</span><span class="szkol-tag">LLM</span></div>
+                <p>Praktyczne warsztaty z AI w codziennej pracy. Od podstaw po human-in-the-loop i projektowanie procesów wspieranych przez AI.</p>
+                <div class="szkol-tags"><span class="szkol-tag">Prompt Engineering</span><span class="szkol-tag">LLM</span><span class="szkol-tag">Human-in-the-loop</span></div>
             </div>
         </div>
         <div class="szkol-card rv-s" style="transition-delay:.15s">
@@ -1542,18 +1635,18 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
                 <div class="szkol-num">02 / szkolenie</div>
                 <div class="szkol-icon">🎯</div>
                 <h3>Mikropoświadczenia w praktyce</h3>
-                <p>Jak zaprojektować, wdrożyć i zarządzać systemem mikropoświadczeń na uczelni — kompletny program.</p>
-                <div class="szkol-tags"><span class="szkol-tag">Digital Credentials</span><span class="szkol-tag">Bologna</span><span class="szkol-tag">Framework</span></div>
+                <p>8h warsztatów: od strategii do wdrożenia. Open Badges, EDC, EQF, ZSK — teoria 40%, praktyka 60%.</p>
+                <div class="szkol-tags"><span class="szkol-tag">Open Badges</span><span class="szkol-tag">EQF</span><span class="szkol-tag">ZSK</span><span class="szkol-tag">EDC</span></div>
             </div>
         </div>
         <div class="szkol-card rv-s" style="transition-delay:.25s">
             <video class="szkol-bg" src="assets/videos/data.mp4" muted loop playsinline autoplay preload="auto"></video>
             <div class="szkol-content">
                 <div class="szkol-num">03 / szkolenie</div>
-                <div class="szkol-icon">📊</div>
-                <h3>Data Science & ML</h3>
-                <p>Od analizy danych po modele predykcyjne — szkolenia z Python, TensorFlow, analityki i wizualizacji.</p>
-                <div class="szkol-tags"><span class="szkol-tag">Python</span><span class="szkol-tag">TensorFlow</span><span class="szkol-tag">Analityka</span></div>
+                <div class="szkol-icon">📋</div>
+                <h3>Zarządzanie projektami</h3>
+                <p>PMI, ITIL, Agile, DevOps — sprawdzone podejścia połączone z realnymi doświadczeniami z prowadzenia firm i zespołów.</p>
+                <div class="szkol-tags"><span class="szkol-tag">PMI</span><span class="szkol-tag">ITIL</span><span class="szkol-tag">Agile</span><span class="szkol-tag">DevOps</span></div>
             </div>
         </div>
     </div>
@@ -1630,19 +1723,33 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
 </section>
 
 
+<!-- CONTACT CTA -->
+<section class="cta-contact" id="kontakt">
+    <div class="cta-contact-inner rv">
+        <div class="cta-contact-dots" id="ctaDots"></div>
+        <div class="cta-contact-tag">Kontakt</div>
+        <h2 class="cta-contact-title">Chcesz pogadać?<br><span class="dim">Po prostu zadzwoń.</span></h2>
+        <p class="cta-contact-sub">Żadnych formularzy, żadnego czekania na maila. Dzwonisz, rozmawiamy, ogarniamy temat.</p>
+        <a href="kontakt/" class="cta-contact-btn">
+            Dane kontaktowe
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
     <div class="footer-grid rv">
         <div class="footer-col">
             <div class="f-logo">TS://</div>
-            <div class="f-desc">Dr inż. Tomasz Siemek — ekspert AI, mikropoświadczeń i nowoczesnych systemów edukacyjnych. Pomagam uczelniom i firmom wdrażać inteligentne rozwiązania.</div>
+            <div class="f-desc">Dr inż. Tomasz Siemek — przedsiębiorca, trener i praktyk. 20+ lat na styku technologii, zarządzania i edukacji. Założyciel CloudTeam.</div>
         </div>
         <div class="footer-col">
-            <div class="f-col-title">Rozwiązania</div>
+            <div class="f-col-title">Działalność</div>
             <ul class="f-links">
-                <li><a href="#edukacja">Dla edukacji</a></li>
-                <li><a href="#biznes">Dla biznesu</a></li>
-                <li><a href="#szkolenia">Szkolenia</a></li>
+                <li><a href="#filary">Filary</a></li>
+                <li><a href="szkolenia/">Szkolenia</a></li>
+                <li><a href="#moja-droga">Moja droga</a></li>
             </ul>
         </div>
         <div class="footer-col">
@@ -1650,7 +1757,7 @@ footer{padding:64px 7vw 32px;border-top:1px solid var(--border);position:relativ
             <ul class="f-links">
                 <li><a href="#blog">Blog</a></li>
                 <li><a href="#o-mnie">O mnie</a></li>
-                <li><a href="#o-mnie">Kontakt</a></li>
+                <li><a href="kontakt/">Kontakt</a></li>
             </ul>
         </div>
         <div class="footer-col">
@@ -1732,6 +1839,28 @@ document.addEventListener('mouseleave',()=>curGlow.classList.remove('vis'));
     requestAnimationFrame(glowLoop);
 })();
 
+/* ═══ CONTACT CTA DOTS ═══ */
+{
+const dotsWrap=document.getElementById('ctaDots');
+if(dotsWrap){
+    for(let i=0;i<8;i++){
+        const d=document.createElement('span');
+        d.style.left=Math.random()*100+'%';
+        d.style.top=Math.random()*100+'%';
+        dotsWrap.appendChild(d);
+        gsap.to(d,{
+            opacity:gsap.utils.random(.12,.3),
+            scale:gsap.utils.random(.8,1.6),
+            x:'random(-40,40)',y:'random(-40,40)',
+            duration:gsap.utils.random(3,6),
+            repeat:-1,yoyo:true,
+            ease:'sine.inOut',
+            delay:gsap.utils.random(0,3)
+        });
+    }
+}
+}
+
 /* ═══ SCROLL ═══ */
 addEventListener('scroll',()=>{
     const h=document.documentElement.scrollHeight-innerHeight;
@@ -1741,7 +1870,7 @@ addEventListener('scroll',()=>{
 const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.n-link');
 const secBar=document.getElementById('secBar'),secLabel=document.getElementById('secLabel');
 const navPill=document.getElementById('navPill'),mainNav=document.getElementById('mainNav');
-const secNames={'o-mnie':'O mnie','filary':'Filary działalności','moja-droga':'Moja droga','szkolenia':'Szkolenia & Konferencje','blog':'Blog'};
+const secNames={'o-mnie':'O mnie','filary':'Filary działalności','moja-droga':'Moja droga','szkolenia':'Szkolenia & Konferencje','blog':'Blog','kontakt':'Kontakt'};
 let labelTimer,lastActive=null;
 
 function movePill(link){
@@ -1777,7 +1906,7 @@ addEventListener('scroll',()=>{
 addEventListener('resize',()=>{const a=mainNav.querySelector('.n-link.active');if(a)movePill(a)});
 
 /* ═══ TYPEWRITER ═══ */
-const phrases=['Ekspert AI & mikropoświadczeń','Nowoczesne systemy egzaminacyjne','Szkolenia i consulting dla uczelni','Rozwiązania AI dla biznesu','Dr inż. — naukowiec i praktyk'];
+const phrases=['Przedsiębiorca, trener, praktyk','PMI · ITIL · Agile · DevOps · AI','2x najlepszy trener Microsoft w Polsce','20+ lat na styku technologii i edukacji','Założyciel CloudTeam · Prezes do 2025'];
 const twEl=document.getElementById('typewriter');let pi=0,ci2=0,del=false;
 function tw(){const p=phrases[pi];if(!del){twEl.innerHTML=p.slice(0,ci2)+'<span class="tw-c"></span>';ci2++;if(ci2>p.length){del=true;setTimeout(tw,2600);return}setTimeout(tw,45+Math.random()*35)}else{twEl.innerHTML=p.slice(0,ci2)+'<span class="tw-c"></span>';ci2--;if(ci2<0){del=false;pi=(pi+1)%phrases.length;ci2=0;setTimeout(tw,400);return}setTimeout(tw,20)}}
 setTimeout(tw,2200);

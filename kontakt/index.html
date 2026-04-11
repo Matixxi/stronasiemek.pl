@@ -209,6 +209,17 @@ a{color:inherit;text-decoration:none}
 /* ═══ REVEAL ═══ */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .rv.vis{opacity:1;transform:translateY(0)}
+
+/* ═══ CURSOR GLOW ═══ */
+.cur-glow{
+    position:fixed;pointer-events:none;z-index:99998;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(212,149,158,.12) 0%,rgba(212,149,158,.04) 40%,transparent 70%);
+    transform:translate(-50%,-50%);
+    transition:opacity .4s;opacity:0;
+}
+.cur-glow.vis{opacity:1}
+@media(max-width:960px){.cur-glow{display:none!important}}
 </style>
 </head>
 <body>
@@ -337,6 +348,19 @@ gsap.timeline({ repeat: -1, defaults: { ease: 'power1.inOut' } })
     .set('#phoneDrawSvg', { opacity: 0.22 })
     .from('#phoneDrawSvg .draw', { drawSVG: '0% 0%', duration: 2.8, stagger: 0.25 })
     .to('#phoneDrawSvg .draw', { drawSVG: '100% 100%', duration: 2.8, stagger: 0.25 }, '+=0.6');
+</script>
+
+<div class="cur-glow" id="curGlow"></div>
+<script>
+const curGlow=document.getElementById('curGlow');
+let gx=0,gy=0,glowX=0,glowY=0;
+document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;curGlow.classList.add('vis')});
+document.addEventListener('mouseleave',()=>curGlow.classList.remove('vis'));
+(function glowLoop(){
+    glowX+=(gx-glowX)*.15;glowY+=(gy-glowY)*.15;
+    curGlow.style.left=glowX+'px';curGlow.style.top=glowY+'px';
+    requestAnimationFrame(glowLoop);
+})();
 </script>
 
 </body>
